@@ -1,0 +1,204 @@
+import { useEffect, useState } from "react";
+import { FaUsers, FaUserPlus } from "react-icons/fa";
+import { RiUserSharedFill } from "react-icons/ri";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "../../assets/Css/bootstrap.css"
+import apiClient from "../../api/apiClient";
+import LeveUserCard from "./LeveUserCard";
+import '../../assets/dashboardcss/css/Dashboard.css'
+import Income from "./income";
+import { useUser } from "../../context/UserContext";
+const LevelIncome = () => {
+  const [open, setOpen] = useState(false);
+  const [op, setop] = useState(false);
+  const [show, setShow] = useState(false);
+  const [animate, setAnimate] = useState(false);
+  const [levels, setLevels] = useState([]);
+
+  const { userData } = useUser();
+
+  useEffect(() => {
+    const regno = 1;
+    apiClient.get(`/Dashboard/team-counts/${regno}`)
+      .then((res) => {
+        console.log("🔥 TEAM COUNTS:", res.data);
+
+        const apiData = res.data.data;
+
+        setLevels([
+          {
+            teamCount: apiData.TeamCount,
+            active: apiData.ActiveTeam,
+            inactive: apiData.InactiveTeam,
+          },
+        ]);
+      })
+      .catch((err) => console.log("❌ API ERROR:", err));
+  }, []);
+
+  // 🔥 ANIMATION CONTROL
+  useEffect(() => {
+    if (show) {
+      const timer = setTimeout(() => setAnimate(true), 50);
+      return () => clearTimeout(timer);
+    } else {
+      setAnimate(false);
+    }
+  }, [show]);
+
+  const teamData = levels[0] || {};
+  const menuItems = [
+    { name: "Total Team", icon: <FaUserPlus />, value: teamData.teamCount },
+    { name: "--", },
+    { name: "--", },
+    { name: "--", },
+    { name: "Active Team", icon: <FaUsers />, value: teamData.active },
+    { name: "Inactive Team", icon: <RiUserSharedFill />, value: teamData.inactive, color: "#ef4444" }
+  ];
+
+  return (
+    <>
+      <div className="activity-container col-lg-12 p-3 mb-5">
+        <div className="card1 no-animate py-1 custom-card1 rounded_5">
+          <div className="card1-body">
+            <div className="row" >
+              <div className="col-lg-6">
+                <div className="">
+                  <div className="activites">Activities</div>
+                  <div className="flow-wrapper d-flex justify-content-center align-items-center">
+                    <div className="  d-flex align-items-center gap-3">
+                      
+                      <div className="level-box">
+                        <button className={`circle-btn ${open ? "active" : ""}`} onClick={() => { setOpen(true); }}>
+                          Business
+                        </button>
+                        {open && (
+                          <>
+                            <div className="popup-backdrop" onClick={() => setOpen(false)} />
+                            {open && (
+                              <>
+                                <div className="popup-backdrop" onClick={() => setOpen(false)} />
+                                <div className="popup-modal">
+                                  <button className="close-btn" onClick={() => setOpen(false)} >
+                                    ✕
+                                  </button>
+                                  {open && (
+                                    <>
+                                      <div className="level-counts-wrapper">
+                                        <div className="coins">
+                                          <div className="level-card">
+                                            <span className="stext">Direct Id</span>
+                                            <span>{userData?.directId || 0}</span>
+                                          </div>
+                                          <div className="level-card">
+                                            <span className="stext">Strong/Weaker Leg</span>
+                                            <span>{userData?.strongLeg} / {userData?.weakerLeg}</span>
+                                          </div>
+                                          <div className="level-card">
+                                            <span className="stext">Team Carryforward</span>
+                                            <span>{userData?.leftCarry} / {userData?.rightCarry || 0}</span>
+                                          </div>
+                                          <div className="level-card">
+                                            <span className="stext">Current Month Business</span>
+                                            <span>{userData?.leftperMonth} / {userData?.rightperMonth}</span>
+                                          </div>
+                                          <div className="level-card">
+                                            <span className="stext">Total Overall Business</span>
+                                            <span>{userData?.LeftBusiness} / {userData?.RightBusiness}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <button className={`circle-btn1 ${open ? "active" : ""}`} onClick={() => setOpen(true)}>
+                                        Business
+                                      </button>
+                                      <div>
+                                        <svg className="lines" viewBox="0 0 500 420">
+                                          <line x1="140" y1="200" x2="400" y2="95" />
+                                          <line x1="140" y1="200" x2="400" y2="150" />
+                                          <line x1="140" y1="200" x2="400" y2="205" />
+                                          <line x1="140" y1="200" x2="400" y2="260" />
+                                          <line x1="140" y1="200" x2="400" y2="315" />
+                                        </svg>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              </>
+                            )}
+                          </>
+                        )}
+                      </div>
+
+
+
+
+
+                      <div className="team-box">
+                        <button
+                          className={`circle-btn ${show ? "active" : ""}`}
+                          onClick={() => setShow(true)} >
+                          Team
+                        </button>
+
+                        {show && (
+                          <>
+                            <div className="popup-backdrop" onClick={() => setShow(false)} />
+                            <div className="popup-modal">
+                              <button className="close-btn" onClick={() => setShow(false)} > ✕ </button>
+                              <div className="menu-container">
+                                <div className={`ring-menu ${animate ? "open" : ""}`}>
+                                  {menuItems.map((item, index) => (
+                                    <div key={index} className="menu-item" style={{ "--i": index }}>
+                                      <div className="icon">{item.icon}</div>
+                                      <div className="text1">
+                                        <h4>{item.name}</h4>
+                                        {item.value !== undefined && <p>{item.value}</p>}
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              <button className="circle-btn2">Team
+                              </button>
+                            </div>
+                          </>
+                        )}
+                      </div>
+
+                      {/* --- INCOME SECTION --- */}
+                      <div className="income-box text-center">
+                        <button className="circle-btn" onClick={() => setop(true)}>
+                          Income
+                        </button>
+
+                        {/* 🔥 Condition lagayi hai taaki click karne par hi data load ho */}
+                        {op && (
+                          <>
+                            <div className="popup-backdrop" onClick={() => setop(false)} />
+                            <div className="popup-modal">
+                              <button className="close-btn" onClick={() => setop(false)}>✕</button>
+
+                              {/* Aapka Income component ab modal ke andar load hoga */}
+                              <Income op={op} setop={setop} />
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-lg-6 p-0  ">
+                <LeveUserCard />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default LevelIncome;

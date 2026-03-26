@@ -1,0 +1,242 @@
+/* ================= BASE TABLE ================= */
+
+.custom-table {
+  width: 100%;
+  border-spacing: 2px;
+}
+
+/* ================= HEADER ================= */
+
+.custom-table thead th {
+  padding: 20px 5px;
+  position: relative;
+  z-index: 1;
+  color: #ffffff;
+  background-color: #fff;
+  font-size: 14px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* HEADER DESIGN */
+.custom-table thead th:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 2%;
+  right: 2%;
+  height: 40px;
+  z-index: -1;
+  clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+}
+
+/* HEADER COLORS */
+.custom-table thead th:nth-child(2)::before,
+.custom-table thead th:nth-child(3)::before,
+.custom-table thead th:nth-child(4)::before,
+.custom-table thead th:nth-child(5)::before,
+.custom-table thead th:nth-child(6)::before,
+.custom-table thead th:nth-child(7)::before {
+  background: linear-gradient(to right, var(--primary-clr), var(--secondary-clr));
+}
+
+/* ================= TD ================= */
+
+.custom-table td {
+  padding: 10px;
+  border: 1px solid rgb(239, 239, 239);
+  text-align: center;
+  vertical-align: middle !important;
+}
+
+/* FIRST COLUMN (CENTER FIX) */
+.custom-table tbody tr td:first-child {
+  background: transparent !important;
+  border: none !important;
+  width: 80px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ================= SERIAL CIRCLE ================= */
+
+.sr-no-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0; /* IMPORTANT FIX */
+  font-size: 14px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin: 5px;
+}
+
+/* CIRCLE COLOR */
+.custom-table tbody tr .sr-no-circle {
+  background: linear-gradient(to right, var(--primary-clr), var(--secondary-clr));
+}
+
+/* ================= CARD ================= */
+
+.report-card {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* ================= ROW COLORS ================= */
+
+.custom-table tbody tr:nth-child(odd) {
+  background-color: #f8f9fa;
+}
+
+.custom-table tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+/* HOVER */
+.custom-table tbody tr:hover {
+  background-color: #eaf3ff;
+}
+
+/* ================= TEXT ================= */
+
+.amount-text-green {
+  color: #27ae60;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.date-subtext {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+.user-name-text,
+.sponsor-id-text {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.user-id-subtext {
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* ================= STATUS ================= */
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.status-pill.active {
+  background-color: rgba(39, 174, 96, 0.1);
+  color: #219150;
+}
+
+.status-pill.inactive {
+  background-color: rgba(148, 163, 184, 0.1);
+  color: #64748b;
+}
+
+.status-pill .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* ================= ROW ================= */
+
+.custom-table-row td {
+  padding-top: 12px !important;
+  padding-bottom: 10px !important;
+}
+
+/* ================= WRAPPER ================= */
+
+.custom-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding: 0px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* TABLET */
+@media (max-width: 992px) {
+
+  .custom-table thead th {
+    padding: 14px 4px;
+    font-size: 12px;
+  }
+
+  .custom-table td {
+    padding: 8px;
+    font-size: 12px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  .custom-table {
+    min-width: 700px;
+  }
+
+  .custom-table td {
+    white-space: nowrap;
+    font-size: 11px;
+  }
+
+  .custom-table thead th {
+    font-size: 11px;
+    padding: 12px 4px;
+  }
+
+  .sr-no-circle {
+    width: 45px;
+    height: 45px;
+    font-size: 11px;
+    margin-top: 15px;
+  }
+
+  .amount-text-green {
+    font-size: 13px;
+  }
+
+  .user-name-text,
+  .sponsor-id-text {
+    font-size: 12px;
+  }
+
+  .user-id-subtext {
+    font-size: 10px;
+  }
+
+  .status-pill {
+    font-size: 9px;
+    padding: 3px 8px;
+  }
+
+  .status-pill .dot {
+    width: 5px;
+    height: 5px;
+  }
+}
+

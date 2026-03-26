@@ -1,0 +1,342 @@
+/* Container and Card Setup */
+.form-container {
+  background-color: #fdf8f4; /* Light creamy background */
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+.form-card {
+  background: white;
+  width: 100%;
+  max-width: 1000px;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eef0f2;
+}
+
+/* Header Section */
+.form-header {
+  border-bottom: 2px solid #f8f9fa;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-weight: 800;
+  color: #e67e22; /* Mango Orange */
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+.brand-sub {
+  font-size: 0.75rem;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.form-title {
+  margin-top: 15px;
+  font-size: 1.5rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Section Styling */
+.form-section {
+  background: #fcfcfc;
+  border: 1px solid #f1f1f1;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  overflow: hidden;
+}
+
+.section-heading {
+  background: #f4f7f9;
+  padding: 12px 20px;
+  font-size: 1rem;
+  color: #34495e;
+  margin: 0;
+  border-bottom: 1px solid #eef0f2;
+  text-transform: capitalize;
+}
+
+/* Form Inputs Grid */
+.grid-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 15px 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group.full-width {
+  padding: 0 20px 15px 20px;
+}
+
+.input-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #7f8c8d;
+}
+
+.input-group input {
+  padding: 10px 14px;
+  border: 1px solid #dcdde1;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background-color: #fff;
+  transition: border 0.3s;
+}
+
+.input-group input:focus {
+  border-color: #e67e22;
+  outline: none;
+}
+
+.input-group small {
+  font-size: 0.75rem;
+  color: #bdc3c7;
+  margin-top: 4px;
+}
+
+.warning-box {
+  background: #fff9f0;
+  border: 1px solid #ffeaa7;
+  color: #d35400;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+/* Checkmark and Bullet Item Styling */
+.acknowledgment {
+  padding: 15px 20px;
+}
+
+.check-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: flex-start;
+}
+
+.tick-icon {
+  color: #27ae60; /* Professional Green */
+  font-weight: bold;
+  font-size: 1.1rem;
+  min-width: 20px;
+}
+
+.bullet-dot {
+  color: #7f8c8d;
+  font-size: 1.2rem;
+  min-width: 20px;
+  text-align: center;
+}
+
+.check-item p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #2c3e50;
+}
+
+.sub-point {
+  margin-left: 10px;
+}
+
+/* Signature Section */
+.signature-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 35px;
+  padding: 20px;
+  border-top: 1px solid #f1f1f1;
+}
+
+.sig-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sig-column p {
+  margin: 2px 0;
+  font-size: 0.9rem;
+  color: #2c3e50;
+}
+
+.brand-sig {
+  font-family: 'Brush Script MT', 'Cursive';
+  font-size: 2rem;
+  color: #2c3e50;
+  padding: 10px 0;
+}
+
+.user-sig {
+  font-family: 'Brush Script MT', 'Cursive';
+  font-size: 1.8rem;
+  color: #2980b9;
+}
+
+.investor-name-box {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.sig-pad {
+  border: 1px solid #ecf0f1;
+  background: #fbfcfc;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sig-pad span {
+  font-size: 0.75rem;
+  color: #bdc3c7;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 40px;
+  padding-right: 20px;
+}
+
+.btn-white {
+  background: white;
+  border: 1px solid #dcdde1;
+  padding: 12px 30px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #7f8c8d;
+  transition: all 0.2s;
+}
+
+.btn-white:hover {
+  background: #f8f9fa;
+}
+
+.btn-orange {
+  background: #e67e22;
+  color: white;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(230, 126, 34, 0.2);
+  transition: all 0.2s;
+}
+
+.btn-orange:hover {
+  background: #d35400;
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .grid-row, .signature-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ... baki upar ka code same rahega ... */
+
+/* Responsive Design Queries */
+
+@media (max-width: 1024px) {
+  .form-card {
+    max-width: 95%; /* Tablet par thoda gap rahega */
+    padding: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-row {
+    grid-template-columns: 1fr; /* 2 column se 1 column ho jayega */
+    gap: 15px;
+    padding: 10px 15px;
+  }
+
+  .signature-container {
+    grid-template-columns: 1fr; /* Signatures ek ke niche ek aayenge */
+    gap: 20px;
+  }
+
+  .form-title {
+    font-size: 1.2rem;
+  }
+
+  .brand-name {
+    font-size: 1rem;
+  }
+
+  .button-group {
+    justify-content: center; /* Mobile par buttons center mein ache lagte hain */
+    flex-direction: column-reverse; /* Print button niche aur Submit upar */
+    padding-right: 0;
+  }
+
+  .btn-orange, .btn-white {
+    width: 100%; /* Buttons full width ho jayenge */
+  }
+
+  .form-card {
+    padding: 20px 15px;
+  }
+
+  .section-heading {
+    font-size: 0.9rem;
+    padding: 10px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 10px 5px; /* Bahut choti screen ke liye kam padding */
+  }
+
+  .check-item p {
+    font-size: 0.8rem; /* Mobile par text thoda chota */
+  }
+
+  .logo-icon {
+    font-size: 22px;
+  }
+}
