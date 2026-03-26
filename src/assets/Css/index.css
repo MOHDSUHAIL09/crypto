@@ -25,12 +25,12 @@ Version      : 1.1.9
 /*===================================*
 01. GENERAL STYLE
 *===================================*/
-body {
+/* body {
 	font-family: 'PT Sans', sans-serif;
 	font-size: 15px;
 	color: #616161;
 	line-height: 25px;
-}
+} */
 a {
 	color: #fbbd18;
 	-webkit-transition: all 500ms;

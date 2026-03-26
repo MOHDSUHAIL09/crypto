@@ -2,7 +2,7 @@
  /* ========================================
    FIX: EXTRA SPACE FROM HIDDEN TEXT (image.png content)
    ======================================== */
-@media (max-width: 991px) {
+@media (max-width: 2000px) {
   /* Kill any hidden elements that might be taking space */
   [hidden],
   [style*="display: none"],
@@ -35,11 +35,11 @@
   }
 
   /* Fix hero section height */
-  .hero-main {
+  /* .hero-main {
     height: auto !important;
     min-height: 100vh !important;
     overflow-x: hidden !important;
-  }
+  } */
 
   /* Fix timer section */
   .pre-sale-timer {
@@ -63,7 +63,6 @@
     height: auto !important;
   }
 
-  /* Fix animation containers */
   .diamond-animation,
   .platinum-animation,
   .mercury-animation {
@@ -74,6 +73,16 @@
     overflow: hidden !important;
   }
 }
+
+
+
+
+
+
+
+
+
+
  @media only screen and (max-width: 1600px) {
  	.our-mission-boxes h4 {
  		font-size: 20px;
@@ -317,7 +326,7 @@
 		min-width:680px;
 	}
  }
- @media only screen and (max-width: 991px) {
+  @media only screen and (max-width: 991px) {
  	.logo img {
  		max-width: 180px;
  	}
@@ -614,7 +623,7 @@
 	.token-pricing-section .section-heading {
 	    margin: 0 0 60px;
 	}
- }
+ } 
 
 
 
@@ -628,7 +637,7 @@
   .logo img {
     height: 35px;
   }
-  /* Hamburger Menu Icon */
+
   .menu-icon {
     display: block;
     width: 35px;
@@ -663,7 +672,7 @@
     top: 20px;
   }
 
-  /* Active state for hamburger icon */
+
   .menu-icon.active span:nth-child(1) {
     top: 10px;
     transform: rotate(135deg);
@@ -679,7 +688,7 @@
     transform: rotate(-135deg);
   }
 
-  /* Mobile Menu - Initially hidden on the right */
+
   nav {
     position: fixed;
     top: 0;
@@ -697,7 +706,7 @@
     text-align: center;
   }
 
-  /* OPEN STATE - Slide in from right */
+
   nav.show {
     right: 0;
   }
@@ -716,13 +725,12 @@
     transition: all 0.3s ease;
   }
 
-  /* Animate list items when menu opens */
+
   nav.show ul li {
     opacity: 1;
     transform: translateX(0);
   }
 
-  /* Stagger animation for menu items */
   nav.show ul li:nth-child(1) { transition-delay: 0.05s; }
   nav.show ul li:nth-child(2) { transition-delay: 0.1s; }
   nav.show ul li:nth-child(3) { transition-delay: 0.15s; }
@@ -745,7 +753,7 @@
     color: #f6aa35 !important;
   }
 
-  /* Dashboard Button Mobile */
+
   nav ul li.nav-btn a {
     display: inline-block;
     margin-top: 10px;
@@ -762,20 +770,18 @@
     transform: scale(1.05);
   }
 
-  /* Fixed header mobile styles */
+
   .header.fixed .menu-icon span {
     background: #fbbd18 ;
   }
 
-  /* Prevent body scroll when menu is open */
-  /* body.menu-open {
+
+  body.menu-open {
     overflow: hidden;
-  } */
+  }
 }
 
-/* ========================================
-   SMALL MOBILE STYLES
-   ======================================== */
+
 @media (max-width: 480px) {
   nav {
     max-width: 100%;
@@ -793,30 +799,13 @@
   }
 }
 
-/* ========================================
-   SMOOTH SCROLLING
-   ======================================== */
-html {
-  scroll-behavior: smooth;
-}
 
-/* Custom scrollbar for mobile menu */
-nav::-webkit-scrollbar {
-  width: 5px;
-}
 
-nav::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
 
-nav::-webkit-scrollbar-thumb {
-  background: #fbbd18;
-  border-radius: 5px;
-}
 
-nav::-webkit-scrollbar-thumb:hover {
-  background: #f0931e;
-}
+
+
+
 
 
 
@@ -862,10 +851,10 @@ nav::-webkit-scrollbar-thumb:hover {
  		padding-top: 20px;
  		text-align: center;
  	}
- 	.hero-left .sec-title::after{
+ 	/* .hero-left .sec-title::after{
 
  		background: url(../images/line2.png) no-repeat top center;
- 	}
+ 	} */
  	.pre-sale-timer {
  		padding: 50px 10px;
  		height: auto;
