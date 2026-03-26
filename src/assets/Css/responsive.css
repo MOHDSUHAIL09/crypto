@@ -1,5 +1,79 @@
  /* Responsive css start */
- 
+ /* ========================================
+   FIX: EXTRA SPACE FROM HIDDEN TEXT (image.png content)
+   ======================================== */
+@media (max-width: 991px) {
+  /* Kill any hidden elements that might be taking space */
+  [hidden],
+  [style*="display: none"],
+  [style*="visibility: hidden"],
+  [aria-hidden="true"],
+  .d-none,
+  .hidden,
+  .invisible {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Lock body width */
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Fix hero section height */
+  .hero-main {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Fix timer section */
+  .pre-sale-timer {
+    height: auto !important;
+    display: block !important;
+    margin-bottom: 0 !important;
+  }
+
+  .pre-sale-timer > div {
+    display: block !important;
+  }
+
+  /* Fix any fixed width elements */
+  [style*="width:"] {
+    max-width: 100% !important;
+  }
+
+  /* Images responsive */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Fix animation containers */
+  .diamond-animation,
+  .platinum-animation,
+  .mercury-animation {
+    height: auto !important;
+    min-height: 200px !important;
+    transform: scale(1) !important;
+    width: 100% !important;
+    overflow: hidden !important;
+  }
+}
  @media only screen and (max-width: 1600px) {
  	.our-mission-boxes h4 {
  		font-size: 20px;

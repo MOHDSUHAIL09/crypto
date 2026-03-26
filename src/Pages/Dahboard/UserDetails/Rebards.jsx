@@ -230,10 +230,10 @@ const BonusReport = () => {
         </CustomTable>
 
 
-        {/* Beautiful Circular Pagination */}
+
         {totalPages > 1 && (
           <div className="d-flex justify-content-center align-items-center mt-5 mb-3 flex-wrap gap-md-2">
-            {/* Previous Button */}
+    
             <button
               onClick={goToPreviousPage}
               disabled={pageIndex === 1}
@@ -259,7 +259,7 @@ const BonusReport = () => {
               ←
             </button>
 
-            {/* Page Numbers */}
+  
             {getPagination().map((page, i) => (
               <button
                 key={i}
@@ -313,7 +313,7 @@ const BonusReport = () => {
               </button>
             ))}
 
-            {/* Next Button */}
+      
             <button
               onClick={goToNextPage}
               disabled={pageIndex === totalPages}

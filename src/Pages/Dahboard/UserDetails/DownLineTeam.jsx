@@ -207,10 +207,10 @@ const DownlineTeam = () => {
           })}
         </CustomTable>
         
-        {/* PAGINATION */}
+      
         {totalPages > 1 && (
           <div className="d-flex justify-content-center align-items-center mt-3 mb-3 flex-wrap gap-2 gap-md-3">
-            {/* Previous Button */}
+         
             <button
               onClick={goToPreviousPage}
               disabled={pageIndex === 1}
@@ -236,7 +236,7 @@ const DownlineTeam = () => {
               ←
             </button>
 
-            {/* Page Numbers */}
+       
             {getPagination().map((page, i) => (
               <button
                 key={i}
@@ -290,7 +290,7 @@ const DownlineTeam = () => {
               </button>
             ))}
 
-            {/* Next Button */}
+         
             <button
               onClick={goToNextPage}
               disabled={pageIndex === totalPages}
