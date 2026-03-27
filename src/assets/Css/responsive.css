@@ -35,11 +35,11 @@
   }
 
   /* Fix hero section height */
-  /* .hero-main {
+  .hero-main {
     height: auto !important;
     min-height: 100vh !important;
     overflow-x: hidden !important;
-  } */
+  }
 
   /* Fix timer section */
   .pre-sale-timer {
@@ -57,7 +57,7 @@
     max-width: 100% !important;
   }
 
-  /* Images responsive */
+
   img {
     max-width: 100% !important;
     height: auto !important;
