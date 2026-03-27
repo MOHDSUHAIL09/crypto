@@ -986,14 +986,12 @@ select:focus {
 }
 .custom-pay-form {
   outline: none !important;
-  border-color: #e5e2e2 !important;
-  background: rgb(247, 243, 243) !important;
-  backdrop-filter: blur(8px);
   border-radius: 10px !important;
+  background-color: #d9dbf3 !important;
 }
 .custom-pay-form:focus {
   box-shadow: none;
-  background: rgba(255, 255, 255, 0.429);
+  background: rgba(249, 247, 247, 0.429);
 }
 .custom-pay-form {
   width: 100%;

@@ -132,6 +132,7 @@ const Stake = () => {
             placeholder='Enter Login ID'
             value={loginId}
             onChange={(e) => setLoginId(e.target.value)}
+            style={{ background: "#d9dbf3" }} 
           />
 
           {loading && (
