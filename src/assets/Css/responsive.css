@@ -327,9 +327,9 @@
 	}
  }
   @media only screen and (max-width: 991px) {
- 	.logo img {
+ 	/* .logo img {
  		max-width: 180px;
- 	}
+ 	} */
  	nav {
  		margin-top: 3px;
  	}
@@ -632,10 +632,10 @@
    ======================================== */
 @media (max-width: 991px) {
  .header.fixed {
-    padding: 20px;
+    padding: 10px;
  }
   .logo img {
-    height: 35px;
+    height: 5px;
   }
 
   .menu-icon {
