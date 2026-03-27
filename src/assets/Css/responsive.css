@@ -328,11 +328,11 @@
  }
   @media only screen and (max-width: 991px) {
 	.light{
-		width: 120px;
+		width: 140px;
 		height: auto;
 	}
 	.dark{
-		width: 120px;
+		width: 140px;
 		height: auto;
 	}
  	nav {

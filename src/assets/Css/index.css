@@ -310,7 +310,7 @@ ol, ul, dl{
   top: 0;
   left: 0;
   width: 100%;
-  padding: 10px;
+  padding: 20px;
   background: transparent;
   transition: all 300ms ease;
   z-index: 999;
@@ -323,6 +323,7 @@ ol, ul, dl{
 
 /* scroll hone ke baad */
 .header.fixed {
+  padding: 20px !important;
   position: fixed;
   background: #ffffff;    
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
