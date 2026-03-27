@@ -2575,3 +2575,134 @@ input {
   padding-left: 0;
   padding-right: 35px; /* Shift text left when knob moves right */
 }
+
+
+
+
+
+
+/* Cards Responsive - Break at 992px instead of 768px */
+@media (max-width: 992px) {
+  .row.g-3 {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+    padding: 15px !important;
+  }
+
+  /* All cards take full width on tablet/mobile */
+  .col-lg-5,
+  .col-lg-4,
+  .col-lg-3 {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+    margin-bottom: 15px !important;
+  }
+
+  /* Card styling */
+  .custom-card1 {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* Top row adjustments */
+  .top-row {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+  }
+
+  /* Stake and payout containers */
+  .stake-container,
+  .payout-container {
+    padding: 12px !important;
+  }
+
+  /* Buttons */
+  .wallet-buttton {
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+  }
+
+  /* Input fields */
+  .custom-pay-form {
+    font-size: 14px !important;
+  }
+
+  /* Text sizes */
+  .c-box p,
+  .c-box h5 {
+    font-size: 14px !important;
+  }
+
+  .small-text {
+    font-size: 12px !important;
+  }
+}
+
+/* For larger tablets (between 768px and 992px) */
+@media (min-width: 768px) and (max-width: 992px) {
+  .row.g-3 {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 15px !important;
+  }
+
+  .col-lg-5 {
+    grid-column: span 2 !important;
+  }
+
+  .col-lg-4,
+  .col-lg-3 {
+    grid-column: span 1 !important;
+  }
+}
+
+/* Small mobile (below 768px) - single column */
+@media (max-width: 768px) {
+  .row.g-3 {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+  }
+
+  .col-lg-5,
+  .col-lg-4,
+  .col-lg-3 {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Insurance toggle fix */
+  .insurance-switch {
+    width: 140px !important;
+    height: 36px !important;
+  }
+
+  .switch-knob {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .insurance-switch.active .switch-knob {
+    transform: translateX(108px) !important;
+  }
+
+  .switch-text {
+    font-size: 9px !important;
+    padding-left: 12px !important;
+  }
+
+  /* Dashboard buttons */
+  .wallet-buttton {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+  }
+
+  /* Mint box */
+  .mint-box {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 14px !important;
+  }
+}
