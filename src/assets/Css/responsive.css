@@ -327,9 +327,12 @@
 	}
  }
   @media only screen and (max-width: 991px) {
- 	/* .logo img {
- 		max-width: 180px;
- 	} */
+	.light{
+		width: 180px;
+	}
+	.dark{
+		width: 180px;
+	}
  	nav {
  		margin-top: 3px;
  	}
