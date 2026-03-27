@@ -695,7 +695,7 @@
     top: 0 !important;
     right: -100% !important;
     width: 280px !important;
-    max-width: 80% !important;
+    max-width: 75% !important;
     height: 100vh !important;
     background: #ffffff !important;
     box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2) !important;
@@ -729,7 +729,7 @@
   nav.onepage ul li {
     margin: 8px 0 !important;
     padding: 0 !important;
-    text-align: center !important;
+    text-align: start	 !important;
   }
 
   nav.onepage ul li a {
