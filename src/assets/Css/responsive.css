@@ -26,6 +26,7 @@
     margin: 0 !important;
     padding: 0 !important;
   }
+  
 
   /* Lock body width */
   html, body {
@@ -132,12 +133,6 @@
 	}
  }
  @media only screen and (max-width: 1199px) {
- 	nav ul li {
- 		margin-left: 20px;
- 	}
- 	header {
- 		padding-top: 15px;
- 	}
  	.doughnutChartContainer {
  		margin-right: 20px;
  	}
@@ -636,153 +631,154 @@
    MOBILE MENU STYLES - SLIDE FROM RIGHT
    ======================================== */
 @media (max-width: 991px) {
- .header.fixed {
-    padding: 10px;
- }
-  .logo img {
-    height: 5px;
-  }
-
+ /* Hamburger Button */
   .menu-icon {
-    display: block;
-    width: 35px;
-    height: 30px;
-    position: relative;
-    cursor: pointer;
-    z-index: 1003;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 45px !important;
+    height: 45px !important;
+    background: linear-gradient(135deg, #fbbd18, #f0931e) !important;
+    border-radius: 12px !important;
+    cursor: pointer !important;
+    position: relative !important;
+    z-index: 1003 !important;
+    transition: all 0.3s ease !important;
   }
 
+  /* Hamburger Lines */
   .menu-icon span {
-    display: block;
-    position: absolute;
-    height: 3px;
-    width: 100%;
-    background: #fbbd18;
-    border-radius: 3px;
-    opacity: 1;
-    left: 0;
-    transform: rotate(0deg);
-    transition: 0.25s ease-in-out;
+    display: block !important;
+    position: absolute !important;
+    height: 3px !important;
+    width: 24px !important;
+    background: #1d1d1d !important;
+    border-radius: 3px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    transition: all 0.3s ease !important;
   }
 
   .menu-icon span:nth-child(1) {
-    top: 0px;
+    top: 14px !important;
   }
 
   .menu-icon span:nth-child(2) {
-    top: 10px;
+    top: 21px !important;
   }
 
   .menu-icon span:nth-child(3) {
-    top: 20px;
+    top: 28px !important;
   }
 
-
+  /* Active State - X Icon */
   .menu-icon.active span:nth-child(1) {
-    top: 10px;
-    transform: rotate(135deg);
+    top: 21px !important;
+    transform: translateX(-50%) rotate(45deg) !important;
   }
 
   .menu-icon.active span:nth-child(2) {
-    opacity: 0;
-    left: -60px;
+    opacity: 0 !important;
+    transform: translateX(-50%) scale(0) !important;
   }
 
   .menu-icon.active span:nth-child(3) {
-    top: 10px;
-    transform: rotate(-135deg);
+    top: 21px !important;
+    transform: translateX(-50%) rotate(-45deg) !important;
   }
 
 
-  nav {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 100%;
-    max-width: 320px;
-    height: 100vh;
-    background: #ffffff;
-    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15);
-    padding: 80px 25px 30px;
-    transition: right 0.4s ease-in-out;
-    z-index: 1001;
-    overflow-y: auto;
-    margin-top: 0;
-    text-align: center;
+
+    /* ========== MOBILE MENU PANEL - NO LOGO ========== */
+  nav.onepage {
+    position: fixed !important;
+    top: 0 !important;
+    right: -100% !important;
+    width: 280px !important;
+    max-width: 80% !important;
+    height: 100vh !important;
+    background: #ffffff !important;
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2) !important;
+    padding: 100px 20px 30px !important;  /* Top padding increased, no logo inside */
+    transition: right 0.3s ease-in-out !important;
+    z-index: 1002 !important;
+    overflow-y: auto !important;
+    margin-top: 0 !important;
   }
 
-
-  nav.show {
-    right: 0;
+  /* Remove any logo inside menu */
+  nav.onepage .logo,
+  nav.onepage img {
+    display: none !important;
   }
 
-  nav ul {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+  /* Menu Open State */
+  nav.onepage.show {
+    right: 0 !important;
   }
 
-  nav ul li {
-    display: block;
-    margin: 15px 0;
-    opacity: 0;
-    transform: translateX(20px);
-    transition: all 0.3s ease;
+  /* Menu List */
+  nav.onepage ul {
+    display: flex !important;
+    flex-direction: column !important;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
-
-  nav.show ul li {
-    opacity: 1;
-    transform: translateX(0);
+  nav.onepage ul li {
+    margin: 8px 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
   }
 
-  nav.show ul li:nth-child(1) { transition-delay: 0.05s; }
-  nav.show ul li:nth-child(2) { transition-delay: 0.1s; }
-  nav.show ul li:nth-child(3) { transition-delay: 0.15s; }
-  nav.show ul li:nth-child(4) { transition-delay: 0.2s; }
-  nav.show ul li:nth-child(5) { transition-delay: 0.25s; }
-  nav.show ul li:nth-child(6) { transition-delay: 0.3s; }
-  nav.show ul li:nth-child(7) { transition-delay: 0.35s; }
-
-  nav ul li a {
+  nav.onepage ul li a {
+    display: block !important;
     color: #1d1d1d !important;
-    font-size: 18px;
-    font-weight: 600;
-    padding: 12px 0;
-    display: inline-block;
-    text-transform: uppercase;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    padding: 12px 15px !important;
+    text-transform: uppercase !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
   }
 
-  nav ul li a:hover,
-  nav ul li.active a {
-    color: #f6aa35 !important;
+  nav.onepage ul li a:hover {
+    color: #fbbd18 !important;
+    background: rgba(251, 189, 24, 0.1) !important;
   }
 
+  nav.onepage ul li.active a {
+    color: #fbbd18 !important;
+    background: rgba(251, 189, 24, 0.1) !important;
+  }
 
-  nav ul li.nav-btn a {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 12px 32px;
-    background: #fbbd18;
-    border-radius: 4px;
+  /* Dashboard Button */
+  nav.onepage ul li.nav-btn {
+    margin-top: 20px !important;
+  }
+
+  nav.onepage ul li.nav-btn button {
+    width: 100% !important;
+    background: linear-gradient(135deg, #fbbd18, #f0931e) !important;
     color: #1d1d1d !important;
-    font-weight: 600;
+    padding: 12px 20px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
   }
 
-  nav ul li.nav-btn a:hover {
-    background: #f0931e;
-    color: #1d1d1d !important;
-    transform: scale(1.05);
+  nav.onepage ul li.nav-btn button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(251, 189, 24, 0.4) !important;
   }
 
-
-  .header.fixed .menu-icon span {
-    background: #fbbd18 ;
-  }
-
-
+  /* Body scroll lock when menu open */
   body.menu-open {
-    overflow: hidden;
+    overflow: hidden !important;
   }
 }
 

@@ -39,12 +39,11 @@ const Header = () => {
         >
           <span></span>
           <span></span>
-          <span></span>
+          <span></span>   
         </div>
 
-        <nav className={`onepage ${menuOpen ? "show" : ""}`}>
+        <nav className={`onepage ${menuOpen ? "show" : ""}`}>  
           <ul>
-
             <li className="active"><a href="#top">Home</a></li>
             <li><a href="#about">About ico</a></li>
             <li><a href="#token">Token</a></li>
