@@ -31,7 +31,7 @@ const Cards = () => {
           <div className="card1-body px-3 py-3">       
             <div className="top-box mb-2">
 
-              <div className='d-flex justify-content-between pt-'>
+              <div className='d-flex justify-content-between pt-3'>
                 <label className={`insurance-switch ${isCovered ? 'active' : ''}`}>
                   <input type="checkbox" checked={isCovered} onChange={handleToggle} hidden />
                   <div className="switch-slider">
@@ -39,7 +39,7 @@ const Cards = () => {
                     <span className="switch-text">Insurance Covered</span>
                   </div>
                 </label>
-                <h6>Rank : <span className="cus-badge green-badge">{userData?.rank || 0}</span></h6>      
+                <h6 className='mt-1'>Rank : <span className="cus-badge green-badge">{userData?.rank || 0}</span></h6>      
               </div>
             </div>
             
