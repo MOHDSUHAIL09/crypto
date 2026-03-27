@@ -2680,16 +2680,17 @@ input {
   }
 
   .switch-knob {
-    width: 28px !important;
-    height: 28px !important;
+    width: 23px !important;
+    height: 23px !important;
   }
+  
 
   .insurance-switch.active .switch-knob {
     transform: translateX(108px) !important;
   }
 
   .switch-text {
-    font-size: 9px !important;
+    font-size: 7px !important;
     padding-left: 12px !important;
   }
 
