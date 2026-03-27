@@ -362,7 +362,7 @@ const TreeComponent = () => {
       .attr("height", height)
       .attr("viewBox", [-dy / 3, x0 - dx, width, height])
       .attr("preserveAspectRatio", "xMidYMid meet")
-      .attr("style", "width: 100%; height: auto; font: 12px sans-serif; background: #fff; border-radius: 8px; cursor: grab;")
+      .attr("style", "width: 100%;  font: 12px sans-serif; background: #fff; border-radius: 8px; cursor: grab;")
       .call(d3.zoom()
         .scaleExtent([0.3, 3])
         .filter(event => {

@@ -406,9 +406,8 @@ SMALL MOBILE
 /* Tree Container */
 .tree-wrapper {
     width: 100%;
-    padding: 40px;
     background: #ffffff;
-    display: flex;
+    /* display: flex; */
     justify-content: center;
     overflow-x: auto;
 }
