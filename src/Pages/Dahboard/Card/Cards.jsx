@@ -72,7 +72,7 @@ const Cards = () => {
               <h5 className='mb-0 fw-bold'>Subscription / Invest</h5>
               <div className='mint-box'><FaMintbit /></div>
             </div>
-            <div className="c-box gap-3 py_1">
+            <div className="c-box    py_1">
               <Stake 
                 walletBalance={stakeData?.walletBalance || 0} 
                 onSuccess={refreshData} // Context refresh hoga
@@ -80,9 +80,9 @@ const Cards = () => {
               />
               {!isActivationVisible && (
                 <div className="animate__animated animate__fadeIn">
-                  <div className="d-flex flex-wrap justify-content-between">
+                  <div className="d-flex flex-wrap justify-content-between ">
                     <p className="mb-1">
-                       <strong>Deposit Fund : </strong>{" "}<span style={{ color: "#16a34a", fontWeight: "700", fontSize: "16px" }}>
+                       <strong>Deposit Fund : </strong><span  style={{ color: "#16a34a", fontWeight: "700", fontSize: "16px" }}>
                         ${userData?.Depositfund || 0}
                       </span>
                     </p>

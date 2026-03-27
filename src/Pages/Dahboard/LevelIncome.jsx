@@ -62,11 +62,14 @@ const LevelIncome = () => {
         <div className="card1 no-animate py-1 custom-card1 rounded_5">
           <div className="card1-body">
             <div className="row" >
-              <div className="col-lg-6">
+              <div className="col-lg-6">  
                 <div className="">
                   <div className="activites">Activities</div>
                   <div className="flow-wrapper d-flex justify-content-center align-items-center">
                     <div className="  d-flex align-items-center gap-3">
+                      
+
+
                       
                       <div className="level-box">
                         <button className={`circle-btn ${open ? "active" : ""}`} onClick={() => { setOpen(true); }}>

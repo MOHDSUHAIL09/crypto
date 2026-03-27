@@ -129,7 +129,7 @@ const Stake = () => {
         <div style={{ position: 'relative', flex: 1 }}>
           <input type="text"
             className="custom-pay-form form-control "
-            placeholder='Enter Login ID (e.g. M903154)'
+            placeholder='Enter Login ID'
             value={loginId}
             onChange={(e) => setLoginId(e.target.value)}
           />
