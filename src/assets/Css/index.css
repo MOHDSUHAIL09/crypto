@@ -64,14 +64,11 @@ img {
 }
 input[type="text"], input[type="password"], input[type="color"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="email"], input[type="number"], input[type="range"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], input[type="month"], input[type="week"], textarea, select{
 	width: 100%;
-	background-color: #ffffff;
 	font-size: 15px;
-	line-height:40px;
 	height:46px;
 	max-width: 100%;
 	vertical-align: middle; 
 	padding:2px 15px;
-	border:1px solid #ebebeb;
 	border-radius:4px;
 	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }

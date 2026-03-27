@@ -118,6 +118,25 @@ body{
   min-width: 20px;
   font-size: 25px;
 }
+@media (max-width: 768px) {
+  /* Completely hide title/tooltip on mobile */
+  .pro-item[title] {
+    position: relative;
+  }
+  
+  .pro-item[title]:hover::after,
+  .pro-item[title]::after {
+    display: none !important;
+    content: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
+  }
+}
   
 /* ================= LAYOUT ================= */
 
@@ -218,8 +237,7 @@ body{
 
       .layout,
     .layout.collapsed {
-      margin-left: 0px;
-     
+      margin-left: 0px;    
     }
     .topbar .left{
       margin-left: -5px;
