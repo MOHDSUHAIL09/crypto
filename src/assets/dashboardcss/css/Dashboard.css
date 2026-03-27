@@ -119,22 +119,39 @@ body{
   font-size: 25px;
 }
 @media (max-width: 768px) {
-  /* Completely hide title/tooltip on mobile */
-  .pro-item[title] {
-    position: relative;
+  /* Hide the actual title attribute tooltip */
+  .pro-item {
+    pointer-events: auto !important;
   }
   
+  .pro-item[title] {
+    pointer-events: auto !important;
+  }
+  
+  /* Override browser default tooltip */
   .pro-item[title]:hover::after,
-  .pro-item[title]::after {
+  .pro-item[title]:focus::after,
+  .pro-item[title]:active::after {
     display: none !important;
-    content: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-    position: absolute !important;
-    top: -9999px !important;
-    left: -9999px !important;
+    content: none !important;
+  }
+}
+
+/* Global hide for all title tooltips on mobile */
+@media (max-width: 768px) {
+  *[title] {
+    pointer-events: auto !important;
+  }
+  
+  *[title]:hover::after,
+  *[title]:focus::after,
+  *[title]:active::after {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    content: none !important;
   }
 }
   
