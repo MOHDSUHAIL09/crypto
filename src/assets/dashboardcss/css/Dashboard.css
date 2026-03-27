@@ -2683,7 +2683,6 @@ input {
     width: 23px !important;
     height: 23px !important;
   }
-  
 
   .insurance-switch.active .switch-knob {
     transform: translateX(108px) !important;
@@ -2692,12 +2691,6 @@ input {
   .switch-text {
     font-size: 7px !important;
     padding-left: 12px !important;
-  }
-
-  /* Dashboard buttons */
-  .wallet-buttton {
-    padding: 6px 12px !important;
-    font-size: 12px !important;
   }
 
   /* Mint box */

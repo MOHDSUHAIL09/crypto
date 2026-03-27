@@ -140,10 +140,15 @@ const Stake = () => {
             </small>
           )}
 
-          {!loading && hasChecked && isValidUser && (
+         {!loading && hasChecked && isValidUser && (
             <small style={{
-              position: 'absolute', bottom: '-22px', left: '5px', fontSize: '11px',
-              color: isBotActive ? '#27ae60' : '#f39c12', fontWeight: '600'
+              position: 'absolute',
+              bottom: '-22px',
+              left: '5px',
+              fontSize: '11px',
+              color: isBotActive ? '#27ae60' : '#f39c12',
+              fontWeight: '600',
+              whiteSpace: 'nowrap'  // ← Text ek line me rahega
             }}>
               {isBotActive
                 ? `✓ Verified: ${userName} (Subs Active)`
@@ -152,7 +157,16 @@ const Stake = () => {
           )}
 
           {!loading && hasChecked && !isValidUser && (
-            <small style={{ position: 'absolute', bottom: '-22px', left: '5px', color: '#e74c3c', fontSize: '11px', fontWeight: 'bold' }}>
+            <small style={{
+              position: 'absolute',
+              bottom: '-22px',
+              left: '5px',
+              color: '#e74c3c',
+              fontSize: '11px',
+              fontWeight: 'bold',
+              whiteSpace: 'nowrap',        // ← Text ek line me rahega
+              background: 'transparent'     // Background transparent
+            }}>
               ✖ Invalid Login ID or User not found.
             </small>
           )}
