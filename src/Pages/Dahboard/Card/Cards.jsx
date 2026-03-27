@@ -30,7 +30,6 @@ const Cards = () => {
         <div className="card1 no-animate custom-card1 p-0 rounded_5"> 
           <div className="card1-body px-3 py-3">       
             <div className="top-box mb-2">
-
               <div className='d-flex justify-content-between pt-3'>
                 <label className={`insurance-switch ${isCovered ? 'active' : ''}`}>
                   <input type="checkbox" checked={isCovered} onChange={handleToggle} hidden />

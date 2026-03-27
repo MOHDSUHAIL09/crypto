@@ -125,82 +125,53 @@ const Stake = () => {
 
   return (
     <>
-     <div className="stake-card d-flex gap-3 align-items-center" style={{ marginBottom: '45px', flexWrap: 'wrap' }}>
-  <div style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
-    <input type="text"
-      className="custom-pay-form form-control"
-      placeholder='Enter Login ID (e.g. M903154)'
-      value={loginId}
-      onChange={(e) => setLoginId(e.target.value)}
-      style={{ width: '100%' }}
-    />
+      <div className="stake-card d-flex gap-3 align-items-center" style={{ marginBottom: '35px' }}>
+        <div style={{ position: 'relative', flex: 1 }}>
+          <input type="text"
+            className="custom-pay-form form-control "
+            placeholder='Enter Login ID (e.g. M903154)'
+            value={loginId}
+            onChange={(e) => setLoginId(e.target.value)}
+          />
 
-    {loading && (
-      <small style={{
-        position: 'absolute',
-        bottom: '-28px',
-        left: '5px',
-        color: '#e67e22',
-        fontSize: '11px',
-        whiteSpace: 'nowrap',  // Text ek line me
-        background: 'transparent'
-      }}>
-        Checking database...
-      </small>
-    )}
+          {loading && (
+            <small style={{ position: 'absolute', bottom: '-22px', left: '5px', color: '#e67e22', fontSize: '11px' }}>
+              Checking database...
+            </small>
+          )}
 
-    {!loading && hasChecked && isValidUser && (
-      <small style={{
-        position: 'absolute',
-        bottom: '-28px',
-        left: '5px',
-        fontSize: '11px',
-        color: isBotActive ? '#27ae60' : '#f39c12',
-        fontWeight: '600',
-        whiteSpace: 'nowrap',  // Text ek line me
-        background: 'transparent'
-      }}>
-        {isBotActive
-          ? `✓ Verified: ${userName} (Subs Active)`
-          : `✓ Found: ${userName} (Subscription Needed)`}
-      </small>
-    )}
+          {!loading && hasChecked && isValidUser && (
+            <small style={{
+              position: 'absolute', bottom: '-22px', left: '5px', fontSize: '11px',
+              color: isBotActive ? '#27ae60' : '#f39c12', fontWeight: '600'
+            }}>
+              {isBotActive
+                ? `✓ Verified: ${userName} (Subs Active)`
+                : `✓ Found: ${userName} (Subscription Needed)`}
+            </small>
+          )}
 
-    {!loading && hasChecked && !isValidUser && (
-      <small style={{
-        position: 'absolute',
-        bottom: '-28px',
-        left: '5px',
-        color: '#e74c3c',
-        fontSize: '11px',
-        fontWeight: 'bold',
-        whiteSpace: 'nowrap',  // Text ek line me
-        background: 'transparent'
-      }}>
-        ✖ Invalid Login ID or User not found.
-      </small>
-    )}
-  </div>
+          {!loading && hasChecked && !isValidUser && (
+            <small style={{ position: 'absolute', bottom: '-22px', left: '5px', color: '#e74c3c', fontSize: '11px', fontWeight: 'bold' }}>
+              ✖ Invalid Login ID or User not found.
+            </small>
+          )}
+        </div>
 
-  <button
-    type="button"
-    className="wallet-buttton"
-    disabled={loading}
-    style={{
-      backgroundColor: !isValidUser && hasChecked ? '#95a5a6' : (isBotActive ? '#27ae60' : '#6366f1'),
-      color: 'white',
-      border: 'none',
-      padding: '10px 20px',
-      borderRadius: '8px',
-      minWidth: '130px',
-      cursor: 'pointer',
-      transition: '0.3s'
-    }}
-    onClick={handleButtonClick}
-  >
-    {isBotActive ? "Investment" : "Subscription"}
-  </button>
-</div>
+        <button
+          type="button"
+          className="wallet-buttton"
+          disabled={loading}
+          style={{
+            backgroundColor: !isValidUser && hasChecked ? '#95a5a6' : (isBotActive ? '#27ae60' : '#6366f1'),
+            color: 'white', border: 'none', padding: '10px 20px', borderRadius: '8px',
+            minWidth: '130px', cursor: 'pointer', transition: '0.3s'
+          }}
+          onClick={handleButtonClick}
+        >
+          {isBotActive ? "Investment" : "Subscription"}
+        </button>
+      </div>
       <AgreementForm
         open={openAgreement}
         loginId={loginId}
