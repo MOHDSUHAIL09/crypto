@@ -446,7 +446,7 @@
  		background:none; 
  	}
  	.expert-slider .team-img{
- 		align-self: start;
+ 		align-self: center;
  	}
  	.about-section.c-l::before{
  		right: 70%;
