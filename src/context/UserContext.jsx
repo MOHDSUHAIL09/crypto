@@ -73,6 +73,8 @@ export const UserProvider = ({ children }) => {
           weakerLeg: apiData.PowerLeg,
           leftCarry: apiData.leftCarry,
           rightCarry: apiData.rightCarry,
+          LeftPerMonth: apiData.LeftPerMonth,
+          RightPerMonth: apiData.RightPerMonth,
         };
         
         setUserData(newUserData);

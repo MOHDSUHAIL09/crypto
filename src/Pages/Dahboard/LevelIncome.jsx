@@ -103,7 +103,7 @@ const LevelIncome = () => {
                                           </div>
                                           <div className="level-card">
                                             <span className="stext">Current Month Business</span>
-                                            <span>{userData?.leftperMonth} / {userData?.rightperMonth}</span>
+                                            <span>{userData?.LeftPerMonth} / {userData?.RightPerMonth}</span>
                                           </div>
                                           <div className="level-card">
                                             <span className="stext">Total Overall Business</span>
