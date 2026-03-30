@@ -12,6 +12,7 @@ import { Deposit2Deposit } from "./UserDetails/Deposit2Deposit";
 import DepositHistory from "./UserDetails/DepositHistory";
 import AccStatement from "./AccStatement";
 import CapitalPayout from "./CapitalPayout/CapitalPayout";
+import CapitalWithdrawalRequest from "./CapitalPayout/CapitalWithdrawalRequest";
 
 const Main = () => {
   return (
@@ -77,7 +78,7 @@ const Main = () => {
                   }
                 />
                 <Route
-                  path="/accstatement"
+                  path="accstatement"
                   element={
                     <ProtecedRoute>
                       <AccStatement/>
@@ -85,10 +86,18 @@ const Main = () => {
                   }
                 />
                  <Route
-                  path="/capitalpayout"
+                  path="capitalpayout"
                   element={
                     <ProtecedRoute>
                       <CapitalPayout/>
+                    </ProtecedRoute>
+                  }
+                />
+                 <Route
+                  path="/capitalwithdrawalrequest"
+                  element={
+                    <ProtecedRoute>
+                      <CapitalWithdrawalRequest/>
                     </ProtecedRoute>
                   }
                 />

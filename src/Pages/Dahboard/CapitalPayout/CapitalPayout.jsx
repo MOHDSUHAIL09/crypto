@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import CustomTable from "../CustomTable/CustomTable"; 
+import { Link } from "react-router-dom";
+import CustomTable from "../CustomTable/CustomTable";
+import './CapitalPayout.css'; 
 
-const CapitalPayout = ({ data = [] }) => {
+const CapitalPayout = () => {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,19 +12,13 @@ const CapitalPayout = ({ data = [] }) => {
   const [pageIndex, setPageIndex] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  // Agar data prop se aa raha hai to use karo, warna API se fetch karo
-  useEffect(() => {
-    if (data && data.length > 0) {
-      setRecords(data);
-    } else {
-      fetchCapitalData();
-    }
-  }, [data]);
+ useEffect(() => {
+  fetchCapitalData();
+}, []);
 
   const fetchCapitalData = async () => {
     setLoading(true);
     try {
-      // Sample data for testing
       const sampleData = [
         {
           id: 1,
@@ -69,12 +65,10 @@ const CapitalPayout = ({ data = [] }) => {
   const endIndex = startIndex + itemsPerPage;
   const currentRecords = filteredRecords.slice(startIndex, endIndex);
 
-  // Reset to first page when search term or items per page changes
   useEffect(() => {
     setPageIndex(1);
   }, [searchTerm, itemsPerPage]);
 
-  // ✅ FIX 1: Navigation functions define karo
   const goToPreviousPage = () => {
     if (pageIndex > 1) {
       setPageIndex(pageIndex - 1);
@@ -85,13 +79,6 @@ const CapitalPayout = ({ data = [] }) => {
     if (pageIndex < totalPages) {
       setPageIndex(pageIndex + 1);
     }
-  };
-
-  // Handle capital payout action
-  const handleCapitalPayout = (item) => {
-    console.log("Capital Payout clicked for:", item);
-    alert(`Processing payout for $${item.amount}`);
-    // Yahan tumhari API call for payout
   };
 
   return (
@@ -188,31 +175,33 @@ const CapitalPayout = ({ data = [] }) => {
                   {row.remainingDays || "-"}
                 </td>
                 <td className="text-center">
-                  <button
-                    className="capital-payout-btn"
-                    onClick={() => handleCapitalPayout(row)}
-                    style={{
-                      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                      color: "white",
-                      border: "none",
-                      padding: "6px 12px",
-                      borderRadius: "4px",
-                      fontSize: "12px",
-                      fontWeight: "600",
-                      cursor: "pointer",
-                      transition: "all 0.3s ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.transform = "translateY(-1px)";
-                      e.target.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.4)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.transform = "translateY(0)";
-                      e.target.style.boxShadow = "none";
-                    }}
-                  >
-                    CAPITAL PAYOUT
-                  </button>
+                  {/* ✅ FIX: Link should wrap the button */}
+                  <Link to="/dashboard/capitalwithdrawalrequest" state={{ investmentData: row }}>
+                    <button
+                      className="capital-payout-btn"
+                      style={{
+                        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                        color: "white",
+                        border: "none",
+                        padding: "6px 12px",
+                        borderRadius: "4px",
+                        fontSize: "12px",
+                        fontWeight: "600",
+                        cursor: "pointer",
+                        transition: "all 0.3s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.transform = "translateY(-1px)";
+                        e.target.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.4)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.transform = "translateY(0)";
+                        e.target.style.boxShadow = "none";
+                      }}
+                    >
+                      CAPITAL PAYOUT
+                    </button>
+                  </Link>
                 </td>
               </tr>
             ))
@@ -225,10 +214,9 @@ const CapitalPayout = ({ data = [] }) => {
           )}
         </CustomTable>
 
-        {/* ✅ FIX 2: Pagination Controls - Correct function call */}
+        {/* Pagination Controls */}
         {totalPages > 1 && (
           <div className="d-flex justify-content-center align-items-center mt-5 mb-3 flex-wrap gap-md-2">
-            {/* Previous Button */}
             <button
               onClick={goToPreviousPage}
               disabled={pageIndex === 1}
@@ -254,7 +242,6 @@ const CapitalPayout = ({ data = [] }) => {
               ←
             </button>
 
-            {/* ✅ Page Numbers - Pass parameters correctly */}
             {getPagination(pageIndex, totalPages).map((page, i) => (
               <button
                 key={i}
@@ -306,7 +293,6 @@ const CapitalPayout = ({ data = [] }) => {
               </button>
             ))}
 
-            {/* Next Button */}
             <button
               onClick={goToNextPage}
               disabled={pageIndex === totalPages}
@@ -338,7 +324,7 @@ const CapitalPayout = ({ data = [] }) => {
   );
 };
 
-// ✅ Pagination helper function (same as BonusReport)
+// Pagination helper function
 const getPagination = (pageIndex, totalPages) => {
   const delta = 2;
   const range = [];

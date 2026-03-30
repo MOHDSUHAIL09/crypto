@@ -825,6 +825,14 @@ body {
   border-radius: 15px;
 }
 
+
+@media (max-width: 500px) {
+  .investment-wrapper {
+    flex-direction: column;
+    gap: 0 !important;
+  }
+}
+
 .top-box h6 {
   margin-bottom: 0px;
   font-size: 15px;

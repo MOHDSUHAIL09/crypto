@@ -57,6 +57,7 @@ export const UserProvider = ({ children }) => {
           referral: apiData.introid,
           kid: apiData.kid,
           Depositfund: apiData.topupwallet,
+          BotAmount: apiData.BotAmount,
           InvestAmount: apiData.InvestAmount,
           totalWallet: apiData.totalWallet,
           LevelIncome: apiData.LevelIncome,
