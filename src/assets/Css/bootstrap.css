@@ -5,6 +5,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 :root {
+  --hovercolor: rgb(215, 75, 75);
   --inputcolor: #ebeeef;
   --blue: #007bff;
   --indigo: #6610f2;

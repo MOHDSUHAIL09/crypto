@@ -285,15 +285,11 @@ TABLET
   margin:15px 0;
 }
 
-/* .d-flex{
+.d-flex{
   flex-wrap:wrap;
   gap:20px;
-} */
-
-.options-grid{
-  grid-template-columns:repeat(3,1fr);
 }
-
+  
 }
 
 /* =========================
@@ -581,7 +577,6 @@ background:#b18202;
   border-radius: 10px;
   padding: 10px;
 }
-
 
 
 

@@ -68,8 +68,6 @@ const LevelIncome = () => {
                   <div className="flow-wrapper d-flex justify-content-center align-items-center">
                     <div className="  d-flex align-items-center gap-3">
                       
-
-
                       
                       <div className="level-box">
                         <button className={`circle-btn ${open ? "active" : ""}`} onClick={() => { setOpen(true); }}>

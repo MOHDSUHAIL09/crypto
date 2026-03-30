@@ -170,7 +170,7 @@ export const Deposit2Deposit = () => {
       {isLoading ? (
         <div className="loading">Loading Wallet...</div>
       ) : (
-        <div className="d-flex justify-content-between align-items-start p-1">
+        <div className="deposit-col d-flex justify-content-between align-items-start p-1">
           {/* SELF TRANSFER CARD */}
           <div className="deposit-card">
             <div className="d-flex justify-content-between align-items-center">

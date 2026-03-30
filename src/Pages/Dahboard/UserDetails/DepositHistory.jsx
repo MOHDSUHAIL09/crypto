@@ -69,7 +69,7 @@ const DepositHistory = () => {
     }
   };
 
-  // ================= FETCH INCOME DATA =================
+ // ================= FETCH INCOME DATA =================
   const fetchIncomeData = async () => {
     if (!regno) return [];
 

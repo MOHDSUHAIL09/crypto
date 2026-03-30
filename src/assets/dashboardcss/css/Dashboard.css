@@ -801,7 +801,20 @@ body {
   font-weight: 500;
   line-height: 24px;
 }
-
+.hover-text{
+  color: #3b3a3a;
+}
+.hover-text:hover{
+ color: var(--hovercolor);
+}
+.Investment-text{
+  color: #16a34a;
+  font-weight: 700;
+  font-size: 16px;
+}
+.Investment-text:hover{
+  color: var(--hovercolor);
+}
 .top-box {
   background: linear-gradient(to right,
       var(--primary-clr),
@@ -2830,11 +2843,6 @@ input {
   padding-right: 35px;
   /* Shift text left when knob moves right */
 }
-
-
-
-
-
 
 /* Cards Responsive - Break at 992px instead of 768px */
 @media (max-width: 992px) {

@@ -11,6 +11,7 @@ import TreeView from "./UserDetails/TreeView";
 import { Deposit2Deposit } from "./UserDetails/Deposit2Deposit";
 import DepositHistory from "./UserDetails/DepositHistory";
 import AccStatement from "./AccStatement";
+import CapitalPayout from "./CapitalPayout/CapitalPayout";
 
 const Main = () => {
   return (
@@ -80,6 +81,14 @@ const Main = () => {
                   element={
                     <ProtecedRoute>
                       <AccStatement/>
+                    </ProtecedRoute>
+                  }
+                />
+                 <Route
+                  path="/capitalpayout"
+                  element={
+                    <ProtecedRoute>
+                      <CapitalPayout/>
                     </ProtecedRoute>
                   }
                 />

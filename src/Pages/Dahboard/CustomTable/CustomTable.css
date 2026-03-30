@@ -11,14 +11,14 @@
   padding: 20px 5px;
   position: relative;
   z-index: 1;
-  color: #ffffff;
   background-color: #fff;
   font-size: 14px;
+  font-weight: 600;
   text-align: center;
   vertical-align: middle;
 }
 
-/* HEADER DESIGN */
+/* HEADER DESIGN - Gradient background for all except first column */
 .custom-table thead th:not(:first-child)::before {
   content: "";
   position: absolute;
@@ -26,18 +26,34 @@
   left: 2%;
   right: 2%;
   height: 40px;
-  z-index: -1;
-  clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+  z-index: 0;
+  /* clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); */
+  background: linear-gradient(to right, var(--primary-clr), var(--secondary-clr));
+  /* opacity: 0.85; */
 }
 
-/* HEADER COLORS */
-.custom-table thead th:nth-child(2)::before,
-.custom-table thead th:nth-child(3)::before,
-.custom-table thead th:nth-child(4)::before,
-.custom-table thead th:nth-child(5)::before,
-.custom-table thead th:nth-child(6)::before,
-.custom-table thead th:nth-child(7)::before {
-  background: linear-gradient(to right, var(--primary-clr), var(--secondary-clr));
+/* HEADER TEXT - White on gradient */
+.custom-table thead th .th-content {
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* FIRST COLUMN (Sl.No.) - No gradient, black text */
+.custom-table thead th:first-child::before {
+  display: none;
+}
+
+.custom-table thead th:first-child .th-content {
+  color: #000000;
+  font-weight: 700;
+}
+
+/* ACTION COLUMN - Special styling */
+.custom-table thead th:last-child .th-content {
+  color: #ffffff;
+  font-weight: 700;
 }
 
 /* ================= TD ================= */
@@ -54,7 +70,6 @@
   background: transparent !important;
   border: none !important;
   width: 80px;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,10 +86,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0; /* IMPORTANT FIX */
+  margin: 0;
   font-size: 14px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  margin: 5px;
 }
 
 /* CIRCLE COLOR */
@@ -107,7 +121,25 @@
   background-color: #eaf3ff;
 }
 
-/* ================= TEXT ================= */
+/* ================= TEXT STYLES ================= */
+
+/* Amount cell */
+.amount-cell {
+  color: #16a34a !important;
+  font-weight: 600 !important;
+}
+
+/* Profit cell */
+.profit-cell {
+  color: #22c55e !important;
+  font-weight: 500 !important;
+}
+
+/* Remaining Capital cell */
+.remaining-capital {
+  color: #3b82f6 !important;
+  font-weight: 500 !important;
+}
 
 .amount-text-green {
   color: #27ae60;
@@ -131,6 +163,7 @@
   font-size: 11px;
   color: #64748b;
 }
+
 
 /* ================= STATUS ================= */
 
@@ -178,9 +211,7 @@
 
 /* ================= RESPONSIVE ================= */
 
-/* TABLET */
 @media (max-width: 992px) {
-
   .custom-table thead th {
     padding: 14px 4px;
     font-size: 12px;
@@ -190,11 +221,15 @@
     padding: 8px;
     font-size: 12px;
   }
+
+  .capital-payout-btn {
+    padding: 4px 10px !important;
+    font-size: 11px !important;
+  }
 }
 
 /* MOBILE */
 @media (max-width: 768px) {
-
   .custom-table {
     min-width: 700px;
   }
@@ -213,7 +248,6 @@
     width: 45px;
     height: 45px;
     font-size: 11px;
-    margin-top: 15px;
   }
 
   .amount-text-green {
@@ -234,9 +268,8 @@
     padding: 3px 8px;
   }
 
-  .status-pill .dot {
-    width: 5px;
-    height: 5px;
+  .capital-payout-btn {
+    padding: 4px 8px !important;
+    font-size: 10px !important;
   }
 }
-

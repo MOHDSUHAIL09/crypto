@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom'
 import { GiProfit } from "react-icons/gi";
 import { FaMintbit, FaRegCopy } from "react-icons/fa6";
 import { MdAddCard } from "react-icons/md";
@@ -7,18 +8,25 @@ import Stake from "./Stake";
 import { useUser } from "../../../context/UserContext"; // Path sahi kar lena
 import '../../../assets/dashboardcss/css/Dashboard.css';
 
+
 const Cards = () => {
+  const navigate = useNavigate();
+
   // Context se data nikaal lo
   const { userData, stakeData, payoutData, loading, refreshData } = useUser();
-  
+
   const [isActivationVisible, setIsActivationVisible] = useState(false);
   const [isCovered, setIsCovered] = useState(false);
 
   const handleToggle = () => setIsCovered(!isCovered);
-
   const copyReferral = (text) => {
     navigator.clipboard.writeText(text);
     toast.success("Sponser ID Copied!");
+  
+  };
+
+  const handleCapitalPayout = () => {
+    navigate("/dashboard/capitalpayout");
   };
 
   if (loading) return <div>Loading...</div>;
@@ -80,23 +88,17 @@ const Cards = () => {
               />
               {!isActivationVisible && (
                 <div className="animate__animated animate__fadeIn">
-                  <div className="d-flex flex-wrap justify-content-between ">
+                  <div className="d-flex flex-wrap justify-content-between">
                     <p className="mb-1">
-                       <strong>Deposit Fund : </strong><span  style={{ color: "#16a34a", fontWeight: "700", fontSize: "16px" }}>
+                       <strong>Deposit Fund : </strong><span className='Investment-text'>
                         ${userData?.Depositfund || 0}
                       </span>
                     </p>
                     <button type="button" className="wallet-buttton b"><MdAddCard size={20}/></button>
                   </div>
                   <p className="mb-0">
-                    <strong>Investment : </strong>{" "}
-                    <span
-                      style={{
-                        color: "#16a34a",
-                        fontWeight: "700",
-                        fontSize: "16px"
-                      }}
-                    >
+                    <strong>Investment : </strong>
+                    <span className='Investment-text'>
                       ${(userData?.InvestAmount || 0).toLocaleString("en-IN")}
                     </span>
                   </p>
@@ -113,20 +115,27 @@ const Cards = () => {
           <div className="card1-body px-3 py-3">
             <div className="d-flex justify-content-between align-items-center mb-2">
               <h5 className='mb-0 fw-bold'>Payout</h5>
-              <div className='mint-box'><GiProfit /></div>
+              <div className='mint-box'><GiProfit /></div> 
             </div>
             <div className="c-box gap-3 py_3">
               <div className="payout-input-box">
                 <input type="number" className="custom-pay-form form-control mb-2" placeholder='Enter Amount' />
                 <div className="d-flex align-items-center justify-content-between">
-                  <h6 className='small-text mb-1'>
-                    Payout Amt: <span className="pay-badge pay-bg"><strong>{payoutData?.WorkingWallet || 0}</strong></span>
+                  <h6 className='hover-text small-text mb-1'>
+                    Payout Amt : <span className="pay-badge pay-bg"><strong>{payoutData?.WorkingWallet || 0}</strong></span>
                   </h6>
                   <button type="button" className="wallet-buttton">Payout</button>
                 </div>
-                <p className='payout-text mb-0'>
+                {/* <p className='payout-text mb-0'>
                   Note: Min <span className='text_clr'>{payoutData?.min || 0}</span> & Max 5000
-                </p>
+                </p> */}
+                 <Link to="/dashboard/capitalpayout">
+                 <h6 
+                  style={{ cursor: "pointer" }} 
+                  className='hover-text small-text mb-2'
+                >
+                  Capital Status For Payout →
+                </h6></Link>
               </div>
             </div>
           </div>
