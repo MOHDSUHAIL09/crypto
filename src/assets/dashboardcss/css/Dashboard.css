@@ -2971,3 +2971,146 @@ input {
     font-size: 14px !important;
   }
 }
+
+
+
+
+
+
+
+
+
+
+/* Modal Styles */
+.modal-content {
+  background: linear-gradient(95deg, #c6d3f3, #fbd2f2) !important;
+  border-radius: 24px;
+  width: 95% !important;
+  max-width: 700px !important;
+  overflow-y: auto;
+  animation: modalSlideIn 0.3s ease;
+}
+.meddle{
+  background: rgba(255, 255, 255, 0.429);
+  border-radius: 15px;
+  padding: 10px;
+}
+/* Balance Info */
+.balance-info {
+  background: linear-gradient(to right, var(--primary-clr), var(--secondary-clr));
+  padding: 15px 16px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.balance-info span {
+  color: #f0f0f0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.balance-info strong {
+  font-size: 17px;
+  color: #eaeaea;
+}
+
+
+/* Quick Amount Buttons */
+.quick-amounts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.quick-amount-btn {
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  background: var(--inputcolor);
+  border: 1px solid  rgb(198, 198, 198);
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.quick-amount-btn:hover {
+  background: #e9ecef;
+}
+
+.quick-amount-btn.active {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+
+/* Method details styling */
+.method-details {
+  margin: 20px 0;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+
+/* Bank Card Display */
+.bank-card-display {
+  text-align: start;
+  background: linear-gradient(135deg, #6380ff 0%, #764ba2 100%);
+  padding: 10px;
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-number {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-family: monospace;
+}
+.address-value{
+  display: flex ;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  max-width: 100%;
+  display: block;
+}
+.copy-icon{
+  margin-top: 4px;
+  font-size: 17px;
+}
+.copy-icon:hover{
+  color: rgb(144, 143, 142);
+}
+@media (max-width: 768px) {
+  .address-value {
+    padding: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .address-value.expanded {
+    white-space: normal;
+    word-break: break-all;
+  }
+}
