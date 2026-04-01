@@ -148,7 +148,7 @@ const AccStatement = () => {
   const totalPages = Math.ceil(totalRecords / pageSize);
 
   return (
-    <div className="container-fluid p-5 mb-5">
+    <div className="container-fluid p-2 mb-5">
       <div className="report-card p-3">
 
         {/* Dynamic Heading */}
@@ -158,7 +158,7 @@ const AccStatement = () => {
         <hr/>
 
         {/* TOP CONTROLS */}
-        <div className="table-controls ms-3">
+        <div className="table-controls ">
           <div className="entries-control">
             <select 
               className="form-select w-auto"
@@ -175,8 +175,7 @@ const AccStatement = () => {
             </select>
           </div>
 
-          <div className="search-control">
-            <label>Search:</label>
+          <div className="search-control mt-2 mb-2">
             <input type="text" placeholder="Search..." />
           </div>
         </div>
@@ -264,7 +263,7 @@ const AccStatement = () => {
                   width: "clamp(28px, 6vw, 38px)",
                   height: "clamp(28px, 6vw, 38px)",
                   borderRadius: "50%",
-                  fontSize: "clamp(13px, 4vw, 16px)",
+                  fontSize: "12px",
                   fontWeight: pageIndex === page ? "700" : "500",
                   cursor: page === "..." ? "default" : "pointer",
                   transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",

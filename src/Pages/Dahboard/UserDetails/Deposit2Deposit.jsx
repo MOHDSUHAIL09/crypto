@@ -316,11 +316,11 @@ export const Deposit2Deposit = () => {
                       onBlur={() => checkUser1(investUserId1)}
                       placeholder="Enter User ID"
                     />
+                    
                   </div>
                 </div>
 
-                {checkingUser1 && <small>Checking...</small>}
-                {validUser1 && <small className="success-msg">✓ {userName1}</small>}
+
 
                 <div className="options-grid">
                   {depositOptions.map((opt) => (
@@ -343,6 +343,7 @@ export const Deposit2Deposit = () => {
               </div>
             </div>
           </div>
+          
         </div>
       )}
     </div>

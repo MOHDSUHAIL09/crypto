@@ -109,9 +109,9 @@ const Cards = () => {
                   <p className="mb-0"><strong>Name:</strong>&nbsp; {userData?.name || "N/A"}</p>
                   <div className="mb-2">
                     {userData?.kid > 0 ? (
-                      <span className="status-badge">Active</span>
+                      <span className="status-badge">Active 🟢</span>
                     ) : (
-                      <span className="status-badge2">Inactive</span>
+                      <span className="status-badge2">Inactive 🔴</span>
                     )}
                   </div>
                 </div>
@@ -153,20 +153,20 @@ const Cards = () => {
 
                     <div className='investment-wrapper d-flex gap-3'>
                       <Link to="/dashboard/investmenthistory">
-                      <p className="mb-0">
-                        <strong>Subscription : </strong>
-                        <span className='Investment-text'>
-                          ${(userData?.BotAmount || 0).toLocaleString("en-IN")}
-                        </span>
-                      </p>
+                        <p className="mb-0">
+                          <strong>Subscription : </strong>
+                          <span className='Investment-text'>
+                            ${(userData?.BotAmount || 0).toLocaleString("en-IN")}
+                          </span>
+                        </p>
                       </Link>
-                    <Link to="/dashboard/investmenthistory">
-                      <p className="mb-0">
-                        <strong>Investment : </strong>
-                        <span className='Investment-text'>
-                          ${(userData?.InvestAmount || 0).toLocaleString("en-IN")}
-                        </span>
-                      </p></Link> 
+                      <Link to="/dashboard/investmenthistory">
+                        <p className="mb-0">
+                          <strong>Investment : </strong>
+                          <span className='Investment-text'>
+                            ${(userData?.InvestAmount || 0).toLocaleString("en-IN")}
+                          </span>
+                        </p></Link>
                     </div>
                   </div>
                 )}
@@ -204,14 +204,12 @@ const Cards = () => {
                       Payout
                     </button>
                   </div>
-                  {/* <Link to="/dashboard/capitalpayout">
-                    <h6
-                      style={{ cursor: "pointer" }}
-                      className='hover-text small-text mb-2'
-                    >
-                      Capital Payout →
-                    </h6>
-                  </Link> */}
+
+                  <div className='d-flex align-items-center gap-2'>
+                    <span style={{ color: "green", fontWeight: "bold" }}>Note :</span>
+                    <p style={{ margin: 0, color: "#666", fontSize: "13px" }}> Min Withdrawal $ 20.00</p>
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -275,9 +273,9 @@ const Cards = () => {
                     <div className="bank-card-display d-flex justify-content-between">
                       <div className="card-number">
                         {userData?.bankCardNumber || userData?.card_number || "No card added"}
-                      </div>  
-                      <FaRegCopy 
-                        className='copy-icon' 
+                      </div>
+                      <FaRegCopy
+                        className='copy-icon'
                         style={{ cursor: 'pointer' }}
                         onClick={copyBankCard}
                       />
@@ -292,9 +290,9 @@ const Cards = () => {
                       <div className="address-value">
                         {userData?.usdtAddress || userData?.wallet_address || "No address added"}
                       </div>
-                      <FaRegCopy 
-                        className='copy-icon' 
-                        style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                      <FaRegCopy
+                        className='copy-icon'
+                        style={{ cursor: 'pointer', marginLeft: '5px' }}
                         onClick={copyUsdtAddress}
                       />
                     </div>
@@ -328,11 +326,11 @@ const Cards = () => {
                     value={withdrawOtp}
                     onChange={(e) => setWithdrawOtp(e.target.value.replace(/\D/g, ''))}
                   />
-                  <IoSend/>
+                  <IoSend />
                 </div>
 
                 {/* Withdraw Button */}
-                <button  className="modal-button mt-3" onClick={handleWithdraw}>
+                <button className="modal-button mt-3" onClick={handleWithdraw}>
                   Withdraw Now
                 </button>
               </div>

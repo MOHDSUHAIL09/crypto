@@ -249,7 +249,7 @@ const DownlineTeam = () => {
                   width: "clamp(28px, 6vw, 38px)",
                   height: "clamp(28px, 6vw, 38px)",
                   borderRadius: "50%",
-                  fontSize: "clamp(13px, 4vw, 16px)",
+                  fontSize: "12px",
                   fontWeight: pageIndex === page ? "700" : "500",
                   cursor: page === "..." ? "default" : "pointer",
                   transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
