@@ -13,6 +13,7 @@ import DepositHistory from "./UserDetails/DepositHistory";
 import AccStatement from "./AccStatement";
 import CapitalPayout from "./CapitalPayout/CapitalPayout";
 import CapitalWithdrawalRequest from "./CapitalPayout/CapitalWithdrawalRequest";
+import InvestmentHistory from "./InvestmentHistory";
 
 const Main = () => {
   return (
@@ -98,6 +99,14 @@ const Main = () => {
                   element={
                     <ProtecedRoute>
                       <CapitalWithdrawalRequest/>
+                    </ProtecedRoute>
+                  }
+                />
+                 <Route
+                  path="/investmenthistory"
+                  element={
+                    <ProtecedRoute>
+                      <InvestmentHistory/>
                     </ProtecedRoute>
                   }
                 />

@@ -33,6 +33,20 @@ const Cards = () => {
     toast.success("Sponser ID Copied!");
   };
 
+  // Dynamic copy function for bank card - user ke data se
+  const copyBankCard = () => {
+    const bankCardNumber = userData?.bankCardNumber || userData?.card_number || "No card added";
+    navigator.clipboard.writeText(bankCardNumber);
+    toast.success("Bank card number copied!");
+  };
+
+  // Dynamic copy function for USDT address - user ke data se
+  const copyUsdtAddress = () => {
+    const usdtAddress = userData?.usdtAddress || userData?.wallet_address || "No address added";
+    navigator.clipboard.writeText(usdtAddress);
+    toast.success("USDT address copied!");
+  };
+
   // Handle Payout Button Click - Amount pre-fill karega
   const handlePayoutClick = () => {
     if (payoutAmount && parseFloat(payoutAmount) > 0) {
@@ -138,19 +152,21 @@ const Cards = () => {
                     </div>
 
                     <div className='investment-wrapper d-flex gap-3'>
+                      <Link to="/dashboard/investmenthistory">
                       <p className="mb-0">
                         <strong>Subscription : </strong>
                         <span className='Investment-text'>
                           ${(userData?.BotAmount || 0).toLocaleString("en-IN")}
                         </span>
                       </p>
-
+                      </Link>
+                    <Link to="/dashboard/investmenthistory">
                       <p className="mb-0">
                         <strong>Investment : </strong>
                         <span className='Investment-text'>
                           ${(userData?.InvestAmount || 0).toLocaleString("en-IN")}
                         </span>
-                      </p>
+                      </p></Link> 
                     </div>
                   </div>
                 )}
@@ -188,14 +204,14 @@ const Cards = () => {
                       Payout
                     </button>
                   </div>
-                  <Link to="/dashboard/capitalpayout">
+                  {/* <Link to="/dashboard/capitalpayout">
                     <h6
                       style={{ cursor: "pointer" }}
                       className='hover-text small-text mb-2'
                     >
                       Capital Payout →
                     </h6>
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             </div>
@@ -253,22 +269,34 @@ const Cards = () => {
                   </div>
                 </div>
 
-
+                {/* BANK CARD Details - Dynamic */}
                 {selectedMethod === 'BANK CARD' && (
-                        
                   <div className="method-details">
                     <div className="bank-card-display d-flex justify-content-between">
-                      <div className="card-number">564625******022</div>  
-                      <FaRegCopy className='copy-icon'/>
+                      <div className="card-number">
+                        {userData?.bankCardNumber || userData?.card_number || "No card added"}
+                      </div>  
+                      <FaRegCopy 
+                        className='copy-icon' 
+                        style={{ cursor: 'pointer' }}
+                        onClick={copyBankCard}
+                      />
                     </div>
                   </div>
                 )}
 
+                {/* USDT TRC20 Details - Dynamic */}
                 {selectedMethod === 'USDT TRC20' && (
-                  <div className="method-details ">
+                  <div className="method-details">
                     <div className="bank-card-display d-flex justify-content-between">
-                      <div className="address-value">TXhY3xR9pL.hhhhhjhgfdhhhhhhhhgmN2vB5hBg</div>
-                      <FaRegCopy className='copy-icon'/>
+                      <div className="address-value">
+                        {userData?.usdtAddress || userData?.wallet_address || "No address added"}
+                      </div>
+                      <FaRegCopy 
+                        className='copy-icon' 
+                        style={{ cursor: 'pointer', marginLeft: '5px' }} 
+                        onClick={copyUsdtAddress}
+                      />
                     </div>
                   </div>
                 )}
@@ -304,7 +332,7 @@ const Cards = () => {
                 </div>
 
                 {/* Withdraw Button */}
-                <button className="modal-button mt-3" onClick={handleWithdraw}>
+                <button  className="modal-button mt-3" onClick={handleWithdraw}>
                   Withdraw Now
                 </button>
               </div>

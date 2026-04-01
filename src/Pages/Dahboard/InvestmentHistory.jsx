@@ -1,90 +1,73 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import CustomTable from "../CustomTable/CustomTable";
-import './CapitalPayout.css'; 
+import React, { useEffect, useState } from "react";
+// import "./UserDetails.css";
+import apiClient from "../../api/apiClient";
+import CustomTable from "./CustomTable/CustomTable";
 
-const CapitalPayout = () => {
+const BonusReport = () => {
   const [records, setRecords] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [error, setError] = useState(null);
   
   // Pagination state
   const [pageIndex, setPageIndex] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(15);
+
+  const regno = localStorage.getItem("regno");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetchCapitalData();
-  }, []);
+    const fetchBonus = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-  const fetchCapitalData = async () => {
-    setLoading(true);
-    try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const sampleData = [
-        {
-          id: 1,
-          investmentDate: "17/12/2025",
-          amount: 1000.00,
-          profit: 87.10,
-          withdrawal: 0.00,
-          remainingCapital: 1000.00,
-          remainingDays: "",
-        },
-        {
-          id: 2,
-          investmentDate: "15/12/2025",
-          amount: 500.00,
-          profit: 43.55,
-          withdrawal: 0.00,
-          remainingCapital: 500.00,
-          remainingDays: "5",
-        },
-        {
-          id: 3,
-          investmentDate: "10/12/2025",
-          amount: 2000.00,
-          profit: 174.20,
-          withdrawal: 500.00,
-          remainingCapital: 1500.00,
-          remainingDays: "10",
-        },
-        {
-          id: 4,
-          investmentDate: "05/12/2025",
-          amount: 750.00,
-          profit: 65.33,
-          withdrawal: 0.00,
-          remainingCapital: 750.00,
-          remainingDays: "15",
-        },
-        {
-          id: 5,
-          investmentDate: "01/12/2025",
-          amount: 3000.00,
-          profit: 261.30,
-          withdrawal: 1000.00,
-          remainingCapital: 2000.00,
-          remainingDays: "20",
+        const res = await apiClient.get(
+          `/Dashboard/self-trading-history/${regno}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("selfhistroy", res);
+
+        // Validate the response data structure
+        if (res.data && res.data.data) {
+          // Get the tradingHistory array from the response
+          const tradingData = res.data.data.tradingHistory;
+        
+          // Ensure we're setting an array
+          const dataArray = Array.isArray(tradingData) ? tradingData : [];
+          setRecords(dataArray);
+        } else {
+          setRecords([]);
+          if (res.data && !res.data.success) {
+            setError(res.data.message || "Failed to fetch data");
+          }
         }
-      ];
-      setRecords(sampleData);
-    } catch (error) {
-      console.error("Error fetching capital data:", error);
-    } finally {
-      setLoading(false);
+      } catch (error) {
+        console.error("API Error:", error.response || error);
+        setError(error.response?.data?.message || "An error occurred while fetching data");
+        setRecords([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (regno && token) {
+      fetchBonus();
     }
-  };
+  }, [regno, token]);
 
   // Filter records based on search term
   const filteredRecords = records.filter((row) => {
     const searchLower = searchTerm.toLowerCase();
     return (
-      (row.investmentDate && row.investmentDate.toLowerCase().includes(searchLower)) ||
-      (row.amount && row.amount.toString().toLowerCase().includes(searchLower)) ||
-      (row.profit && row.profit.toString().toLowerCase().includes(searchLower)) ||
-      (row.remainingCapital && row.remainingCapital.toString().toLowerCase().includes(searchLower))
+      (row.Rdate && row.Rdate.toLowerCase().includes(searchLower)) ||
+      (row.paymode && row.paymode.toLowerCase().includes(searchLower)) ||
+      (row.Rkprice && row.Rkprice.toString().toLowerCase().includes(searchLower)) ||
+      (row.Rkid && row.Rkid.toString().toLowerCase().includes(searchLower))
     );
   });
 
@@ -95,10 +78,12 @@ const CapitalPayout = () => {
   const endIndex = startIndex + itemsPerPage;
   const currentRecords = filteredRecords.slice(startIndex, endIndex);
 
+  // Reset to first page when search term or items per page changes
   useEffect(() => {
     setPageIndex(1);
   }, [searchTerm, itemsPerPage]);
 
+  // Navigation functions
   const goToPreviousPage = () => {
     if (pageIndex > 1) {
       setPageIndex(pageIndex - 1);
@@ -111,23 +96,74 @@ const CapitalPayout = () => {
     }
   };
 
-  const columns = [
-    "Sl.No.",
-    "Investment Date",
-    "Amount",
-    "Profit",
-    "Withdrawal",
-    "Remaining Capital",
-    "Remaining Days",
-    "Action",
-  ];
+  // Generate page numbers with ellipsis
+  const getPagination = () => {
+    if (totalPages <= 1) return [];
+    
+    const delta = 2;
+    const range = [];
+    const rangeWithDots = [];
+    let l;
+
+    for (let i = 1; i <= totalPages; i++) {
+      if (i === 1 || i === totalPages || (i >= pageIndex - delta && i <= pageIndex + delta)) {
+        range.push(i);
+      }
+    }
+
+    range.forEach((i) => {
+      if (l) {
+        if (i - l === 2) {
+          rangeWithDots.push(l + 1);
+        } else if (i - l !== 1) {
+          rangeWithDots.push("...");
+        }
+      }
+      rangeWithDots.push(i);
+      l = i;
+    });
+
+    return rangeWithDots;
+  };
+
+  // Handle items per page change
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setPageIndex(1);
+  };
+
+  // Format date if needed
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString();
+    } catch (e) {
+      return dateString;
+    }
+  };
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="report-container p-2 p-md-4 mb-5">
+        <div className="mb-3">
+          <h2>Investment Statement</h2>
+        </div>
+        <hr style={{ border: "1px solid #282727" }} />
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="report-container p-2 p-md-4 mb-5">
       
       {/* Heading */}
       <div className="mb-3">
-        <h2>Capital Status For Payout</h2>
+        <h2>Investment Statement</h2>
       </div>
       <hr style={{ border: "1px solid #282727" }} />
 
@@ -140,11 +176,11 @@ const CapitalPayout = () => {
           <select
             className="form-select"
             value={itemsPerPage}
-            onChange={(e) => setItemsPerPage(Number(e.target.value))}
+            onChange={handleItemsPerPageChange}
             style={{
               backgroundColor: "var(--inputcolor)",
               width: "auto",
-              height: "38px",
+              height:"38px",
               borderRadius: "8px",
               border: "1px solid rgba(102, 126, 234, 0.2)",
               fontSize: "14px",
@@ -175,73 +211,50 @@ const CapitalPayout = () => {
         </div>
       </div>
 
-      {/* Table - Using CustomTable with Loader */}
+      {/* Table */}
       <div className="report-card">
         <CustomTable
-          columns={columns}
+          columns={[
+            "Sl.No.",
+            "Investment Date",
+            "Amount",
+            "For Locking",
+            "Invest Mode",
+          ]}
           loading={loading}
-          loaderSize="md"
-          loaderText="Loading capital data..."
-          emptyMessage="No capital data found"
         >
-          {!loading && currentRecords.map((row, index) => (
-            <tr key={row.id || index}>
-              <td className="text-center">
-                <div className="sr-no-circle">
-                  {startIndex + index + 1}
-                </div>
-              </td>
-              <td className="text-center">{row.investmentDate}</td>
-              <td className="text-center amount-cell">
-                ${row.amount?.toFixed(2)}
-              </td>
-              <td className="text-center profit-cell">
-                ${row.profit?.toFixed(2)}
-              </td>
-              <td className="text-center">
-                ${row.withdrawal?.toFixed(2)}
-              </td>
-              <td className="text-center remaining-capital">
-                ${row.remainingCapital?.toFixed(2)}
-              </td>
-              <td className="text-center">
-                {row.remainingDays || "-"}
-              </td>
-              <td className="text-center">
-                <Link to="/dashboard/capitalwithdrawalrequest" state={{ investmentData: row }}>
-                  <button
-                    className="capital-payout-btn"
-                    style={{
-                      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                      color: "white",
-                      border: "none",
-                      padding: "6px 12px",
-                      borderRadius: "4px",
-                      fontSize: "12px",
-                      fontWeight: "600",
-                      cursor: "pointer",
-                      transition: "all 0.3s ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.transform = "translateY(-1px)";
-                      e.target.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.4)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.transform = "translateY(0)";
-                      e.target.style.boxShadow = "none";
-                    }}
-                  >
-                    CAPITAL PAYOUT
-                  </button>
-                </Link>
+          {currentRecords.length > 0 ? (
+            currentRecords.map((row, index) => (
+              <tr key={row.Rid || index}>
+                
+                {/* Sl.No with proper pagination */}
+                <td className="text-center">
+                  <div className="sr-no-circle">
+                    {startIndex + index + 1}
+                  </div>
+                </td>
+                
+                <td>{formatDate(row.Rdate)}</td>
+                <td>${row.Rkprice || 0}</td>
+                <td>{row.expDate || "Standard"}</td>
+                <td>{row.paymode || row.paymentmode || "N/A"}</td>
+            
+                
+                
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={5} className="text-center py-4">
+                {loading ? "Loading..." : "No records found"}
               </td>
             </tr>
-          ))}
+          )}
         </CustomTable>
 
-        {/* Pagination Controls - Only show when not loading and has data */}
-        {!loading && totalPages > 1 && (
+        {totalPages > 1 && (
           <div className="d-flex justify-content-center align-items-center mt-5 mb-3 flex-wrap gap-md-2">
+    
             <button
               onClick={goToPreviousPage}
               disabled={pageIndex === 1}
@@ -267,7 +280,7 @@ const CapitalPayout = () => {
               ←
             </button>
 
-            {getPagination(pageIndex, totalPages).map((page, i) => (
+            {getPagination().map((page, i) => (
               <button
                 key={i}
                 disabled={page === "..."}
@@ -284,14 +297,14 @@ const CapitalPayout = () => {
                   cursor: page === "..." ? "default" : "pointer",
                   transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
                   background: pageIndex === page
-                    ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                    ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" 
                     : "white",
                   color: pageIndex === page ? "#fff" : "#667eea",
                   boxShadow: pageIndex === page
-                    ? "0 8px 20px rgba(102, 126, 234, 0.3), 0 2px 4px rgba(0,0,0,0.1)"
+                    ? "0 8px 20px rgba(102, 126, 234, 0.3), 0 2px 4px rgba(0,0,0,0.1)" 
                     : "0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05)",
-                  border: page === "..."
-                    ? "none"
+                  border: page === "..." 
+                    ? "none" 
                     : pageIndex === page
                       ? "none"
                       : "1px solid rgba(102, 126, 234, 0.2)",
@@ -313,6 +326,8 @@ const CapitalPayout = () => {
                     e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
                   }
                 }}
+                aria-label={page === "..." ? "More pages" : `Go to page ${page}`}
+                aria-current={pageIndex === page ? "page" : undefined}
               >
                 {page}
               </button>
@@ -344,44 +359,10 @@ const CapitalPayout = () => {
             </button>
           </div>
         )}
-        
-        {/* Show message when no data */}
-        {!loading && filteredRecords.length === 0 && (
-          <div className="text-center py-4">
-            <p className="text-muted">No capital data found</p>
-          </div>
-        )}
       </div>
+
     </div>
   );
 };
 
-// Pagination helper function
-const getPagination = (pageIndex, totalPages) => {
-  const delta = 2;
-  const range = [];
-  const rangeWithDots = [];
-  let l;
-
-  for (let i = 1; i <= totalPages; i++) {
-    if (i === 1 || i === totalPages || (i >= pageIndex - delta && i <= pageIndex + delta)) {
-      range.push(i);
-    }
-  }
-
-  range.forEach((i) => {
-    if (l) {
-      if (i - l === 2) {
-        rangeWithDots.push(l + 1);
-      } else if (i - l !== 1) {
-        rangeWithDots.push("...");
-      }
-    }
-    rangeWithDots.push(i);
-    l = i;
-  });
-
-  return rangeWithDots;
-};
-
-export default CapitalPayout;
+export default BonusReport;

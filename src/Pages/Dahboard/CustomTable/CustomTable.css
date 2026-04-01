@@ -66,14 +66,14 @@
 }
 
 /* FIRST COLUMN (CENTER FIX) */
-.custom-table tbody tr td:first-child {
+/* .custom-table tbody tr td:first-child {
   background: transparent !important;
   border: none !important;
   width: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
+} */
 
 /* ================= SERIAL CIRCLE ================= */
 

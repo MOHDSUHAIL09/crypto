@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import * as d3 from "d3";
 import apiClient from "../../../api/apiClient";
+import Preloader from "../../../Preloader"; // Apna Preloader import karo
 import "./UserDetails.css";
 
 /**
@@ -28,12 +29,6 @@ const TreeComponent = () => {
    * buildTree - Converts flat API data into hierarchical tree structure
    * @param {Array} data - Flat array of nodes received from API
    * @returns {Object} - Root node of the tree with children hierarchy
-   * 
-   * API response example:
-   * [
-   *   { regno: "1", Name: "John", introRegNo: null, loginid: "john123", STATUS: "GREEN" },
-   *   { regno: "2", Name: "Alice", introRegNo: "1", loginid: "alice456", STATUS: "BLUE" },
-   * ]
    */
   const buildTree = useCallback((apiData) => {
     // Guard clause - return null if no data from API
@@ -152,6 +147,10 @@ const TreeComponent = () => {
           // Need to fetch children from API
           console.log("⏳ Fetching children for:", clickedRegNo);
           
+          // Show loading indicator on node
+          d3Node.data.loading = true;
+          setTreeData({...treeData}); // Force re-render
+          
           // Async API call
           fetchNodeChildren(clickedRegNo).then(apiChildren => {
             if (apiChildren.length > 0) {
@@ -198,8 +197,12 @@ const TreeComponent = () => {
               // Update the clicked node with new children
               d3Node.data._children = directChildren;
               d3Node.data.children = directChildren;
+              d3Node.data.loading = false;
               
               // Force re-render by creating a new tree data reference
+              setTreeData({...treeData});
+            } else {
+              d3Node.data.loading = false;
               setTreeData({...treeData});
             }
           });
@@ -424,6 +427,9 @@ const TreeComponent = () => {
     // ===== ADD CIRCLES (NODE MARKERS) =====
     node.append("circle")
       .attr("fill", d => {
+        // Show loading animation
+        if (d.data.loading) return "#ff9800";
+        
         const status = d.data.STATUS || d.data.BotStatus;
         
         // Root node special color
@@ -437,12 +443,15 @@ const TreeComponent = () => {
         // Status-based colors
         return status === "BLUE" ? "#3498db" : "#2ecc71";
       })
-      .attr("r", d => expandedNodes.has(d.data.regno) ? 8 : 6)
+      .attr("r", d => {
+        if (d.data.loading) return 10;
+        return expandedNodes.has(d.data.regno) ? 8 : 6;
+      })
       .attr("stroke", "#fff")
       .attr("stroke-width", 2);
 
     // ===== ADD EXPAND/COLLAPSE INDICATORS (+/-) =====
-    node.filter(d => d.data._children && d.data._children.length > 0)
+    node.filter(d => d.data._children && d.data._children.length > 0 && !d.data.loading)
       .append("text")
       .attr("dy", "-0.8em")
       .attr("x", 0)
@@ -453,6 +462,18 @@ const TreeComponent = () => {
       .attr("font-weight", "bold")
       .attr("stroke", "#333")
       .attr("stroke-width", "0.5");
+
+    // ===== ADD LOADING INDICATOR =====
+    node.filter(d => d.data.loading)
+      .append("text")
+      .attr("dy", "-0.8em")
+      .attr("x", 0)
+      .attr("text-anchor", "middle")
+      .text("⟳")
+      .attr("fill", "#ff9800")
+      .attr("font-size", "14px")
+      .attr("font-weight", "bold")
+      .style("animation", "spin 1s linear infinite");
 
     // ===== ADD NAME LABELS (FROM API) =====
     node.append("text")
@@ -495,9 +516,25 @@ const TreeComponent = () => {
         return `${name}\nLogin ID: ${loginid}\nStatus: ${status}\nChildren: ${children}\n\n${hasMore ? 'Click to expand/collapse' : 'No children to expand'}`;
       });
 
+    // Add spin animation for loading indicator
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
+
   }, [treeData, loading, handleNodeClick, expandedNodes]);
 
   // ==================== UI RENDERING ====================
+  
+  // Agar loading true hai to Preloader dikhao
+  if (loading) {
+    return <Preloader />;
+  }
+
   return (
     <div className="tree-page">
       
@@ -516,14 +553,6 @@ const TreeComponent = () => {
           </button>
         </div>
       </div>
-
-      {/* Loading State */}
-      {loading && (
-        <div className="loading-container">
-          <div className="spinner"></div>
-          <p>Loading tree data from API...</p>
-        </div>
-      )}
 
       {/* Error State */}
       {error && !loading && (

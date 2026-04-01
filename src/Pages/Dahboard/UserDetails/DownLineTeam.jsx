@@ -317,13 +317,6 @@ const DownlineTeam = () => {
             </button>
           </div>
         )}
-
-        {/* Show message when no data */}
-        {totalRecords === 0 && !loading && (
-          <div className="text-center py-4">
-            <p className="text-muted">No data available</p>
-          </div>
-        )}
       </div>
     </div>
   );
