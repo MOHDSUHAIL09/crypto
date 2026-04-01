@@ -238,9 +238,6 @@ const BonusReport = () => {
                 <td>${row.Rkprice || 0}</td>
                 <td>{row.expDate || "Standard"}</td>
                 <td>{row.paymode || row.paymentmode || "N/A"}</td>
-            
-                
-                
               </tr>
             ))
           ) : (

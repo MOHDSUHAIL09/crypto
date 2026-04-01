@@ -1,7 +1,7 @@
   import React, { useState, useEffect } from 'react';
   import { createPortal } from 'react-dom';
   import './AgreementForm.css';
-import toast from 'react-hot-toast';
+import { FaRegCopy } from "react-icons/fa";
 
   const AgreementForm = ({ open, onClose, loginId }) => {
     const passedLoginId = (loginId || "GUEST").toUpperCase();
@@ -19,6 +19,18 @@ import toast from 'react-hot-toast';
   });
 
     const [agreementId, setAgreementId] = useState("");
+
+const handleCopy = (agreementId) => {
+  navigator.clipboard.writeText(agreementId)
+    .then(() => {
+      alert("Agreement ID copied!");
+    })
+    .catch((err) => {
+      alert("Failed to copy!");
+      console.error(err);
+    });
+};
+  
 
     useEffect(() => {
       if (!open) {
@@ -100,14 +112,17 @@ const handleSubmit = (e) => {
             <div className="form-card" style={{ background: '#fff', borderRadius: '8px', paddingBottom: '30px' }}>
               <div className="form-header">
                 <div className="logo-section">
-                  <img src='/images/favicon.ico' className='logo-icon' alt="logo" />
                   <div className="logo-text">
                     <span className="brand-name">CoinPool</span>
                     <span className="brand-sub">Wealth Planner</span>
                   </div>
                 </div>
+
+               
                 <h2 className="form-title">Customer agreement form</h2>
-                <p style={{textAlign: 'center', color: '#e67e22', fontWeight: 'bold'}}>Agreement ID: {agreementId}</p>
+                 <div className='d-flex gap-4'>
+                <p style={{ color: '#e67e22', fontWeight: 'bold' }}>Agreement ID: {agreementId} </p> <FaRegCopy className='mt-1' onClick={() => handleCopy(agreementId)} />
+              </div>
               </div>
 
               <section className="form-section">
