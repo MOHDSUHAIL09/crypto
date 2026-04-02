@@ -267,33 +267,39 @@ const Cards = () => {
                   </div>
                 </div>
 
-                {/* BANK CARD Details - Dynamic */}
+                {/* BANK CARD Details */}
                 {selectedMethod === 'BANK CARD' && (
                   <div className="method-details">
                     <div className="bank-card-display d-flex justify-content-between">
                       <div className="card-number">
-                        {userData?.bankCardNumber || userData?.card_number || "No card added"}
+                        {localStorage.getItem("accountNumber") || "No card added"}  {/* 🔥 Bas itna */}
                       </div>
                       <FaRegCopy
                         className='copy-icon'
                         style={{ cursor: 'pointer' }}
-                        onClick={copyBankCard}
+                        onClick={() => {
+                          navigator.clipboard.writeText(localStorage.getItem("accountNumber") || "No card added");
+                          toast.success("Bank card number copied!");
+                        }}
                       />
                     </div>
                   </div>
                 )}
 
-                {/* USDT TRC20 Details - Dynamic */}
+                {/* USDT TRC20 Details */}
                 {selectedMethod === 'USDT TRC20' && (
                   <div className="method-details">
                     <div className="bank-card-display d-flex justify-content-between">
                       <div className="address-value">
-                        {userData?.usdtAddress || userData?.wallet_address || "No address added"}
+                        {localStorage.getItem("bep20Wallet") || "No address added"}  {/* 🔥 Bas itna */}
                       </div>
                       <FaRegCopy
                         className='copy-icon'
                         style={{ cursor: 'pointer', marginLeft: '5px' }}
-                        onClick={copyUsdtAddress}
+                        onClick={() => {
+                          navigator.clipboard.writeText(localStorage.getItem("bep20Wallet") || "No address added");
+                          toast.success("USDT address copied!");
+                        }}
                       />
                     </div>
                   </div>

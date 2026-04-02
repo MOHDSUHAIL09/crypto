@@ -14,6 +14,7 @@ export const UserProvider = ({ children }) => {
   const [stakeData, setStakeData] = useState(null);
   const [payoutData, setPayoutData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [accountNumber, setAccountNumber] = useState(null); 
 
   // ================= LOAD FROM LOCALSTORAGE =================
   useEffect(() => {
@@ -165,6 +166,7 @@ export const UserProvider = ({ children }) => {
       
       console.log("API Response:", response.data);
       
+      
       if (response.data.success) {
         console.log("✅ API success - database updated");
         // Refresh from server to confirm
@@ -210,8 +212,10 @@ export const UserProvider = ({ children }) => {
     setUserData(null);
     setStakeData(null);
     setPayoutData(null);
-    localStorage.clear();
-    sessionStorage.clear();
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("regno");
+    localStorage.removeItem("userData");
   };
 
   useEffect(() => {

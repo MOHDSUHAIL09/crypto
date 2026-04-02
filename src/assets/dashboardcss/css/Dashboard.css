@@ -3162,9 +3162,10 @@ input {
     transform: translateX(-50%);
     width: 70px;
     height: 40px;
-    background: #fff;
-    border-radius: 0 0 50px 50px; /* 🔥 inverted half moon */
-    z-index: 1;
+    background: #eee7ee;
+    border-radius: 0 0 50px 50px;   
+    z-index: 1; 
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
   }
   /* ================= CENTER BUTTON ================= */
   .center-btn {

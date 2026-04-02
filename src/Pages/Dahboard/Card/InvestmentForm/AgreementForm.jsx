@@ -75,7 +75,7 @@ const handleSubmit = (e) => {
 
   // 2. Check: Empty fields
   if (!formData.fullName || !formData.amountUSDT) {
-    alert("Bhai, Name aur Amount bharna zaroori hai!");
+    alert("please, fell the name");
     return;
   }
 
@@ -687,7 +687,7 @@ const handleSubmit = (e) => {
             /* --- PREMIUM SUCCESS TRIGGER POPUP --- */
           <div style={{
             background: '#fff', padding: '20px', borderRadius: '24px', textAlign: 'center',
-            maxWidth: '400px', width: '100%', marginTop: '80px', position: 'relative',
+            maxWidth: '300px', width: '100%', marginTop: '80px', position: 'relative',
             boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
             animation: 'fadeIn 0.4s ease-out'
           }}>
@@ -730,8 +730,6 @@ const handleSubmit = (e) => {
             </div>
           </div>
         )}
-
-
       </div>,
       document.body
     );

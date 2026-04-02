@@ -14,6 +14,7 @@ import AccStatement from "./AccStatement";
 import CapitalPayout from "./CapitalPayout/CapitalPayout";
 import CapitalWithdrawalRequest from "./CapitalPayout/CapitalWithdrawalRequest";
 import InvestmentHistory from "./InvestmentHistory";
+import Profaile from "./Profile/Profile";
 
 const Main = () => {
   return (
@@ -57,7 +58,7 @@ const Main = () => {
                   path="rewards"
                   element={
                     <ProtecedRoute>
-                      <Rebards/>
+                      <Rebards />
                     </ProtecedRoute>
                   }
                 />
@@ -70,11 +71,11 @@ const Main = () => {
                     </ProtecedRoute>
                   }
                 />
-                 <Route
+                <Route
                   path="depositHistory"
                   element={
                     <ProtecedRoute>
-                      <DepositHistory/>
+                      <DepositHistory />
                     </ProtecedRoute>
                   }
                 />
@@ -82,31 +83,39 @@ const Main = () => {
                   path="accstatement"
                   element={
                     <ProtecedRoute>
-                      <AccStatement/>
+                      <AccStatement />
                     </ProtecedRoute>
                   }
                 />
-                 <Route
+                <Route
                   path="capitalpayout"
                   element={
                     <ProtecedRoute>
-                      <CapitalPayout/>
+                      <CapitalPayout />
                     </ProtecedRoute>
                   }
                 />
-                 <Route
+                <Route
                   path="/capitalwithdrawalrequest"
                   element={
                     <ProtecedRoute>
-                      <CapitalWithdrawalRequest/>
+                      <CapitalWithdrawalRequest />
                     </ProtecedRoute>
                   }
                 />
-                 <Route
+                <Route
                   path="/investmenthistory"
                   element={
                     <ProtecedRoute>
-                      <InvestmentHistory/>
+                      <InvestmentHistory />
+                    </ProtecedRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtecedRoute>
+                      <Profaile />
                     </ProtecedRoute>
                   }
                 />
