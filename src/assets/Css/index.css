@@ -73,10 +73,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="color"]:focu
     color: #495057;
     outline: 0;
 }
-textarea{
-	height:150px;
-	border:1px solid #ebebeb;
-}
+
 textarea.form-control{
 	border:1px solid #ebebeb;	
 }

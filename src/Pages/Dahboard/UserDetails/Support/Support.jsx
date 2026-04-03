@@ -1,4 +1,4 @@
-// Support.jsx - With View Ticket Modal
+// Support.jsx - With Toast Messages
 import React, { useState, useEffect } from 'react';
 import { useUser } from '../../../../context/UserContext';
 import CustomTable from '../../CustomTable/CustomTable';
@@ -15,7 +15,7 @@ const Support = () => {
   const [replyMessage, setReplyMessage] = useState('');
   const [formData, setFormData] = useState({
     subject: '',
-    ticketType: '',
+    ticketType: '', 
     description: ''
   });
   const [submitting, setSubmitting] = useState(false);
@@ -25,8 +25,19 @@ const Support = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
   const [activeFilter, setActiveFilter] = useState('widthdraw');
+  
+  // ✅ Toast State
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
   const API_BASE_URL = 'https://api.mangowealthplanner.com/api/Dashboard';
+
+  // ✅ Toast Function
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => {
+      setToast({ show: false, message: '', type: 'success' });
+    }, 3000);
+  };
 
   const getAuthToken = () => {
     return localStorage.getItem('token') || localStorage.getItem('auth_token');
@@ -151,12 +162,11 @@ const Support = () => {
     const regNo = getRegNo();
     
     if (!token) {
-      setError('❌ Please login first. Token not found.');
+      showToast('Please login first', 'error');
       return;
     }
 
     setSubmitting(true);
-    setError('');
     
     try {
       const formDataPayload = new FormData();
@@ -207,15 +217,16 @@ const Support = () => {
         setShowModal(false);
         resetForm();
         setSelectedImage(null);
-        alert('✅ Ticket created successfully!');
+        
+        // ✅ Toast Success
+        showToast('✅ Ticket created successfully!', 'success');
       } else {
         throw new Error(result.message || 'Failed to create ticket');
       }
       
     } catch (err) {
       console.error('❌ Create error:', err);
-      setError(err.message);
-      alert(`❌ Failed: ${err.message}`);
+      showToast(`❌ ${err.message}`, 'error');
     } finally {
       setSubmitting(false);
     }
@@ -224,7 +235,7 @@ const Support = () => {
   // ✅ Send Reply
   const sendReply = async () => {
     if (!replyMessage.trim()) {
-      alert('Please type your message');
+      showToast('Please type your message', 'error');
       return;
     }
     
@@ -250,24 +261,23 @@ const Support = () => {
       });
       
       if (response.ok) {
-        alert('✅ Reply sent successfully!');
+        showToast('✅ Reply sent successfully!', 'success');
         setReplyMessage('');
         setShowViewModal(false);
-        // Refresh tickets to show updated status
         await fetchTickets(activeFilter, currentPage);
       } else {
-        alert('❌ Failed to send reply');
+        showToast('❌ Failed to send reply', 'error');
       }
     } catch (err) {
       console.error('Reply error:', err);
-      alert('❌ Failed to send reply');
+      showToast('❌ Failed to send reply', 'error');
     }
   };
 
   const resetForm = () => {
     setFormData({
       subject: '',
-      ticketType: 'withdrawal',
+      ticketType: '',
       description: ''
     });
     setSelectedImage(null);
@@ -275,8 +285,12 @@ const Support = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formData.ticketType) {
+      showToast('Please select ticket type', 'error');
+      return;
+    }
     if (!formData.subject.trim()) {
-      alert('Please enter subject');
+      showToast('Please enter subject', 'error');
       return;
     }
     createTicket({
@@ -297,25 +311,6 @@ const Support = () => {
     }
   };
 
-  const handleFilterChange = (type) => {
-    let paymentMode = 'widthdraw';
-    if (type === 'income') paymentMode = 'income';
-    else if (type === 'all') paymentMode = '';
-    
-    setActiveFilter(paymentMode);
-    setFormData(prev => ({ ...prev, ticketType: type }));
-    setCurrentPage(1);
-    fetchTickets(paymentMode, 1);
-  };
-
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
-      fetchTickets(activeFilter, newPage);
-    }
-  };
-
-  // ✅ View Ticket Handler - Opens Modal
   const handleViewTicket = (ticket) => {
     setSelectedTicket(ticket);
     setShowViewModal(true);
@@ -324,9 +319,6 @@ const Support = () => {
 
   useEffect(() => {
     const token = getAuthToken();
-    console.log('🔍 Support Component Initialized');
-    console.log('Token:', token ? '✅ Present' : '❌ Missing');
-    
     if (!token) {
       setError('⚠️ No authentication token found. Please login first.');
     } else {
@@ -335,42 +327,25 @@ const Support = () => {
   }, []);
 
   return (
-    <div className="support-container">
+    <div className="downline-main-wrapper support-container">
+      {/* ✅ Toast Notification */}
+      {toast.show && (
+        <div className={`toast-notification ${toast.type}`}>
+          <span className="toast-message">{toast.message}</span>
+        </div>
+      )}
+
       <div className="support-header">
         <div>
           <h1 className="support-title">Ticket List</h1>
-          <p className="support-subtitle">
-            Welcome, {userData?.name || user?.name || 'User'}! 
-            {totalRecords > 0 && ` Total Tickets: ${totalRecords}`}
-          </p>
         </div>
+
         <button className="create-ticket-btn" onClick={() => setShowModal(true)}>
           Create New Ticket
         </button>
       </div>
 
-      <div className="filter-section">
-        <button 
-          className={`filter-btn ${activeFilter === 'widthdraw' ? 'active' : ''}`}
-          onClick={() => handleFilterChange('withdrawal')}
-        >
-          Withdrawal
-        </button>
-        <button 
-          className={`filter-btn ${activeFilter === 'income' ? 'active' : ''}`}
-          onClick={() => handleFilterChange('income')}
-        >
-          Income
-        </button>
-        <button 
-          className={`filter-btn ${activeFilter === '' ? 'active' : ''}`}
-          onClick={() => handleFilterChange('all')}
-        >
-          All Tickets
-        </button>
-      </div>
 
-      {error && <div className="error-message">⚠️ {error}</div>}
 
       <CustomTable 
         columns={["S.NO.", "DATE", "TICKET ID", "TICKET TYPE", "SUBJECT"]}
@@ -399,97 +374,77 @@ const Support = () => {
         ))}
       </CustomTable>
 
-      {totalPages > 1 && (
-        <div className="pagination">
-          <button 
-            onClick={() => handlePageChange(currentPage - 1)} 
-            disabled={currentPage === 1}
-            className="page-btn"
-          >
-            Previous
-          </button>
-          <span className="page-info">Page {currentPage} of {totalPages}</span>
-          <button 
-            onClick={() => handlePageChange(currentPage + 1)} 
-            disabled={currentPage === totalPages}
-            className="page-btn"
-          >
-            Next
-          </button>
-        </div>
-      )}
-
+ 
       {/* Create Ticket Modal */}
-      {showModal && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>Create New Ticket</h2>
-              <button className="modal-close" onClick={() => setShowModal(false)}>✕</button>
-            </div>
-            <form onSubmit={handleSubmit}>
-          <div className="form-group">
-  <label>Ticket Type *</label>
-<select 
-  name="ticketType" 
-  value={formData.ticketType} 
-  onChange={handleInputChange} 
-  required
->
-  <option value="">-- Select Message Type --</option>
-  <option value="income">Income</option>
-  <option value="withdrawal">Withdrawal</option>
-  <option value="deposit">Deposit</option>
-  <option value="purchase_bot">Purchase BOT</option>
-  <option value="profile">Profile</option>
-  <option value="other">Other</option>
-</select>
-</div>
-              
-              <div className="form-group">
-                <label>Subject *</label>
-                <input 
-                  type="text" 
-                  name="subject" 
-                  value={formData.subject} 
-                  onChange={handleInputChange} 
-                  placeholder="Enter ticket subject" 
-                  required 
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>Description</label>
-                <textarea 
-                  name="description" 
-                  value={formData.description} 
-                  onChange={handleInputChange} 
-                  placeholder="Enter detailed description" 
-                  rows="4" 
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>Attachment (Optional)</label>
-                <input type="file" onChange={handleImageChange} accept="image/*" />
-              </div>
-              
-              <div className="modal-buttons">
-                <button type="button" className="cancel-btn" onClick={() => setShowModal(false)}>
-                  Cancel
-                </button>
-                <button type="submit" className="submit-btn" disabled={submitting}>
-                  {submitting ? 'Creating...' : 'Create Ticket'}
-                </button>
-              </div>
-            </form>
-          </div>
+{showModal && (
+  <div className="modal-overlay01" onClick={(e) => e.stopPropagation()}>  {/* ✅ Yahan se hata diya */}
+    <div className="modal-content01" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-header01">
+        <h2>Create New Ticket</h2>
+        <button className="modal-close01" onClick={() => setShowModal(false)}>✕</button>  {/* ✅ Sirf ye close karega */}
+      </div>
+      <form className='modal-middle' onSubmit={handleSubmit}>
+        <div className="form-group01">
+          <label>Ticket Type *</label>
+          <select 
+            name="ticketType" 
+            value={formData.ticketType} 
+            onChange={handleInputChange} 
+            required
+          >
+            <option value="">-- Select Message Type --</option>
+            <option value="income">Income</option>
+            <option value="withdrawal">Withdrawal</option>
+            <option value="deposit">Deposit</option>
+            <option value="purchase_bot">Purchase BOT</option>
+            <option value="profile">Profile</option>
+            <option value="other">Other</option>
+          </select>
         </div>
-      )}
-
-      {/* View Ticket Modal - Message Center Style */}
+        
+        <div className="form-group">
+          <label>Subject *</label>
+          <input 
+            type="text" 
+            name="subject" 
+            value={formData.subject} 
+            onChange={handleInputChange} 
+            placeholder="Enter ticket subject" 
+            required 
+          />
+        </div>
+        
+        <div className="form-group">
+          <label>Description</label>
+          <textarea 
+            name="description" 
+            value={formData.description} 
+            onChange={handleInputChange} 
+            placeholder="Enter detailed description" 
+            rows="4" 
+          />
+        </div>
+        
+        <div className="form-group">
+          <label>Attachment (Optional)</label>
+          <input type="file" onChange={handleImageChange} accept="image/*" />
+        </div>
+        
+        <div className="modal-buttons">
+          <button type="button" className="cancel-btn" onClick={() => setShowModal(false)}>
+            Cancel
+          </button>
+          <button type="submit" className="submit-btn" disabled={submitting}>
+            {submitting ? 'Creating...' : 'Create Ticket'}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
+      {/* View Ticket Modal */}
       {showViewModal && selectedTicket && (
-        <div className="modal-overlay" onClick={() => setShowViewModal(false)}>
+        <div className="modal-overlay" onClick={() => setShowViewModal()}>
           <div className="modal-content view-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Message Center</h2>
@@ -497,10 +452,6 @@ const Support = () => {
             </div>
             
             <div className="ticket-details">
-              <div className="detail-row">
-                <span className="detail-label">Date:</span>
-                <span className="detail-value">{selectedTicket.date}</span>
-              </div>
               <div className="detail-row">
                 <span className="detail-label">Message Type:</span>
                 <span className={`detail-value type-${selectedTicket.type?.toLowerCase()}`}>
@@ -522,24 +473,16 @@ const Support = () => {
             <div className="ticket-divider"></div>
 
             <div className="reply-section">
-              <label className="reply-label">Type your message here...</label>
+              <label className="reply-label000">Type your message here...</label>
               <textarea
                 className="reply-textarea"
                 value={replyMessage}
                 onChange={(e) => setReplyMessage(e.target.value)}
                 placeholder="Type your reply..."
-                rows="4"
               />
             </div>
 
             <div className="modal-buttons reply-buttons">
-              <button 
-                type="button" 
-                className="back-btn"
-                onClick={() => setShowViewModal(false)}
-              >
-                Back To Ticket List
-              </button>
               <button 
                 type="button" 
                 className="solve-btn"

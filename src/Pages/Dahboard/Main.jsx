@@ -32,14 +32,7 @@ const Main = () => {
           </ProtecedRoute>
         }
       />
-     <Route
-        path="/Support"
-        element={
-          <ProtecedRoute>
-            <Support/>
-          </ProtecedRoute>
-        }
-      />
+
 
       {/* 🔥 Dashboard Layout */}
       <Route
@@ -79,6 +72,15 @@ const Main = () => {
                   element={
                     <ProtecedRoute>
                       <BonusReport />
+                    </ProtecedRoute>
+                  }
+                />
+
+                <Route
+                  path="/Support"
+                  element={
+                    <ProtecedRoute>
+                      <Support />
                     </ProtecedRoute>
                   }
                 />
@@ -130,7 +132,7 @@ const Main = () => {
                     </ProtecedRoute>
                   }
                 />
-                 <Route
+                <Route
                   path="/changepassword"
                   element={
                     <ProtecedRoute>
