@@ -76,6 +76,8 @@ import {
 import { RiP2pFill } from "react-icons/ri";
 import { PiTreeView, PiHandWithdrawBold } from "react-icons/pi";
 import { useNavigate, useLocation } from "react-router-dom";
+import { MdSupportAgent } from "react-icons/md";
+import logo from "../../../assets/images/mango_logo.png"
 import "../../../assets/dashboardcss/css/Dashboard.css";
 
 const menuItems = [
@@ -86,6 +88,7 @@ const menuItems = [
   { icon: <FaUndo />, title: "Rewards", path: "/dashboard/rewards" },
   { icon: <PiHandWithdrawBold />,title: "Capital Payout", path: "/dashboard/capitalpayout" },
   { icon: <PiTreeView />, title: "TreeView", path: "/dashboard/TreeView" },
+  { icon: <MdSupportAgent />, title: "Support", path: "/dashboard/Support " },
 ];
 
 const Sidebar = () => {
@@ -110,11 +113,7 @@ const Sidebar = () => {
       {!isMobile && (
         <aside className="pro-sidebar">
           <div className="pro-sidebar-header">
-            <img
-              src="https://th.bing.com/th/id/OIP.QcwGS8N7YkTFkSEX-GE87gHaHa?w=168"
-              className="pro-logo"
-              alt="logo"
-            />
+          <img src={logo} className="pro-logo" alt="logo" />
           </div>
 
           <ul className="pro-menu">

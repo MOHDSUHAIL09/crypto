@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import apiClient from "../../../api/apiClient";
 import CustomTable from "../CustomTable/CustomTable";
+import "./UserDetails.css";
 
 const DownlineTeam = () => {
   const [level, setLevel] = useState(0);
@@ -120,7 +121,7 @@ const DownlineTeam = () => {
   const columns = ["Sl.No.", "DOWNLINE INFO", "SPONSOR", "INVESTED AMOUNT", "STATUS"];
 
   return (
-    <div className="downline-main-wrapper container-fluid mb-5">
+    <div className="downline-main-wrapper mb-5">
       <h4 className="mt-4 pb-2">All Downline Team</h4>
 
       {/* TOP BOX */}

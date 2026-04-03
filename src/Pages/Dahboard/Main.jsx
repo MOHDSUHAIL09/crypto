@@ -17,6 +17,7 @@ import InvestmentHistory from "./InvestmentHistory";
 import Profaile from "./Profile/profile/Profile";
 import ChangePassword from "./Profile/ChangePassword/ChangePassword";
 import { Epin } from "./Profile/Epin/Epin";
+import Support from "./UserDetails/Support/Support";
 
 const Main = () => {
   return (
@@ -28,6 +29,14 @@ const Main = () => {
         element={
           <ProtecedRoute>
             <TreeView />
+          </ProtecedRoute>
+        }
+      />
+     <Route
+        path="/Support"
+        element={
+          <ProtecedRoute>
+            <Support/>
           </ProtecedRoute>
         }
       />

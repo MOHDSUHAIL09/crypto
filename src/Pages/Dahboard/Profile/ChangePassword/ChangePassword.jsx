@@ -47,7 +47,7 @@ const ChangePassword = () => {
       
       if (data.success) {
         setLoginOtpSent(true);
-        showSuccess('✅ OTP sent successfully to your registered email!');
+        showSuccess('✅ OTP sent successfully...');
       } else {
         showError(data.message || 'Failed to send OTP');
       }
@@ -151,7 +151,7 @@ const ChangePassword = () => {
 
       if (data.success) {
         setMasterOtpSent(true);
-        showSuccess('✅ OTP sent successfully to your registered email!');
+        showSuccess('✅ OTP sent successfully !');
       } else {
         showError(data.message || 'Failed to send OTP');
       }
@@ -243,12 +243,13 @@ const ChangePassword = () => {
     <>
       <ToastContainer />
       
-      <div className="password-container">
+      <div className=" password-container mb-5">
         {/* Change Login Password Section */}
         <div className="password-card">
           <h2 className="card-title">Change Login Password</h2>
-          
-          <div className="form-group">
+
+          <div className='f-contaoner'>
+            <div className="form-group">
             <label className="form-label">Enter OTP</label>
             <div className="otp-wrapper">
               <input
@@ -277,7 +278,7 @@ const ChangePassword = () => {
                 </button>
               )}
             </div>
-          </div>
+           </div>
 
           <div className="form-group">
             <label className="form-label">Current Password</label>
@@ -289,6 +290,7 @@ const ChangePassword = () => {
               className="form-input"
             />
           </div>
+
 
           <div className="form-group">
             <label className="form-label">New Password</label>
@@ -328,13 +330,16 @@ const ChangePassword = () => {
             </button>
           </div>
         </div>
+        </div>
 
         {/* Change Master Password Section */}
         <div className="password-card">
           <h2 className="card-title">Change Master Password</h2>
 
-          <div className="form-group">
-            <label className="form-label">Enter OTP</label>
+
+          <div className='f-contaoner'>
+            <div className="form-group">
+             <label className="form-label">Enter OTP</label>
             <div className="otp-wrapper">
               <input
                 type="text"
@@ -411,6 +416,7 @@ const ChangePassword = () => {
             >
               CANCEL
             </button>
+          </div>
           </div>
         </div>
       </div>

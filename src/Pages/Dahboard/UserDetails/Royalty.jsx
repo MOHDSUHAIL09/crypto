@@ -125,7 +125,7 @@ const BonusReport = () => {
   ];
 
   return (
-    <div className="container-fluid p-2 p-md-4 mb-5">
+    <div className="downline-main-wrapper mb-5">
       <h4 className="mb-3">Royal Status</h4>
       <hr style={{ border: "1px solid #706e6e" }} />
 

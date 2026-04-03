@@ -347,10 +347,10 @@ const ProfilePage = () => {
           </form>
 
           {/* Security footer note */}
-          <div className="security-footer">
-            <FaShieldAlt />
+          {/* <div className="security-footer">
+            <FaShieldAlt />Your information is encrypted and secure. Bank details are stored locally for your convenience.
             <span>Your information is encrypted and secure. Bank details are stored locally for your convenience.</span>
-          </div>
+          </div> */}
         </div>
       </div>
       

@@ -58,13 +58,13 @@ body {
 .pro-sidebar-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 80px;
+  margin-bottom: 50px; 
 }
 
-.pro-logo {
-  mix-blend-mode: multiply;
-}
+  .pro-logo {
+    mix-blend-mode: darken;
+    width: 50px;
+  }
 
 
 .pro-menu {

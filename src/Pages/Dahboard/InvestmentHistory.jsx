@@ -159,7 +159,7 @@ const BonusReport = () => {
   }
 
   return (
-    <div className="report-container p-2 p-md-4 mb-5">
+    <div className="downline-main-wrapper report-container p-2 p-md-4 mb-5">
       
       {/* Heading */}
       <div className="mb-3">

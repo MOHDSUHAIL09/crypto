@@ -548,18 +548,6 @@ transition:0.3s;
 .dashboard-btn:hover{
 background:#b18202;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 /* d2d history */
 .credit {
   color: #28a745;
@@ -570,13 +558,26 @@ background:#b18202;
   color: #dc3545;
   font-weight: 600;
 }
-
-
 .entries-control{
   background: linear-gradient(to right, var(--primary-clr), var(--secondary-clr));
   color: #fff;
   border-radius: 10px;
   padding: 10px;
+}
+
+.downline-main-wrapper{
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 20px;
+    padding: 20px;
+}
+@media (max-width: 768px) {
+  .downline-main-wrapper{
+    margin: 5px;
+  }
 }
 
 

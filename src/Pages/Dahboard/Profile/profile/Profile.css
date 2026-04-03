@@ -3,7 +3,7 @@
 /* Reset & Base */
 .profile-page-wrapper {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fc 0%, #eef2f8 100%);
+  
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -375,7 +375,7 @@ input[type="password"].text,
   border-radius: 16px;
   font-size: 0.95rem;
   transition: all 0.2s;
-  background: #fffafa;
+  background: #e3e6fa;
   font-family: inherit;
 }
 

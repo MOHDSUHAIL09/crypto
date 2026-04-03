@@ -52,7 +52,7 @@ export const Epin = () => {
 
                     <div className="epin-stats d-flex">
                         <div className="stat-card1">
-                            <span className="stat-label">Total E-Pin</span>
+                            <span className="stat-label">Total E-Pin</span> &nbsp; &nbsp;
                             <span className="stat-value">{totalEpin}</span>
                         </div>
                     </div>
