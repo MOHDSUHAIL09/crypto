@@ -5,7 +5,7 @@ import {
   FaArrowLeft, FaBell, FaShieldAlt, FaCheckCircle, FaCopy,
   FaPenAlt, FaUserCircle
 } from "react-icons/fa";
-import { useUser } from "../../../context/UserContext";
+import { useUser } from "../../../../context/UserContext";
 import "./Profile.css";
 
 const ProfilePage = () => {

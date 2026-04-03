@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaHome, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { FaHome, FaKey, FaLockOpen, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../../context/UserContext";
 import "../../../assets/dashboardcss/css/Dashboard.css";
@@ -24,7 +24,7 @@ const Header = () => {
         setIsDropdownOpen(false);
       }
     };
-    
+
     document.addEventListener('click', handleClickOutside);
     return () => {
       document.removeEventListener('click', handleClickOutside);
@@ -47,8 +47,8 @@ const Header = () => {
 
       {/* Dropdown Container */}
       <div className="right" ref={dropdownRef} style={{ position: 'relative' }}>
-        <button 
-          className="logout-btn" 
+        <button
+          className="logout-btn"
           onClick={toggleDropdown}
           style={{
             background: "linear-gradient(to right, var(--primary-clr), var(--secondary-clr))",
@@ -67,7 +67,7 @@ const Header = () => {
 
         {/* Dropdown Menu - Sirf open hote time animation */}
         {isDropdownOpen && (
-          <div 
+          <div
             style={{
               position: 'absolute',
               top: '100%',
@@ -83,45 +83,102 @@ const Header = () => {
               animation: 'dropdownOpen 0.2s ease-out'
             }}
           >
-            {/* User Info Section */}
-            {/* <div style={{
-              padding: '12px 16px',
-              borderBottom: '1px solid #e2e8f0',
-              backgroundColor: '#f8fafc'
-            }}>
-              <p style={{ margin: 0, fontWeight: '600', fontSize: '14px', color: '#1e293b' }}>
-                My Account
-              </p>
-              <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#64748b' }}>
-                Click below to logout
-              </p>
-            </div> */}
-            <div
-              onClick={() => {
-                setIsDropdownOpen(false);   // 👈 dropdown bhi band ho jayega
-                navigate("/dashboard/profile"); // 👈 correct full path
-              }} 
-              style={{
-                padding: '12px 16px',
-                borderBottom: '1px solid #e2e8f0',
-                backgroundColor: '#f8fafc',
-                cursor: "pointer"
-              }}
-            >
-              <p
-                style={{
-                  margin: 0,
-                  fontWeight: '500',
-                  fontSize: '14px',
-                  color: '#1e293b',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px'
-                }}
-              >
-                <FaUser /> Profile
-              </p>
-            </div>
+
+   {/* Profile */}
+<div
+  onClick={() => {
+    setIsDropdownOpen(false);
+    navigate("/dashboard/profile");
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.backgroundColor = "#e2e8f0";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.backgroundColor = "#f8fafc";
+  }}
+  style={{
+    padding: '12px 16px',
+    backgroundColor: '#f8fafc',
+    cursor: "pointer",
+    transition: "all 0.2s ease"
+  }}
+>
+  <p style={{
+    margin: 0,
+    fontWeight: '500',
+    fontSize: '14px',
+    color: '#1e293b',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px'
+  }}>
+    <FaUser /> Profile
+  </p>
+</div>
+
+{/* Change Password */}
+<div
+  onClick={() => {
+    setIsDropdownOpen(false);
+    navigate("/dashboard/changepassword");
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.backgroundColor = "#e2e8f0";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.backgroundColor = "#f8fafc";
+  }}
+  style={{
+    padding: '12px 16px',
+    backgroundColor: '#f8fafc',
+    cursor: "pointer",
+    transition: "all 0.2s ease"
+  }}
+>
+  <p style={{
+    margin: 0,
+    fontWeight: '500',
+    fontSize: '14px',
+    color: '#1e293b',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px'
+  }}>
+    <FaLockOpen /> Change Password
+  </p>
+</div>
+
+ {/* Profile */}
+<div
+  onClick={() => {
+    setIsDropdownOpen(false);
+    navigate("/dashboard/epin");
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.backgroundColor = "#e2e8f0";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.backgroundColor = "#f8fafc";
+  }}
+  style={{
+    padding: '12px 16px',
+    backgroundColor: '#f8fafc',
+    cursor: "pointer",
+    transition: "all 0.2s ease"
+  }}
+>
+  <p style={{
+    margin: 0,
+    fontWeight: '500',
+    fontSize: '14px',
+    color: '#1e293b',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px'
+  }}>
+    <FaKey/> Active With ePin
+  </p>
+</div>
 
 
             {/* Logout Button */}
@@ -149,7 +206,7 @@ const Header = () => {
           </div>
         )}
       </div>
-      
+
       {/* Simple Animation Keyframes */}
       <style>{`
         @keyframes dropdownOpen {
@@ -163,7 +220,7 @@ const Header = () => {
           }
         }
       `}</style>
-      
+
     </header>
   );
 };

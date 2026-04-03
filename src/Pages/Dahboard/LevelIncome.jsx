@@ -21,7 +21,6 @@ const LevelIncome = () => {
     const regno = 1;
     apiClient.get(`/Dashboard/team-counts/${regno}`)
       .then((res) => {
-        console.log("🔥 TEAM COUNTS:", res.data);
 
         const apiData = res.data.data;
 

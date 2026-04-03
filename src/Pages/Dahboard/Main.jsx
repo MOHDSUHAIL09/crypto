@@ -14,7 +14,9 @@ import AccStatement from "./AccStatement";
 import CapitalPayout from "./CapitalPayout/CapitalPayout";
 import CapitalWithdrawalRequest from "./CapitalPayout/CapitalWithdrawalRequest";
 import InvestmentHistory from "./InvestmentHistory";
-import Profaile from "./Profile/Profile";
+import Profaile from "./Profile/profile/Profile";
+import ChangePassword from "./Profile/ChangePassword/ChangePassword";
+import { Epin } from "./Profile/Epin/Epin";
 
 const Main = () => {
   return (
@@ -116,6 +118,22 @@ const Main = () => {
                   element={
                     <ProtecedRoute>
                       <Profaile />
+                    </ProtecedRoute>
+                  }
+                />
+                 <Route
+                  path="/changepassword"
+                  element={
+                    <ProtecedRoute>
+                      <ChangePassword />
+                    </ProtecedRoute>
+                  }
+                />
+                <Route
+                  path="/epin"
+                  element={
+                    <ProtecedRoute>
+                      <Epin />
                     </ProtecedRoute>
                   }
                 />
