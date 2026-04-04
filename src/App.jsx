@@ -9,6 +9,7 @@ import Login from './Pages/Auth/Login';
 import ProtecedRoute from "./components/route/ProtecedRoute";
 import { UserProvider } from './context/UserContext';
 import Preloader from './Preloader';
+import ForgotPassword from './Pages/Auth/ForgotPassword';
 
 
 function AppContent() {
@@ -38,6 +39,7 @@ function AppContent() {
           </ProtecedRoute>} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </>

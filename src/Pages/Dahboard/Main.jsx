@@ -18,6 +18,7 @@ import Profaile from "./Profile/profile/Profile";
 import ChangePassword from "./Profile/ChangePassword/ChangePassword";
 import { Epin } from "./Profile/Epin/Epin";
 import Support from "./UserDetails/Support/Support";
+import SupportHelp from "./UserDetails/Support/SupportHelp";
 
 const Main = () => {
   return (
@@ -32,8 +33,8 @@ const Main = () => {
           </ProtecedRoute>
         }
       />
-
-
+     <Route path="/supporthelp/:id" element={<SupportHelp />} />
+ 
       {/* 🔥 Dashboard Layout */}
       <Route
         path="/*"

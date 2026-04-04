@@ -132,9 +132,13 @@ const LoginPage = () => {
 
           <div className="login-v2-footer">
 
-            <span className="login-v2-forgot">
-              Forgot password?
-            </span>
+<span 
+  className="login-v2-forgot"
+  onClick={() => navigate("/forgotpassword")}
+  style={{ cursor: "pointer" }}
+>
+  Forgot password?
+</span>
 
             <p className="login-v2-redirect">
               New user?
