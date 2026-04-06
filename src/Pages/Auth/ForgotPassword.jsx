@@ -11,50 +11,47 @@ const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!loginId.trim()) {
-      toast.error("Please enter Login ID");
-      return;
+  const trimmedId = loginId.trim();
+  if (!trimmedId) {
+    toast.error("Please enter your Login ID / Email");
+    return;
+  }
+
+  setLoading(true);
+  try {
+    // 🔥 FIX: Send raw string, NOT JSON object
+    const response = await apiClient.post("/Authentication/forget-password", trimmedId, {
+    });
+
+    // Handle response (adjust based on actual structure)
+    const responseData = response.data || response;
+    
+    if (responseData.result === "true" || responseData.success === true) {
+      toast.success(responseData.message || "Password recovery instructions sent");
+      navigate("/login");
+    } else {
+      // Extract error message from array
+      const errorMsg = Array.isArray(responseData.message)
+        ? responseData.message[0]
+        : responseData.message || "Request failed";
+      toast.error(errorMsg);
     }
-
-    try {
-      setLoading(true);
-
-      // ✅ FIX: await lagao
-      const response = await apiClient(
-        "/Authentication/forget-password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(loginId.trim()),
-        }
-      );
-
-      // ✅ response already parsed hai (apiClient se)
-      console.log("API Response:", response);
-
-      // ✅ SUCCESS
-      if (response.success) {
-        toast.success(response.message || "Password sent successfully");
-        navigate("/login");
-      } else {
-        const errorMessage = Array.isArray(response.message)
-          ? response.message[0]
-          : response.message;
-        toast.error(errorMessage || "Something went wrong");
-      }
-
-    } catch (error) {
-      console.error(error);
-      toast.error("Server error");
-    } finally {
-      setLoading(false);
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    if (error.response?.data?.message) {
+      const msg = Array.isArray(error.response.data.message)
+        ? error.response.data.message[0]
+        : error.response.data.message;
+      toast.error(msg);
+    } else {
+      toast.error("Server error. Please try again.");
     }
-  };
-
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <div className="fp-wrapper">
       <div className="fp-container">

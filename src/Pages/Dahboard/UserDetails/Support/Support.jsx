@@ -189,13 +189,12 @@ const handleViewTicket = (ticket) => {
       formDataPayload.append('MessageType', ticketData.ticketType === 'withdrawal' ? 'withdraw' : 'income');
       formDataPayload.append('LoginId', loginId);
       
-      if (ticketData.messege) {
-        formDataPayload.append('Message', ticketData.messege);
-      }
-      
-      if (selectedImage) {
-        formDataPayload.append('TicketImgage', selectedImage);
-      }
+    const messageText = ticketData.messege ? ticketData.messege : '';
+    formDataPayload.append('Message', messageText);
+    
+    if (selectedImage) {
+      formDataPayload.append('TicketImgage', selectedImage);
+    }
       
       console.log('📤 Creating ticket...');
       console.log('FormData contents:');
@@ -363,15 +362,15 @@ const handleViewTicket = (ticket) => {
       <div className="support-header">
         <div>
           <h1 className="support-title">Ticket List</h1>
-          {totalRecords > 0 && <p>Total Tickets: {totalRecords}</p>}
+          {totalRecords > 0 && <p className='Total-Tickets'>Total Tickets: {totalRecords}</p>}
         </div>
 
-        <button className="create-ticket-btn" onClick={() => setShowModal(true)}>
+        <button className="create-ticket-btn" onClick={() => setShowModal(true)}> 
           Create New Ticket
         </button>
       </div>
 
-      {loading && <div className="loading-spinner">Loading tickets...</div>}
+   
 
       <CustomTable 
         columns={["S.NO.", "DATE", "TICKET ID", "TICKET TYPE", "SUBJECT"]}
@@ -445,15 +444,15 @@ const handleViewTicket = (ticket) => {
                 />
               </div>
               
-              <div className="form-group">
-                <label>Description</label>
-                <textarea 
-                  name="messege" 
-                  value={formData.messege} 
-                  onChange={handleInputChange} 
-                  placeholder="Enter detailed messege" 
-                  rows="4" 
-                />
+                <div className="form-group">
+                  <label>Message *</label>
+                  <textarea 
+                    name="messege" 
+                    value={formData.messege} 
+                    onChange={handleInputChange} 
+                    placeholder="Enter detailed messege" 
+                    rows="4" 
+                  />
               </div>
               
               <div className="form-group">
