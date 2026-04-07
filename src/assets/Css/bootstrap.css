@@ -5,7 +5,8 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 :root {
-  --buttoncolor: 
+  --buttoncolor: #d4ced6;
+  --buttonhover:  #e4e2e2;
   --font-family: Courier, monospace;
   --hovercolor: rgb(215, 75, 75);
   --inputcolor: #f1f3fa;
@@ -7570,7 +7571,7 @@ button.bg-dark:focus {
 
 .mb-5,
 .my-5 {
-  margin-bottom: 5rem !important;
+  margin-bottom: 4.6rem !important;
 }
 
 .ml-5,

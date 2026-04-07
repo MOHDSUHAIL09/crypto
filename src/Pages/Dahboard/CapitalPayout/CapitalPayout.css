@@ -101,6 +101,18 @@
   padding: 0 24px 16px;
 } */
 
+.capital-payout-btn{
+  background: linear-gradient(to right, var(--primary-clr), var(--secondary-clr));
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+
 .methods-grid {
   display: flex;
   gap: 12px;
@@ -295,11 +307,18 @@
 }
 
 .modal-close {
-  background: none;
-  border: none;
-  font-size: 28px;
-  cursor: pointer;
-  color: #8A99B0;
+    background: rgba(255, 255, 255, 0.5);
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #6b7280;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
 }
 
 .modal-body {

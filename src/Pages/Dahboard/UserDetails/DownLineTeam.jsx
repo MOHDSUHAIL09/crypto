@@ -10,7 +10,7 @@ const DownlineTeam = () => {
   const [loading, setLoading] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
-  const pageSize = 15; // Changed to 5 to see pagination (with 10 records = 2 pages)
+  const pageSize = 10; 
   const regno = localStorage.getItem("regno");
 
   // ================= API =================
@@ -36,7 +36,7 @@ const DownlineTeam = () => {
         // Yahan humein actual total records count chahiye, jo API nahi de raha
         // Isliye hum man lenge ki total records 10 se zyada hain
         // Aap yahan pe ek API call kar sakte ho total count ke liye
-        count = 1500; // Temporary fix - actual API se total count aana chahiye
+        count = 1000; // Temporary fix - actual API se total count aana chahiye
       }
 
       setUsers(resData);

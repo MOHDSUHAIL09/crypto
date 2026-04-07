@@ -221,8 +221,8 @@ export const Deposit2Deposit = () => {
                     size={22}
                     style={{ cursor: "pointer", color: "#333" }}
                     onClick={() =>
-                      navigate("/dashboard/depositHistory", {
-                        state: { type: "SELF", tab: "income" }
+                      navigate("/dashboard/accstatement",{
+                        state: { transtype: "fundtransfer" }
                       })
                     }
                     onMouseOver={(e) => (e.target.style.color = "#f909f9")}

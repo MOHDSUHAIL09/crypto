@@ -28,12 +28,12 @@
 }
 
 .create-ticket-btn {
-  background: linear-gradient(135deg, #2c2c6f 0%, #192122 100%);
+  background: var(--buttoncolor);
+  color: #5d5d5d;
   border: none;
   padding: 12px 24px;
   border-radius: 8px;
-  color: white;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -42,12 +42,12 @@
 
 .create-ticket-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  background-color: var(--buttonhover);
 }
 
 .view-btn {
   padding: 1px 15px;
-  background-color: rgb(2, 106, 12);
+  background-color: rgb(11, 55, 159);
   color: #f1f1f1;
 }
 
@@ -362,10 +362,10 @@ form {
 }
 
 .official-badge {
-  background: #d4ced6;
+  background: var(--buttoncolor);
   backdrop-filter: blur(4px);
   padding: 8px 20px;
-  border-radius: 60px;
+  border-radius: 8px;
   font-size: 0.85rem;
   font-weight: 700;
   color: #5d5d5d;
@@ -375,9 +375,7 @@ form {
 }
 
 .official-badge:hover {
-  color: #ffffff;
-  border-color: #a09d9d;
-  background: #a9a8a9;
+  background-color: var(--buttonhover)
 }
 
   

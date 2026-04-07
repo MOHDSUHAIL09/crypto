@@ -1,318 +1,137 @@
-// Support.jsx - With Toast Messages
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../../../context/UserContext';
+import apiClient from '../../../../api/apiClient';
 import CustomTable from '../../CustomTable/CustomTable';
 import './Support.css';
 
 const Support = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const { user, userData, refreshData } = useUser();
-  
-  // State declarations - ALL FIXED
+
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
-  const [selectedTicket] = useState(null);
-  const [replyMessage, setReplyMessage] = useState('');
-  const [formData, setFormData] = useState({
-    subject: '',
-    ticketType: '', 
-    messege: ''
-  });
+  const [formData, setFormData] = useState({ subject: '', ticketType: '', messege: '' });
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState('');  // ✅ FIXED: Added 'error' variable
-  const [currentPage] = useState(1); 
-
-  const [totalRecords, setTotalRecords] = useState(0);  // ✅ FIXED: Added variable name
+  const [error, setError] = useState('');
+  const [pageIndex, setPageIndex] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
   const [activeFilter] = useState('widthdraw');
-  
-  // Toast State
+  const pageSize = 10;
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
-  
-  const API_BASE_URL = 'https://api.mangowealthplanner.com/api/Dashboard';
 
-  // Handle View Ticket - Navigation
-const handleViewTicket = (ticket) => {   
-  navigate(`/dashboard/supporthelp/${ticket.id}`, { 
-    state: { ticket }  
-  });
-};
-  // Toast Function
-  const showToast = (message, type = 'success') => {
-    setToast({ show: true, message, type });
-    setTimeout(() => {
-      setToast({ show: false, message: '', type: 'success' });
-    }, 3000);
-  };
-
-  const getAuthToken = () => {
-    return localStorage.getItem('token') || localStorage.getItem('auth_token');
-  };
-
-  const getRegNo = () => {
-    if (userData?.regno) return userData.regno;
-    if (user?.Regno) return user.Regno;
-    if (user?.regno) return user.regno;
-    return localStorage.getItem('regno') || '1';
-  };
-
+  const getRegNo = () => userData?.regno || user?.Regno || user?.regno || localStorage.getItem('regno') || '1';
   const getLoginId = () => {
     if (userData?.me) return userData.me;
     if (user?.loginid) return user.loginid;
-    if (user?.LoginId) return user.LoginId;
-    const storedUserData = localStorage.getItem('userData');
-    if (storedUserData) {
+    const stored = localStorage.getItem('userData');
+    if (stored) {
       try {
-        const parsed = JSON.parse(storedUserData);
+        const parsed = JSON.parse(stored);
         if (parsed.me) return parsed.me;
         if (parsed.loginid) return parsed.loginid;
-      } catch (e) {}
+      } catch {}
     }
     return 'india';
   };
 
-  // Format date function
+  const showToastMsg = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 3000);
+  };
+
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     try {
       const date = new Date(dateString);
       return date.toLocaleString('en-US', {
-        month: 'numeric',
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true
+        month: 'numeric', day: 'numeric', year: 'numeric',
+        hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true
       });
-    } catch (e) {
-      return dateString;
-    }
+    } catch { return dateString; }
   };
 
-  // Ticket List Fetch
-  const fetchTickets = async (paymentMode = 'widthdraw', pageIndex = 1) => {
-    const token = getAuthToken();
+  const fetchTickets = async (page = 1) => {
     const regNo = getRegNo();
-    
-    if (!token) {
-      setError('❌ Please login first. Token not found.');
-      showToast('Please login first', 'error');
-      return;
-    }
-
     setLoading(true);
     setError('');
-    
     try {
-      const url = `${API_BASE_URL}/ticket-list?PageIndex=${pageIndex}&PageSize=10&RegNo=${regNo}&PaymentMode=${paymentMode}`;
-      
-      console.log('📡 Fetching tickets:', url);
-      
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
+      const response = await apiClient.get('/Dashboard/ticket-list', {
+        params: { PageIndex: page, PageSize: pageSize, RegNo: regNo, PaymentMode: activeFilter }
       });
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error('Session expired. Please login again.');
-        }
-        throw new Error(`API Error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log('✅ API Response:', data);
-      
-      if (data?.success && data?.data?.data && Array.isArray(data.data.data)) {
-        const formattedTickets = data.data.data.map((item) => ({
-          id: item.MsgId,
-          ticketId: `FX${item.MsgId}`,
-          date: formatDate(item.MsgDate),
-          type: item.MsgType === 'withdraw' ? 'Withdrawal' : 
-          item.MsgType === 'income' ? 'Income' : 
-          item.MsgType || 'N/A',
-          subject: item.MsgSubject || 'VIEW',
-          status: item.status,
-          rowNumber: item.RowNumber,
-          message: item.Message,
-          originalDate: item.MsgDate
-        }));
-        
-        setTickets(formattedTickets);
+      const data = response.data;
+      if (data?.success && data?.data?.data) {
+        const formatted = data.data.data.map(item => {
+          // ✅ Extract message from any possible field name
+          const messageText = item.Message || item.Msg || item.MsgText || item.Description || item.messege || item.text || 'No message provided';
+          return {
+            id: item.MsgId,
+            ticketId: `FX${item.MsgId}`,
+            date: formatDate(item.MsgDate),
+            type: item.MsgType === 'withdraw' ? 'Withdrawal' : item.MsgType === 'income' ? 'Income' : item.MsgType || 'N/A',
+            subject: item.MsgSubject || 'VIEW',
+            message: messageText
+          };
+        });
+        setTickets(formatted);
         setTotalRecords(data.data.recordCount || 0);
-    
-        
-        console.log('📊 Formatted tickets:', formattedTickets);
-        console.log('📊 Total records:', data.data.recordCount);
-        console.log('📊 Total pages:', Math.ceil((data.data.recordCount || 0) / 10));
       } else {
         setTickets([]);
         setTotalRecords(0);
-        console.log('⚠️ No tickets found or invalid response structure');
       }
-      
     } catch (err) {
-      console.error('❌ Fetch error:', err);
-      setError(err.message);
-      showToast(err.message, 'error');
+      const msg = err.response?.data?.message || err.message;
+      setError(msg);
+      showToastMsg(msg, 'error');
       setTickets([]);
+      setTotalRecords(0);
     } finally {
       setLoading(false);
     }
   };
 
-  // Create Ticket
+  useEffect(() => { fetchTickets(pageIndex); }, [pageIndex]);
+
   const createTicket = async (ticketData) => {
-    const token = getAuthToken();
     const loginId = getLoginId();
     const regNo = getRegNo();
-    
-    if (!token) {
-      showToast('Please login first', 'error');
-      return;
-    }
-
     setSubmitting(true);
-    
     try {
       const formDataPayload = new FormData();
       formDataPayload.append('From', regNo);
       formDataPayload.append('Subject', ticketData.subject);
       formDataPayload.append('MessageType', ticketData.ticketType === 'withdrawal' ? 'withdraw' : 'income');
       formDataPayload.append('LoginId', loginId);
-      
-    const messageText = ticketData.messege ? ticketData.messege : '';
-    formDataPayload.append('Message', messageText);
-    
-    if (selectedImage) {
-      formDataPayload.append('TicketImgage', selectedImage);
-    }
-      
-      console.log('📤 Creating ticket...');
-      console.log('FormData contents:');
-      for (let pair of formDataPayload.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-      }
-      
-      const response = await fetch(`${API_BASE_URL}/create-ticket`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-        body: formDataPayload
+      formDataPayload.append('Message', ticketData.messege || '');
+      if (selectedImage) formDataPayload.append('TicketImgage', selectedImage);
+
+      const response = await apiClient.post('/Dashboard/create-ticket', formDataPayload, {
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
-
-      const responseText = await response.text();
-      console.log('📥 Create Response:', responseText);
-      
-      let result;
-      try {
-        result = JSON.parse(responseText);
-      } catch (e) {
-        result = { message: responseText };
-      }
-
-      if (!response.ok) {
-        throw new Error(result.message || result.Message || responseText);
-      }
-
-      if (result?.success || result?.data?.success) {
-        console.log('✅ Ticket created successfully');
-        
-        await fetchTickets(activeFilter, currentPage);
-        
+      if (response.data?.success || response.data?.data?.success) {
+        await fetchTickets(pageIndex);
         if (refreshData) refreshData();
-        
         setShowModal(false);
-        resetForm();
+        setFormData({ subject: '', ticketType: '', messege: '' });
         setSelectedImage(null);
-        
-        showToast('✅ Ticket created successfully!', 'success');
+        showToastMsg('✅ Ticket created successfully!', 'success');
       } else {
-        throw new Error(result.message || 'Failed to create ticket');
+        throw new Error(response.data?.message || 'Failed to create ticket');
       }
-      
     } catch (err) {
-      console.error('❌ Create error:', err);
-      showToast(`❌ ${err.message}`, 'error');
+      showToastMsg(`❌ ${err.message}`, 'error');
     } finally {
       setSubmitting(false);
     }
   };
 
-  // Send Reply
-  const sendReply = async () => {
-    if (!replyMessage.trim()) {
-      showToast('Please type your message', 'error');
-      return;
-    }
-    
-    const token = getAuthToken();
-    const loginId = getLoginId();
-    const regNo = getRegNo();
-    
-    try {
-      const formDataPayload = new FormData();
-      formDataPayload.append('From', regNo);
-      formDataPayload.append('Subject', `RE: ${selectedTicket?.subject}`);
-      formDataPayload.append('MessageType', 'reply');
-      formDataPayload.append('Message', replyMessage);
-      formDataPayload.append('LoginId', loginId);
-      formDataPayload.append('ParentId', selectedTicket?.id);
-      
-      const response = await fetch(`${API_BASE_URL}/create-ticket`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-        body: formDataPayload
-      });
-      
-      if (response.ok) {
-        showToast('✅ Reply sent successfully!', 'success');
-        setReplyMessage('');
-        await fetchTickets(activeFilter, currentPage);
-      } else {
-        showToast('❌ Failed to send reply', 'error');
-      }
-    } catch (err) {
-      console.error('Reply error:', err);
-      showToast('❌ Failed to send reply', 'error');
-    }
-  };
-
-  const resetForm = () => {
-    setFormData({
-      subject: '',
-      ticketType: '',
-      messege: ''
-    });
-    setSelectedImage(null);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.ticketType) {
-      showToast('Please select ticket type', 'error');
-      return;
-    }
-    if (!formData.subject.trim()) {
-      showToast('Please enter subject', 'error');
-      return;
-    }
-    createTicket({
-      subject: formData.subject,
-      ticketType: formData.ticketType,
-      messege: formData.messege
-    });
+    if (!formData.ticketType) return showToastMsg('Please select ticket type', 'error');
+    if (!formData.subject.trim()) return showToastMsg('Please enter subject', 'error');
+    createTicket(formData);
   };
 
   const handleInputChange = (e) => {
@@ -321,159 +140,84 @@ const handleViewTicket = (ticket) => {
   };
 
   const handleImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
+    if (e.target.files?.[0]) {
       setSelectedImage(e.target.files[0]);
-      showToast('Image selected: ' + e.target.files[0].name, 'success');
+      showToastMsg(`Image selected: ${e.target.files[0].name}`, 'success');
     }
   };
 
-  useEffect(() => {
-    const token = getAuthToken();
-    console.log('🔑 Auth token exists:', !!token);
-    if (!token) {
-      setError('⚠️ No authentication token found. Please login first.');
-      showToast('Please login first', 'error');
-    } else {
-      fetchTickets('widthdraw', 1);
-    }
-  }, []);
+  const handleViewTicket = (ticket) => {
+    navigate(`/dashboard/supporthelp/${ticket.id}`, { state: { ticket } });
+  };
 
-  // Debug: Log tickets when they change
-  useEffect(() => {
-    console.log('🎫 Tickets updated:', tickets.length, 'tickets');
-  }, [tickets]);
+  const totalPages = Math.ceil(totalRecords / pageSize) || 1;
+
+  const getPagination = () => {
+    if (totalRecords === 0 || totalPages === 1) return [1];
+    const pages = [1];
+    let start = Math.max(2, pageIndex - 1);
+    let end = Math.min(totalPages - 1, pageIndex + 1);
+    for (let i = start; i <= end; i++) if (!pages.includes(i)) pages.push(i);
+    if (end < totalPages - 1) pages.push('...');
+    if (!pages.includes(totalPages)) pages.push(totalPages);
+    return pages;
+  };
+
+  const goToPreviousPage = () => { if (pageIndex > 1 && totalRecords > 0) setPageIndex(pageIndex - 1); };
+  const goToNextPage = () => { if (pageIndex < totalPages && totalRecords > 0) setPageIndex(pageIndex + 1); };
+
+  useEffect(() => { fetchTickets(1); }, []);
 
   return (
     <div className="downline-main-wrapper support-container">
-      {/* Toast Notification */}
-      {toast.show && (
-        <div className={`toast-notification ${toast.type}`}>
-          <span className="toast-message">{toast.message}</span>
-        </div>
-      )}
-
-      {/* Error Display */}
-      {error && (
-        <div className="error-message" style={{backgroundColor: '#f8d7da', color: '#721c24', padding: '10px', borderRadius: '5px', marginBottom: '15px'}}>
-          {error}
-        </div>
-      )}
-
+      {toast.show && <div className={`toast-notification ${toast.type}`}><span className="toast-message">{toast.message}</span></div>}
+      {error && <div className="error-message" style={{ backgroundColor: '#f8d7da', color: '#721c24', padding: '10px', borderRadius: '5px', marginBottom: '15px' }}>{error}</div>}
       <div className="support-header">
-        <div>
-          <h1 className="support-title">Ticket List</h1>
-          {totalRecords > 0 && <p className='Total-Tickets'>Total Tickets: {totalRecords}</p>}
-        </div>
-
-        <button className="create-ticket-btn" onClick={() => setShowModal(true)}> 
-          Create New Ticket
-        </button>
+        <div><h1 className="support-title">Ticket List</h1>{totalRecords > 0 && <p className="Total-Tickets">Total Tickets: {totalRecords}</p>}</div>
+        <button className="create-ticket-btn" onClick={() => setShowModal(true)}>Create New Ticket</button>
       </div>
 
-   
-
-      <CustomTable 
-        columns={["S.NO.", "DATE", "TICKET ID", "TICKET TYPE", "SUBJECT"]}
-        loading={loading}
-        emptyMessage="No tickets found. Create your first ticket!"
-      >
-        {tickets.length > 0 ? (
-          tickets.map((ticket, index) => (
-            <tr key={ticket.id || index}>
-              <td>{((currentPage - 1) * 10) + index + 1}</td>
+      <CustomTable columns={["S.NO.", "DATE", "TICKET ID", "TICKET TYPE", "SUBJECT"]} loading={loading} emptyMessage="No tickets found. Create your first ticket!">
+        {tickets.map((ticket, index) => {
+          const serialNo = (pageIndex - 1) * pageSize + index + 1;
+          const formattedNo = serialNo.toString().padStart(2, '0');
+          return (
+            <tr key={ticket.id}>
+              <td className="text-center"><div className="sr-no-circle mx-auto">{formattedNo}</div></td>
               <td>{ticket.date}</td>
               <td className="ticket-id">{ticket.ticketId}</td>
-              <td>
-                <span className={`ticket-type ${ticket.type?.toLowerCase()}`}>
-                  {ticket.type}
-                </span>
-              </td>
-              <td>
-                <button 
-                  className="view-btn"
-                  onClick={() => handleViewTicket(ticket)}               
-                >
-                  VIEW
-                </button>
-              </td>
+              <td><span className={`ticket-type ${ticket.type?.toLowerCase()}`}>{ticket.type}</span></td>
+              <td><button className="capital-payout-btn" onClick={() => handleViewTicket(ticket)}>VIEW All</button></td>
             </tr>
-          ))
-        ) : (
-          <tr>
-            <td colSpan="5" style={{textAlign: 'center'}}>No tickets found</td>
-          </tr>
-        )}
+          );
+        })}
       </CustomTable>
 
-      {/* Create Ticket Modal */}
+      {totalPages > 1 && (
+        <div className="d-flex justify-content-center align-items-center mt-3 mb-3 flex-wrap gap-2 gap-md-3">
+          <button onClick={goToPreviousPage} disabled={pageIndex === 1} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "clamp(28px, 6vw, 38px)", height: "clamp(28px, 6vw, 38px)", borderRadius: "50%", fontSize: "clamp(13px, 4vw, 16px)", fontWeight: "600", cursor: pageIndex === 1 ? "not-allowed" : "pointer", transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)", background: "white", color: pageIndex === 1 ? "#ccc" : "#667eea", boxShadow: "0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05)", border: "1px solid rgba(102, 126, 234, 0.2)", opacity: pageIndex === 1 ? 0.5 : 1 }}>←</button>
+          {getPagination().map((page, i) => (
+            <button key={i} disabled={page === '...'} onClick={() => page !== '...' && setPageIndex(page)} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "clamp(28px, 6vw, 38px)", height: "clamp(28px, 6vw, 38px)", borderRadius: "50%", fontSize: "12px", fontWeight: pageIndex === page ? "700" : "500", cursor: page === '...' ? "default" : "pointer", transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)", background: pageIndex === page ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" : "white", color: pageIndex === page ? "#fff" : "#667eea", boxShadow: pageIndex === page ? "0 8px 20px rgba(102, 126, 234, 0.3), 0 2px 4px rgba(0,0,0,0.1)" : "0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05)", border: page === '...' ? "none" : (pageIndex === page ? "none" : "1px solid rgba(102, 126, 234, 0.2)"), opacity: page === '...' ? 0.7 : 1 }}>{page}</button>
+          ))}
+          <button onClick={goToNextPage} disabled={pageIndex === totalPages} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "clamp(28px, 6vw, 38px)", height: "clamp(28px, 6vw, 38px)", borderRadius: "50%", fontSize: "clamp(13px, 4vw, 16px)", fontWeight: "600", cursor: pageIndex === totalPages ? "not-allowed" : "pointer", transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)", background: "white", color: pageIndex === totalPages ? "#ccc" : "#667eea", boxShadow: "0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05)", border: "1px solid rgba(102, 126, 234, 0.2)", opacity: pageIndex === totalPages ? 0.5 : 1 }}>→</button>
+        </div>
+      )}
+
       {showModal && (
         <div className="modal-overlay01">
           <div className="modal-content01">
-            <div className="modal-header01">
-              <h2>Create New Ticket</h2>
-              <button className="modal-close" onClick={() => setShowModal(false)}>✕</button>
-            </div>
-            <form className='modal-middle' onSubmit={handleSubmit}>
-              <div className="form-group01">
-                <label>Ticket Type *</label>
-                <select 
-                  name="ticketType" 
-                  value={formData.ticketType} 
-                  onChange={handleInputChange} 
-                  required
-                >
-                  <option value="">-- Select Message Type --</option>
-                  <option value="income">Income</option>
-                  <option value="withdrawal">Withdrawal</option>
-                  <option value="deposit">Deposit</option>
-                  <option value="purchase_bot">Purchase BOT</option>
-                  <option value="profile">Profile</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              
-              <div className="form-group">
-                <label>Subject *</label>
-                <input 
-                  type="text" 
-                  name="subject" 
-                  value={formData.subject} 
-                  onChange={handleInputChange} 
-                  placeholder="Enter ticket subject" 
-                  required 
-                />
-              </div>
-              
-                <div className="form-group">
-                  <label>Message *</label>
-                  <textarea 
-                    name="messege" 
-                    value={formData.messege} 
-                    onChange={handleInputChange} 
-                    placeholder="Enter detailed messege" 
-                    rows="4" 
-                  />
-              </div>
-              
-              <div className="form-group">
-                <label>Attachment (Optional)</label>
-                <input type="file" onChange={handleImageChange} accept="image/*" />
-                {selectedImage && <p style={{fontSize: '12px', marginTop: '5px'}}>Selected: {selectedImage.name}</p>}
-              </div>
-              
-              <div className="modal-buttons">
-                <button type="button" className="cancel-btn" onClick={() => setShowModal(false)}>
-                  Cancel
-                </button>
-                <button type="submit" className="submit-btn" disabled={submitting}>
-                  {submitting ? 'Creating...' : 'Create Ticket'}
-                </button>
-              </div>
+            <div className="modal-header01"><h2>Create New Ticket</h2><button className="modal-close" onClick={() => setShowModal(false)}>✕</button></div>
+            <form className="modal-middle" onSubmit={handleSubmit}>
+              <div className="form-group01"><label>Ticket Type *</label><select name="ticketType" value={formData.ticketType} onChange={handleInputChange} required><option value="">-- Select Message Type --</option><option value="income">Income</option><option value="withdrawal">Withdrawal</option><option value="deposit">Deposit</option><option value="purchase_bot">Purchase BOT</option><option value="profile">Profile</option><option value="other">Other</option></select></div>
+              <div className="form-group"><label>Subject *</label><input type="text" name="subject" value={formData.subject} onChange={handleInputChange} placeholder="Enter ticket subject" required /></div>
+              <div className="form-group"><label>Message *</label><textarea name="messege" value={formData.messege} onChange={handleInputChange} placeholder="Enter detailed message" rows="4" /></div>
+              <div className="form-group"><label>Attachment (Optional)</label><input type="file" onChange={handleImageChange} accept="image/*" />{selectedImage && <p style={{ fontSize: '12px', marginTop: '5px' }}>Selected: {selectedImage.name}</p>}</div>
+              <div className="modal-buttons"><button type="button" className="cancel-btn" onClick={() => setShowModal(false)}>Cancel</button><button type="submit" className="submit-btn" disabled={submitting}>{submitting ? 'Creating...' : 'Create Ticket'}</button></div>
             </form>
           </div>
         </div>
       )}
-    </div>  
+    </div>
   );
 };
 

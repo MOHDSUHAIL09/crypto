@@ -16,18 +16,26 @@ const AccStatement = () => {
   // Get type from URL
   const queryParams = new URLSearchParams(location.search);
   const urlType = queryParams.get("type") || "ALL";
+
+  const stateType = location.state?.transtype || location.state?.type;
   
-  const [selectedType, setSelectedType] = useState(urlType);
+  // 🔥 FIX: initialSelectedType ko use karo selectedType ke liye
+  let initialSelectedType = urlType;
+  if (stateType === "fundtransfer" || stateType === "FUND TRANSFER") {
+    initialSelectedType = "fundtransfer";
+  }
+  
+  const [selectedType, setSelectedType] = useState(initialSelectedType); // ✅ ab state se set hoga
   const [pageIndex, setPageIndex] = useState(1);
-  const [pageSize] = useState(20);
+  const [pageSize] = useState(10);
 
   const regno = localStorage.getItem("regno");
-  const token = localStorage.getItem("token");
 
-  // Function to get display name
+  // Function to get display name (added fundtransfer)
   const getTypeDisplayName = (typeValue) => {
     const typeMap = {
       "ALL": "All Transactions",
+      "fundtransfer": "Fund Transfer",    // ✅ added
       "FUND WITHDRAWAL": "Fund Withdrawal",
       "INSURANCE FEE": "Insurance Fee",
       "LEVEL INCOME": "Level Income",
@@ -42,42 +50,32 @@ const AccStatement = () => {
     fetchStatement();
   }, [pageIndex, selectedType]);
 
-  // Update when URL changes
+  // Update when URL changes (only if not overridden by state)
   useEffect(() => {
     const newType = queryParams.get("type") || "ALL";
-    setSelectedType(newType);
-    setPageIndex(1);
+    // Agar state se override ho raha hai to URL change ignore karo
+    if (newType !== selectedType && !location.state?.transtype) {
+      setSelectedType(newType);
+      setPageIndex(1);
+    }
   }, [location.search]);
 
   const fetchStatement = async () => {
     try {
       setLoading(true);
-
-      const response = await apiClient.get(
-        "/Dashboard/income-report",
-        {
-          params: {
-            regno: regno,
-            transtype: selectedType,
-            pageIndex: pageIndex,
-            pageSize: pageSize,
-          },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      console.log("API Response:", response.data);
-
+      const response = await apiClient.get("/Dashboard/income-report", {
+        params: {
+          regno: regno,
+          transtype: selectedType,
+          pageIndex: pageIndex,
+          pageSize: pageSize,
+        },
+      });
       const apiData = response.data?.data?.data || [];
       const total = response.data?.data?.recordCount || 0;
       setTableData(apiData);
       setTotalRecords(total);
-      
-      // Check if next page exists
       setHasNextPage(apiData.length === pageSize);
-
     } catch (error) {
       console.error("API Error:", error);
       setTableData([]);
@@ -92,7 +90,6 @@ const AccStatement = () => {
     const newType = event.target.value;
     setSelectedType(newType);
     setPageIndex(1);
-    
     // Update URL
     const url = new URL(window.location);
     url.searchParams.set("type", newType);
@@ -101,35 +98,25 @@ const AccStatement = () => {
 
   // Navigation functions for pagination
   const goToPreviousPage = () => {
-    if (pageIndex > 1) {
-      setPageIndex(pageIndex - 1);
-    }
+    if (pageIndex > 1) setPageIndex(pageIndex - 1);
   };
-
   const goToNextPage = () => {
-    if (hasNextPage) {
-      setPageIndex(pageIndex + 1);
-    }
+    if (hasNextPage) setPageIndex(pageIndex + 1);
   };
+  const goToPage = (page) => setPageIndex(page);
 
-  const goToPage = (page) => {
-    setPageIndex(page);
-  };
-
-  // Generate page numbers with ellipsis
+  // Generate page numbers with ellipsis (original logic)
   const getPagination = () => {
     const totalPages = Math.ceil(totalRecords / pageSize);
     const delta = 2;
     const range = [];
     const rangeWithDots = [];
     let l;
-
     for (let i = 1; i <= totalPages; i++) {
       if (i === 1 || i === totalPages || (i >= pageIndex - delta && i <= pageIndex + delta)) {
         range.push(i);
       }
     }
-
     range.forEach((i) => {
       if (l) {
         if (i - l === 2) {
@@ -141,7 +128,6 @@ const AccStatement = () => {
       rangeWithDots.push(i);
       l = i;
     });
-
     return rangeWithDots;
   };
 
@@ -150,22 +136,18 @@ const AccStatement = () => {
   return (
     <div className="container-fluid p-2 mb-5">
       <div className="report-card p-3">
+        <h4 className="fw-bold ms-3">{getTypeDisplayName(selectedType)} Statement</h4>
+        <hr />
 
-        {/* Dynamic Heading */}
-        <h4 className="fw-bold ms-3">
-          {getTypeDisplayName(selectedType)} Statement
-        </h4>
-        <hr/>
-
-        {/* TOP CONTROLS */}
-        <div className="table-controls ">
+        <div className="table-controls">
           <div className="entries-control">
-            <select 
+            <select
               className="form-select w-auto"
               value={selectedType}
               onChange={handleTypeChange}
             >
               <option value="ALL">--Select--</option>
+              <option value="fundtransfer">Fund Transfer</option>   {/* ✅ Added */}
               <option value="FUND WITHDRAWAL">Fund Withdrawal</option>
               <option value="INSURANCE FEE">Insurance Fee</option>
               <option value="LEVEL INCOME">Level Income</option>
@@ -174,41 +156,40 @@ const AccStatement = () => {
               <option value="TRADING PASSIVE INCOME">Trading Passive Income</option>
             </select>
           </div>
-
           <div className="search-control mt-2 mb-2">
             <input type="text" placeholder="Search..." />
           </div>
         </div>
 
-        {/* TABLE */}
         <CustomTable columns={columns} loading={loading}>
           {tableData.length > 0 ? (
             tableData.map((item, index) => (
               <tr key={item.id || index}>
-                <div className="sr-no-circle">
-           <td>{(pageIndex - 1) * pageSize + index + 1}</td>
-        </div>
-              
+                <td className="text-center">
+                  <div className="sr-no-circle">{(pageIndex - 1) * pageSize + index + 1}</div>
+                </td>
                 <td className="text-success">₹ {item.credit || 0}</td>
                 <td className="text-danger">₹ {item.debit || 0}</td>
                 <td>
-                  {item.TransDate ? new Date(item.TransDate).toLocaleString("en-IN", {
-                    timeZone: "Asia/Kolkata",
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                    hour12: false,
-                  }) : ""}
+                  {item.TransDate
+                    ? new Date(item.TransDate).toLocaleString("en-IN", {
+                        timeZone: "Asia/Kolkata",
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        hour12: false,
+                      })
+                    : ""}
                 </td>
                 <td>{item.transType}</td>
                 <td className="remark-cell" title={item.Remark || ""}>
                   {item.Remark
-                    ? item.Remark.split(" ").slice(0, 3).join(" ") + (item.Remark.split(" ").length > 3 ? "..." : "")
-                    : ""
-                  }
+                    ? item.Remark.split(" ").slice(0, 3).join(" ") +
+                      (item.Remark.split(" ").length > 3 ? "..." : "")
+                    : ""}
                 </td>
               </tr>
             ))
@@ -221,10 +202,8 @@ const AccStatement = () => {
           )}
         </CustomTable>
 
-     
         {totalPages > 1 && (
           <div className="d-flex justify-content-center align-items-center mt-3 mb-3 flex-wrap gap-2 gap-md-3">
-          
             <button
               onClick={goToPreviousPage}
               disabled={pageIndex === 1}
@@ -250,7 +229,6 @@ const AccStatement = () => {
               ←
             </button>
 
-            
             {getPagination().map((page, i) => (
               <button
                 key={i}
@@ -304,7 +282,6 @@ const AccStatement = () => {
               </button>
             ))}
 
-           
             <button
               onClick={goToNextPage}
               disabled={!hasNextPage}

@@ -14,7 +14,7 @@ const ProUserCard = () => {
   const { userData } = useUser();
   const [copied, setCopied] = useState(false);
 
-  const referralLink = "https://yourapp.com/ref/abc";
+  const referralLink = "https://mohdsuhail.netlify.app";
 
   const handleCopy = () => {
     navigator.clipboard.writeText(referralLink);
@@ -46,29 +46,81 @@ const ProUserCard = () => {
       </div>
 
       {/* REFERRAL + SHARE */}
-      <div className="bottom-section">
+   <div className="bottom-section">
 
-        <div className="referral-box">
-          <label className="refer-link">Referral Link</label>
-          <div className="referral-input">
-            <input value={referralLink} readOnly />
-            <button onClick={handleCopy}>
-              {copied ? "Copied" : <FaCopy />}
-            </button>
-          </div>
-        </div>
+  <div className="referral-box">
+    <label className="refer-link">Referral Link</label>
+    <div className="referral-input">
+      <input value={referralLink} readOnly />
+      <button onClick={handleCopy}>
+        {copied ? "Copied" : <FaCopy />}
+      </button>
+    </div>
+  </div>
 
-        <div className="share-box">
-          <p>Share with others</p>
-          <div className="social-icons">
-            <span className="ig"><FaInstagram /></span>
-            <span className="fb"><FaFacebookF /></span>
-            <span className="wa"><FaWhatsapp /></span>
-            <span className="tg"><FaTelegramPlane /></span>
-          </div>
-        </div>
+  <div className="share-box">
+    <p>Share with others</p>
 
-      </div>
+    <div className="social-icons">
+      
+      {/* Instagram (copy link fallback) */}
+      <span
+        className="ig"
+        onClick={() => {
+          navigator.clipboard.writeText(referralLink);
+          alert("Link copied! Share on Instagram");
+        }}
+      >
+        <FaInstagram />
+      </span>
+
+      {/* Facebook */}
+      <span
+        className="fb"
+        onClick={() =>
+          window.open(
+            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`,
+            "_blank"
+          )
+        }
+      >
+        <FaFacebookF />
+      </span>
+
+      {/* WhatsApp */}
+      <span
+        className="wa"
+        onClick={() =>
+          window.open(
+            `https://wa.me/?text=${encodeURIComponent(
+              "Join using my referral link: " + referralLink
+            )}`,
+            "_blank"
+          )
+        }
+      >
+        <FaWhatsapp />
+      </span>
+
+      {/* Telegram */}
+      <span
+        className="tg"
+        onClick={() =>
+          window.open(
+            `https://t.me/share/url?url=${encodeURIComponent(
+              referralLink
+            )}&text=${encodeURIComponent("Join using my referral link")}`,
+            "_blank"
+          )
+        }
+      >
+        <FaTelegramPlane />
+      </span>
+
+    </div>
+  </div>
+
+</div>
     </div>
   );
 };

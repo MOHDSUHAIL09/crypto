@@ -34,18 +34,19 @@ const Cards = () => {
   };
 
   // Dynamic copy function for bank card - user ke data se
-  const copyBankCard = () => {
-    const bankCardNumber = userData?.bankCardNumber || userData?.card_number || "No card added";
-    navigator.clipboard.writeText(bankCardNumber);
-    toast.success("Bank card number copied!");
-  };
+  // const copyBankCard = () => {
+  //   const bankCardNumber = userData?.bankCardNumber || userData?.card_number || "No card added";
+  //   navigator.clipboard.writeText(bankCardNumber);
+  //   toast.success("Bank card number copied!");
 
-  // Dynamic copy function for USDT address - user ke data se
-  const copyUsdtAddress = () => {
-    const usdtAddress = userData?.usdtAddress || userData?.wallet_address || "No address added";
-    navigator.clipboard.writeText(usdtAddress);
-    toast.success("USDT address copied!");
-  };
+  // };
+
+  // // Dynamic copy function for USDT address - user ke data se
+  // const copyUsdtAddress = () => {
+  //   const usdtAddress = userData?.usdtAddress || userData?.wallet_address || "No address added";
+  //   navigator.clipboard.writeText(usdtAddress);
+  //   toast.success("USDT address copied!"); 
+  // };
 
   // Handle Payout Button Click - Amount pre-fill karega
   const handlePayoutClick = () => {
@@ -143,11 +144,15 @@ const Cards = () => {
                 {!isActivationVisible && (
                   <div className="animate__animated animate__fadeIn">
                     <div className="d-flex flex-wrap justify-content-between">
+
+                    <Link to="/dashboard/depositHistory">
                       <p className="mb-1">
                         <strong>Deposit Fund : </strong><span className='Investment-text'>
                           ${userData?.Depositfund || 0}
                         </span>
                       </p>
+                      </Link>
+
                       <button type="button" className="wallet-buttton b"><MdAddCard size={20} /></button>
                     </div>
 
@@ -225,6 +230,9 @@ const Cards = () => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
+
+
+
             <div className="modal-header">
               <h4>Withdraw</h4>
               <button
@@ -235,9 +243,13 @@ const Cards = () => {
                   setWithdrawOtp('');
                 }}
               >
-                ×
+                ✕
               </button>
             </div>
+
+
+
+
 
             {/* Body */}
             <div className="modal-body">

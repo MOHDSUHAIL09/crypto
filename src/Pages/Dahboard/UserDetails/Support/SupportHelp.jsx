@@ -16,12 +16,12 @@ const SupportHelp = () => {
         const parsed = JSON.parse(storedUserData);
         if (parsed.me) return parsed.me;
         if (parsed.loginid) return parsed.loginid;
-      } catch (e) {}
+      } catch (e) { }
     }
     return localStorage.getItem('loginid') || 'india';
   };
 
-  const [messages, setMessages] = useState([  
+  const [messages, setMessages] = useState([
     { id: 2, text: "Hello dear, please describe in detail the issue you encountered in the game. If possible, kindly send us a screenshot of the problem, this will help us resolve it more effectively and quickly.\nThank you for your cooperation!", sender: "bot", timestamp: new Date() }
   ]);
   const [inputValue, setInputValue] = useState("");
@@ -81,7 +81,7 @@ const SupportHelp = () => {
           image: imageBase64   // image data store kar rahe hain
         };
         setMessages(prev => [...prev, imageMessage]);
-        
+
         // optional: bot reply
         setTimeout(() => {
           const botReply = "Thank you for sharing the screenshot. Our team will look into it and get back to you soon.";
@@ -115,8 +115,8 @@ const SupportHelp = () => {
             <div className="header-title">
               <h2>Message Center</h2>
             </div>
-            <div 
-              className="official-badge" 
+            <div
+              className="official-badge"
               onClick={goBackToTicketList}
               style={{ cursor: 'pointer' }}
             >
@@ -130,7 +130,7 @@ const SupportHelp = () => {
             No ticket information available. ID: {id}
           </div>
         )}
-        
+
         <div className="messages-area">
           {ticket && (
             <div className="message-bubble01">
@@ -140,20 +140,20 @@ const SupportHelp = () => {
               </div>
               <div className="detail-row">
                 <span className="detail-label">Message :</span>
-                <span className="detail-value"><strong>{ticket.message ? ticket.message : 'No message provided'}</strong></span>
+                <span className="detail-value"><strong>{ticket.message || ticket.msg || ticket.text || 'No message provided'}</strong></span>
               </div>
             </div>
           )}
-          
+
           {messages.map(msg => (
             <div key={msg.id} className={`message ${msg.sender}`}>
               <div className="message-bubble">
                 {/* 👇 agar message mein image hai toh dikhao */}
                 {msg.image && (
-                  <img 
-                    src={msg.image} 
-                    alt="screenshot" 
-                    style={{ maxWidth: '200px', maxHeight: '150px', borderRadius: '8px', marginBottom: '8px' }} 
+                  <img
+                    src={msg.image}
+                    alt="screenshot"
+                    style={{ maxWidth: '200px', maxHeight: '150px', borderRadius: '8px', marginBottom: '8px' }}
                   />
                 )}
                 <div className="message-text">{msg.text}</div>

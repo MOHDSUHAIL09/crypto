@@ -209,28 +209,7 @@ const CapitalPayout = () => {
               </td>
               <td className="text-center">
                 <Link to="/dashboard/capitalwithdrawalrequest" state={{ investmentData: row }}>
-                  <button
-                    className="capital-payout-btn"
-                    style={{
-                      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                      color: "white",
-                      border: "none",
-                      padding: "6px 12px",
-                      borderRadius: "4px",
-                      fontSize: "12px",
-                      fontWeight: "600",
-                      cursor: "pointer",
-                      transition: "all 0.3s ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.transform = "translateY(-1px)";
-                      e.target.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.4)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.transform = "translateY(0)";
-                      e.target.style.boxShadow = "none";
-                    }}
-                  >
+                  <button className="capital-payout-btn">
                     CAPITAL PAYOUT
                   </button>
                 </Link>
