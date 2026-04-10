@@ -7,15 +7,12 @@ export const Epin = () => {
     const [loading, setLoading] = useState(false);
     const [epinData, setEpinData] = useState([]);
     const [totalEpin, setTotalEpin] = useState(0);
-
-    // Filter state: 0 = unused, 1 = used (as per API)
-    const [epinType, setEpinType] = useState(1); // default: used
+    const [epinType, setEpinType] = useState(1);
 
     const columns = ['S. No.', 'E-Pin No.', 'E-Pin Name', 'User Id', 'Actions'];
 
-    // Get RegNo from localStorage (adjust key as per your app)
     const getRegNo = () => {
-        return localStorage.getItem('RegNo') || 1;
+        return localStorage.getItem('regno');
     };
 
     const fetchEpinData = async () => {
@@ -24,7 +21,7 @@ export const Epin = () => {
             const response = await apiClient.get('/Dashboard/epin-list', {
                 params: {
                     RegNo: getRegNo(),
-                    EpinType: epinType,  // 0 = unused, 1 = used
+                    EpinType: epinType,
                 }
             });
 
@@ -32,9 +29,9 @@ export const Epin = () => {
                 const mappedData = response.data.data.map(item => ({
                     id: item.EpinId,
                     epinNo: item.EpinNumber,
-                    epinName: item.kitCode || item.SEName || 'E-Pin',
-                    userId: item.memcodeA || item.RegNo,
-                    eActive: item.eActive
+                    epinName: item.SEName,
+                    userId: item.kitCode,
+                    memName: item.MemName   
                 }));
                 setEpinData(mappedData);
                 setTotalEpin(mappedData.length);
@@ -51,12 +48,10 @@ export const Epin = () => {
         }
     };
 
-    // Refetch when filter changes
     useEffect(() => {
         fetchEpinData();
     }, [epinType]);
 
-    // Handle dropdown change
     const handleFilterChange = (e) => {
         const value = e.target.value;
         if (value === 'unused') {
@@ -94,11 +89,15 @@ export const Epin = () => {
                 >
                     {epinData.map((epin, index) => (
                         <tr key={epin.id} className="epin-row">
-                            <td>{index + 1}</td>
-                            <td className="epin-number">{epin.epinNo}</td>
+                            <td className="text-center">
+                                <div className="sr-no-circle">
+                                    {index + 1}
+                                </div>
+                            </td>
+                            <td>{epin.epinNo}</td>
                             <td>{epin.epinName}</td>
                             <td>{epin.userId}</td>
-                            <td className="actions-cell">YES</td>
+                            <td>{epin.memName}</td>
                         </tr>
                     ))}
                 </CustomTable>

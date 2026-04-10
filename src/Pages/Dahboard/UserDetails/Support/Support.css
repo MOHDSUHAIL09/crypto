@@ -678,16 +678,16 @@ form {
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 768px) {
   .chat-wrapper {
-    padding: 12px;
+    padding: 0px;
   }
 
   .chat-container {
-    height: 95vh;
-    border-radius: 28px;
+    height: 100vh;
+    border-radius: 0px;
   }
 
   .chat-header {
-    padding: 14px 18px;
+    padding: 20px;
   }
 
   .header-title h2 {
