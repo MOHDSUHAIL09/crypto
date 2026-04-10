@@ -52,7 +52,6 @@ const Header = () => {
           onClick={toggleDropdown}
           style={{
             background: "linear-gradient(to right, var(--primary-clr), var(--secondary-clr))",
-            color: "#ebd8e8",
             border: 'none',
             cursor: 'pointer',
             padding: '10px',

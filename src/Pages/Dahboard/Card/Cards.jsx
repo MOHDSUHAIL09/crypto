@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import { GiProfit } from "react-icons/gi";
 import { FaCreditCard, FaMintbit, FaRegCopy } from "react-icons/fa6";
@@ -6,6 +6,7 @@ import { MdAddCard } from "react-icons/md";
 import toast from "react-hot-toast";
 import Stake from "./Stake";
 import { useUser } from "../../../context/UserContext";
+import apiClient from '../../../api/apiClient';
 import '../../../assets/dashboardcss/css/Dashboard.css';
 import { IoSend } from 'react-icons/io5';
 
@@ -16,16 +17,43 @@ const Cards = () => {
   const [withdrawAmount, setWithdrawAmount] = useState('');
   const [withdrawOtp, setWithdrawOtp] = useState('');
   const [selectedMethod, setSelectedMethod] = useState('BANK CARD');
+  const [otpSent, setOtpSent] = useState(false);
+  const [sendingOtp, setSendingOtp] = useState(false);
+  const [verifyingOtp, setVerifyingOtp] = useState(false);
+  const [otpTimer, setOtpTimer] = useState(0);
+  const [otpIntervalId, setOtpIntervalId] = useState(null);
+
+  // Live rate states
+  const [usdToInrRate, setUsdToInrRate] = useState(null);
+  const [fetchingRate, setFetchingRate] = useState(false);
+  const [rateError, setRateError] = useState(null);
 
   // Payout input amount state
   const [payoutAmount, setPayoutAmount] = useState('');
 
-  // Context se data nikaal lo
-  const { userData, stakeData, payoutData, loading, refreshData } = useUser();
+  // Context data
+  const { userData, stakeData, loading, refreshData } = useUser();
+
+  // Helper to get loginid
+  const getLoginId = () => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      try {
+        const parsed = JSON.parse(storedUserData);
+        if (parsed.loginid) return parsed.loginid;
+        if (parsed.me) return parsed.me;
+      } catch (e) { }
+    }
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user?.loginid) return user.loginid;
+    if (user?.me) return user.me;
+    return 'india';
+  };
+  const loginid = getLoginId();
+  const regno = userData?.regno || userData?.Regno || localStorage.getItem('regno');
 
   const [isActivationVisible, setIsActivationVisible] = useState(false);
   const [isCovered, setIsCovered] = useState(false);
-
   const handleToggle = () => setIsCovered(!isCovered);
 
   const copyReferral = (text) => {
@@ -33,22 +61,36 @@ const Cards = () => {
     toast.success("Sponser ID Copied!");
   };
 
-  // Dynamic copy function for bank card - user ke data se
-  // const copyBankCard = () => {
-  //   const bankCardNumber = userData?.bankCardNumber || userData?.card_number || "No card added";
-  //   navigator.clipboard.writeText(bankCardNumber);
-  //   toast.success("Bank card number copied!");
+  // Fetch live USD/INR rate
+  const fetchUsdToInrRate = async () => {
+    setFetchingRate(true);
+    setRateError(null);
+    try {
+      const response = await fetch('https://api.budjet.org/fiat/USD/INR');
+      const data = await response.json();
+      const rate = data.conversion_result || data.rate;
+      if (rate && typeof rate === 'number') {
+        setUsdToInrRate(rate);
+      } else {
+        throw new Error('Invalid rate format');
+      }
+    } catch (err) {
+      console.error('Rate fetch error:', err);
+      setRateError('Unable to fetch live conversion rate');
+      toast.error('Could not fetch live rate. Please try again later.');
+    } finally {
+      setFetchingRate(false);
+    }
+  };
 
-  // };
+  // Fetch rate when modal opens
+  useEffect(() => {
+    if (showWithdrawModal) {
+      fetchUsdToInrRate();
+    }
+  }, [showWithdrawModal]);
 
-  // // Dynamic copy function for USDT address - user ke data se
-  // const copyUsdtAddress = () => {
-  //   const usdtAddress = userData?.usdtAddress || userData?.wallet_address || "No address added";
-  //   navigator.clipboard.writeText(usdtAddress);
-  //   toast.success("USDT address copied!"); 
-  // };
-
-  // Handle Payout Button Click - Amount pre-fill karega
+  // Handle Payout Button Click - prefill amount from payout input
   const handlePayoutClick = () => {
     if (payoutAmount && parseFloat(payoutAmount) > 0) {
       setWithdrawAmount(payoutAmount);
@@ -56,34 +98,152 @@ const Cards = () => {
     setShowWithdrawModal(true);
   };
 
-  // Withdraw function
-  const handleWithdraw = () => {
-    if (!withdrawAmount || parseFloat(withdrawAmount) <= 0) {
+  // Send OTP
+  const sendOtp = async () => {
+    if (!regno) {
+      toast.error('Registration number not found');
+      return;
+    }
+    setSendingOtp(true);
+    try {
+      const response = await apiClient.post(`/User/genrate-otp?loginid=${loginid}&regno=${regno}`, {});
+      if (response.data.success || response.data.status === 'success') {
+        toast.success('OTP sent successfully!');
+        setOtpSent(true);
+        setOtpTimer(300);
+        const interval = setInterval(() => {
+          setOtpTimer((prev) => {
+            if (prev <= 1) {
+              clearInterval(interval);
+              setOtpIntervalId(null);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+        setOtpIntervalId(interval);
+      } else {
+        toast.error(response.data.message || 'Failed to send OTP');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message || 'Error sending OTP');
+    } finally {
+      setSendingOtp(false);
+    }
+  };
+
+  // Withdraw function with API call
+  const handleWithdraw = async () => {
+    const amountNum = parseFloat(withdrawAmount);
+    if (!withdrawAmount || isNaN(amountNum) || amountNum <= 0) {
       toast.error('Please enter a valid amount');
+      return;
+    }
+    if (amountNum < 20) {
+      toast.error('Minimum withdrawal amount is $20.00');
+      return;
+    }
+    if (amountNum > (userData?.Remaining || 0)) {
+      toast.error(`Amount exceeds available balance $${userData?.Remaining?.toFixed(2)}`);
       return;
     }
     if (!withdrawOtp || withdrawOtp.length !== 6) {
       toast.error('Please enter a valid 6-digit OTP');
       return;
     }
+    if (!otpSent) {
+      toast.error('Please request OTP first');
+      return;
+    }
 
-    // Yahan API call karo
-    console.log('Withdrawing:', {
-      amount: withdrawAmount,
-      otp: withdrawOtp,
-      method: selectedMethod
-    });
+    let walletAddress = '';
+    let payMode = '';
+    let liveRate = 0;
 
-    toast.success(`Withdrawal request for ₹${withdrawAmount} submitted successfully!`);
+    if (selectedMethod === 'BANK CARD') {
+      const card = localStorage.getItem('accountNumber');
+      if (!card) {
+        toast.error('No bank card added. Please add a card first.');
+        return;
+      }
+      walletAddress = card;
+      payMode = 'inr';
+      liveRate = usdToInrRate || 0; // optional for INR withdrawal
+    } else if (selectedMethod === 'USDT TRC20') {
+      const address = localStorage.getItem('bep20Wallet');
+      if (!address) {
+        toast.error('No USDT TRC20 address added. Please add an address first.');
+        return;
+      }
+      walletAddress = address;
+      payMode = 'usdt';
+      // For USDT, we need the live USD to INR rate for conversion
+      if (!usdToInrRate) {
+        toast.error('Live conversion rate not available. Please try again.');
+        return;
+      }
+      liveRate = usdToInrRate;
+    } else {
+      toast.error('Invalid payment method');
+      return;
+    }
 
-    // Reset and close
-    setWithdrawAmount('');
-    setWithdrawOtp('');
-    setPayoutAmount('');
-    setShowWithdrawModal(false);
+    setVerifyingOtp(true);
+    try {
+      // 1. Verify OTP
+      const verifyRes = await apiClient.post('/User/verify-otp', null, {
+        params: {
+          loginid: loginid,
+          regno: regno,
+          otp: String(withdrawOtp)
+        }
+      });
+      if (!verifyRes.data?.success) {
+        toast.error(verifyRes.data?.message || 'Invalid OTP');
+        setVerifyingOtp(false);
+        return;
+      }
+
+      // 2. Call withdrawal API
+      const payload = {
+        regNo: parseInt(regno),
+        amount: amountNum,
+        liveRate: liveRate,
+        payMode: payMode,
+        walletAddress: walletAddress
+      };
+      console.log('Withdrawal payload:', payload);
+      const withdrawalRes = await apiClient.post('/IncomePayout/withdraw-request', payload);
+
+      if (withdrawalRes.data?.success) {
+        toast.success(`Withdrawal request for $${amountNum.toFixed(2)} submitted successfully!`);
+        refreshData(); // refresh balance
+        setShowWithdrawModal(false);
+        setWithdrawAmount('');
+        setWithdrawOtp('');
+        setPayoutAmount('');
+        setOtpSent(false);
+        setOtpTimer(0);
+        if (otpIntervalId) clearInterval(otpIntervalId);
+        setOtpIntervalId(null);
+      } else {
+        toast.error(withdrawalRes.data?.message || 'Withdrawal failed');
+      }
+    } catch (err) {
+      console.error('Withdrawal error:', err.response?.data || err);
+      toast.error(err.response?.data?.message || 'Server error. Please try again.');
+    } finally {
+      setVerifyingOtp(false);
+    }
   };
 
   if (loading) return <div>Loading...</div>;
+
+  // Compute estimated INR amount for display
+  const estimatedInr = withdrawAmount && usdToInrRate && !isNaN(parseFloat(withdrawAmount))
+    ? (parseFloat(withdrawAmount) * usdToInrRate).toFixed(2)
+    : null;
 
   return (
     <>
@@ -93,7 +253,7 @@ const Cards = () => {
           <div className="card1 no-animate custom-card1 p-0 rounded_5">
             <div className="card1-body px-3 py-3">
               <div className="top-box mb-2">
-                <div className='d-flex justify-content-between pt-2'>
+                <div className='d-flex justify-content-between p-2'>
                   <label className={`insurance-switch ${isCovered ? 'active' : ''}`}>
                     <input type="checkbox" checked={isCovered} onChange={handleToggle} hidden />
                     <div className="switch-slider">
@@ -144,15 +304,13 @@ const Cards = () => {
                 {!isActivationVisible && (
                   <div className="animate__animated animate__fadeIn">
                     <div className="d-flex flex-wrap justify-content-between">
-
-                    <Link to="/dashboard/depositHistory">
-                      <p className="mb-1">
-                        <strong>Deposit Fund : </strong><span className='Investment-text'>
-                          ${userData?.Depositfund || 0}
-                        </span>
-                      </p>
+                      <Link to="/dashboard/depositHistory">
+                        <p className="mb-1">
+                          <strong>Deposit Fund : </strong><span className='Investment-text'>
+                            ${userData?.Depositfund || 0}
+                          </span>
+                        </p>
                       </Link>
-
                       <button type="button" className="wallet-buttton b"><MdAddCard size={20} /></button>
                     </div>
 
@@ -171,7 +329,8 @@ const Cards = () => {
                           <span className='Investment-text'>
                             ${(userData?.InvestAmount || 0).toLocaleString("en-IN")}
                           </span>
-                        </p></Link>
+                        </p>
+                      </Link>
                     </div>
                   </div>
                 )}
@@ -199,7 +358,7 @@ const Cards = () => {
                   />
                   <div className="d-flex align-items-center justify-content-between">
                     <h6 className='hover-text small-text mb-1'>
-                      Payout Amt : <span className="pay-badge pay-bg"><strong>{payoutData?.WorkingWallet || 0}</strong></span>
+                      Payout Amt : <span className="pay-badge pay-bg"><strong>${parseFloat(userData?.Remaining || 0).toFixed(2)}</strong></span>
                     </h6>
                     <button
                       type="button"
@@ -225,14 +384,7 @@ const Cards = () => {
       {/* payout modal */}
       {showWithdrawModal && (
         <div className="modal-overlay">
-          <div
-            className="modal-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header */}
-
-
-
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h4>Withdraw</h4>
               <button
@@ -241,22 +393,20 @@ const Cards = () => {
                   setShowWithdrawModal(false);
                   setWithdrawAmount('');
                   setWithdrawOtp('');
+                  setOtpSent(false);
+                  setOtpTimer(0);
+                  if (otpIntervalId) clearInterval(otpIntervalId);
+                  setOtpIntervalId(null);
                 }}
               >
                 ✕
               </button>
             </div>
 
-
-
-
-
-            {/* Body */}
             <div className="modal-body">
-              {/* Available Balance */}
               <div className="balance-info">
                 <span>Available balance</span>
-                <strong>$0.05</strong>
+                <strong>${parseFloat(userData?.Remaining || 0).toFixed(2)}</strong>
               </div>
 
               <div className='meddle'>
@@ -269,7 +419,6 @@ const Cards = () => {
                     <FaCreditCard />
                     <span>BANK CARD</span>
                   </div>
-
                   <div
                     className={`method-chip ${selectedMethod === 'USDT TRC20' ? 'active' : ''}`}
                     onClick={() => setSelectedMethod('USDT TRC20')}
@@ -284,7 +433,7 @@ const Cards = () => {
                   <div className="method-details">
                     <div className="bank-card-display d-flex justify-content-between">
                       <div className="card-number">
-                        {localStorage.getItem("accountNumber") || "No card added"}  {/* 🔥 Bas itna */}
+                        {localStorage.getItem("accountNumber") || "No card added"}
                       </div>
                       <FaRegCopy
                         className='copy-icon'
@@ -298,12 +447,12 @@ const Cards = () => {
                   </div>
                 )}
 
-                {/* USDT TRC20 Details */}
+                {/* USDT TRC20 Details with Live Rate */}
                 {selectedMethod === 'USDT TRC20' && (
                   <div className="method-details">
                     <div className="bank-card-display d-flex justify-content-between">
                       <div className="address-value">
-                        {localStorage.getItem("bep20Wallet") || "No address added"}  {/* 🔥 Bas itna */}
+                        {localStorage.getItem("bep20Wallet") || "No address added"}
                       </div>
                       <FaRegCopy
                         className='copy-icon'
@@ -314,6 +463,26 @@ const Cards = () => {
                         }}
                       />
                     </div>
+                    {/* Live Rate Display */}
+                    <div className="live-rate-info mt-2">
+                      {fetchingRate && <div className="text-muted small">Fetching live rate...</div>}
+                      {rateError && <div className="text-danger small">{rateError}</div>}
+                      {!fetchingRate && usdToInrRate && (
+                        <div className="small" style={{ backgroundColor: '#f8f9fa', padding: '8px', borderRadius: '8px' }}>
+                          <div className="d-flex justify-content-between">
+                            <span>💱 Live USD → INR Rate:</span>
+                            <strong>1 USD = ₹{usdToInrRate.toFixed(2)}</strong>
+                          </div>
+                          {estimatedInr && (
+                            <div className="d-flex justify-content-between mt-1">
+                              <span>💰 You will receive approx:</span>
+                              <strong>₹{estimatedInr} INR</strong>
+                            </div>
+                          )}
+                          <small className="text-muted d-block mt-1">Rate updates when you open the modal.</small>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
 
@@ -321,7 +490,7 @@ const Cards = () => {
                 <div className="amount-area mb-3">
                   <div className="amount-label">Enter Amount</div>
                   <div className="amount-input-wrapper">
-                    <span className="currency-symbol">₹</span>
+                    <span className="currency-symbol">$</span>
                     <input
                       type="number"
                       className="amount-input"
@@ -332,7 +501,7 @@ const Cards = () => {
                   </div>
                 </div>
 
-                {/* OTP Input */}
+                {/* OTP Input with Send Button */}
                 <div className="input-container01 mt-3">
                   <span className="currency-symbol1">OTP</span>
                   <span className="divider">|</span>
@@ -344,12 +513,33 @@ const Cards = () => {
                     value={withdrawOtp}
                     onChange={(e) => setWithdrawOtp(e.target.value.replace(/\D/g, ''))}
                   />
-                  <IoSend />
+                  <button
+                    className="clear-btn"
+                    onClick={sendOtp}
+                    disabled={otpTimer > 0 || sendingOtp}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                  >
+                    {otpTimer > 0 ? (
+                      `${Math.floor(otpTimer / 60)}:${(otpTimer % 60).toString().padStart(2, '0')}`
+                    ) : (
+                      <IoSend />
+                    )}
+                  </button>
                 </div>
+                {!otpSent && (
+                  <small className="text-muted">Click the send icon to get OTP</small>
+                )}
+                {otpSent && (
+                  <small className="text-success">OTP sent! Enter the code above and click Withdraw Now.</small>
+                )}
 
                 {/* Withdraw Button */}
-                <button className="modal-button mt-3" onClick={handleWithdraw}>
-                  Withdraw Now
+                <button
+                  className="modal-button mt-3"
+                  onClick={handleWithdraw}
+                  disabled={verifyingOtp || !otpSent || !withdrawAmount || parseFloat(withdrawAmount) <= 0 || (selectedMethod === 'USDT TRC20' && !usdToInrRate)}
+                >
+                  {verifyingOtp ? 'Verifying...' : 'Withdraw Now'}
                 </button>
               </div>
             </div>

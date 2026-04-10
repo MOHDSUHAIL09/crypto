@@ -12,7 +12,7 @@
 /* ================= HEADER ================= */
 
 .custom-table thead th {
-  padding: 20px 5px;
+  padding: 10px 1px;
   position: relative;
   z-index: 1;
   background-color: #fff;
@@ -20,29 +20,26 @@
   font-weight: 600;
   text-align: center;
   vertical-align: middle;
-  border-bottom: 2px solid #e2e8f0;
-  border-right: 1px solid #e2e8f0;
+  /* border-bottom: 2px solid #e2e8f0; */
+  /* border-right: 1px solid #e2e8f0; */
 }
 
 /* Remove right border from last header cell */
-.custom-table thead th:last-child {
+/* .custom-table thead th:last-child {
   border-right: none;
-}
+} */
 
 /* HEADER DESIGN - Gradient background for all except first column */
-.custom-table thead th:not(:first-child)::before {
+.custom-table thead th::before {
   content: "";
   position: absolute;
-  top: 10px;
+  top: 1px;
   left: 2%;
   right: 2%;
   height: 40px;
   z-index: 0;
-  /* clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); */
   background: linear-gradient(to right, var(--primary-clr), var(--secondary-clr));
-  /* opacity: 0.85; */
 }
-
 /* HEADER TEXT - White on gradient */
 .custom-table thead th .th-content {
   position: relative;
@@ -52,20 +49,20 @@
 }
 
 /* FIRST COLUMN (Sl.No.) - No gradient, black text */
-.custom-table thead th:first-child::before {
+/* .custom-table thead th:first-child::before {
   display: none;
-}
+} */
 
-.custom-table thead th:first-child .th-content {
-  color: #000000;
+/* .custom-table thead th:first-child .th-content {
+  color: #fff;
   font-weight: 700;
-}
+} */
 
 /* ACTION COLUMN - Special styling */
-.custom-table thead th:last-child .th-content {
+/* .custom-table thead th:last-child .th-content {
   color: #ffffff;
   font-weight: 700;
-}
+} */
 
 /* ================= TD ================= */
 
@@ -208,12 +205,6 @@
   border-radius: 50%;
 }
 
-/* ================= ROW ================= */
-
-.custom-table-row td {
-  padding-top: 12px !important;
-  padding-bottom: 10px !important;
-}
 
 /* ================= WRAPPER ================= */
 

@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import apiClient from "../api/apiClient";
 
+
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -13,8 +14,7 @@ export const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [stakeData, setStakeData] = useState(null);
   const [payoutData, setPayoutData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [accountNumber, setAccountNumber] = useState(null); 
+  const [loading] = useState(false);
 
   // ================= LOAD FROM LOCALSTORAGE =================
   useEffect(() => {
@@ -47,7 +47,7 @@ export const UserProvider = ({ children }) => {
           }
         }
       );
-      console.log("dashboard", res)
+      console.log("Dashboard-Api", res)
       
       if (res.data.success) {
         const apiData = res.data.data;
@@ -55,12 +55,14 @@ export const UserProvider = ({ children }) => {
           regno: apiData.Regno || regno,
           name: apiData.fname,
           me: apiData.loginid,
+          MobileNo: apiData.mobile,
           referral: apiData.introid,
           kid: apiData.kid,
           Depositfund: apiData.topupwallet,
           BotAmount: apiData.BotAmount,
           InvestAmount: apiData.InvestAmount,
           totalWallet: apiData.totalWallet,
+          walletid: apiData.walletid,
           LevelIncome: apiData.LevelIncome,
           MatchingBonus: apiData.MatchingBonus,
           IBIncome: apiData.IBIncome,
@@ -123,7 +125,7 @@ export const UserProvider = ({ children }) => {
       apiEndpoint = `/IncomePayout/fund-transfer`;
       apiBody = {
         regno: Number(regno),
-        reciveId: reciveId,
+        reciveId: userData.me,  
         amount: amount
       };
     } 

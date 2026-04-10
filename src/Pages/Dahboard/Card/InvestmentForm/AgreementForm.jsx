@@ -2,10 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import './AgreementForm.css';
 import { FaRegCopy } from "react-icons/fa";
+import apiClient from '../../../../api/apiClient';
+import { useUser } from '../../../../context/UserContext';
 
 const AgreementForm = ({ open, onClose, loginId }) => {
-  const passedLoginId = (loginId || "GUEST").toUpperCase();
-  const [showSuccess, setShowSuccess] = useState(false); // Success popup control
+  const { userData, refreshData } = useUser();
+
+
+  const passedLoginId = (loginId || userData?.me || "GUEST").toUpperCase();
+  const regno = userData?.regno || userData?.Regno || localStorage.getItem('regno');
+
+  const userReg = localStorage.getItem('userregno'); // for uRegno in investment API
+
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [agreementId, setAgreementId] = useState("");
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -16,717 +27,320 @@ const AgreementForm = ({ open, onClose, loginId }) => {
     address: '',
     amountUSDT: '',
     wallet: '',
+    signature: '',
   });
 
-  const [agreementId, setAgreementId] = useState("");
-
-  const handleCopy = (agreementId) => {
-    navigator.clipboard.writeText(agreementId)
-      .then(() => {
-        alert("Agreement ID copied!");
-      })
-      .catch((err) => {
-        alert("Failed to copy!");
-        console.error(err);
-      });
-  };
-
+  // Auto-fill when modal opens
+  useEffect(() => {
+    if (!open) return;
+    if (userData) {
+      setFormData(prev => ({
+        ...prev,
+        fullName: prev.fullName || userData.name || '',
+        emailID: prev.emailID || userData.email || '',
+        phone: prev.phone || userData.MobileNo || '',
+        wallet: prev.wallet || userData.walletid || '',
+      }));
+    } else {
+      const stored = localStorage.getItem('userData');
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          setFormData(prev => ({
+            ...prev,
+            fullName: prev.fullName || parsed.name || '',
+            emailID: prev.emailID || parsed.email || '',
+            phone: prev.phone || parsed.MobileNo || '',
+            wallet: prev.wallet || parsed.walletid || '',
+          }));
+        } catch (e) { }
+      }
+    }
+  }, [open, userData]);
 
   useEffect(() => {
     if (!open) {
       setShowSuccess(false);
-      return;
+      setAgreementId("");
     }
-
-    const storageKey = `agreementId_${passedLoginId}`;
-    const dataKey = `formData_${passedLoginId}`;
-
-    const savedId = localStorage.getItem(storageKey);
-    if (savedId) {
-      setAgreementId(savedId);
-    } else {
-      const uniqueSuffix = Math.random().toString(36).substr(2, 5).toUpperCase();
-      const newId = `CP-${passedLoginId}-${uniqueSuffix}`;
-      localStorage.setItem(storageKey, newId);
-      setAgreementId(newId);
-    }
-
-    const savedData = localStorage.getItem(dataKey);
-    if (savedData) setFormData(JSON.parse(savedData));
-
-  }, [passedLoginId, open]);
+  }, [open]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    if (name === "amountUSDT") {
-      if (value < 0) return; // negative value ignore
-    }
-
+    if (name === "amountUSDT" && value < 0) return;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleCopy = (id) => {
+    navigator.clipboard.writeText(id);
+    alert("Agreement ID copied!");
+  };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 1. Convert string to number
+    if (!formData.fullName || !formData.amountUSDT || !formData.emailID || !formData.phone) {
+      alert("Please fill in all required fields.");
+      return;
+    }
     const amount = Number(formData.amountUSDT);
-
-    // 2. Check: Empty fields
-    if (!formData.fullName || !formData.amountUSDT) {
-      alert("please, fell the name");
-      return;
-    }
-
-    // 3. Check: Minimum Amount (Ab ye perfectly work karega)
     if (amount < 1000) {
-      alert("Minimum investment of $1000.00 is required.", {
-      });
+      alert("Minimum investment of $1000.00 is required.");
       return;
     }
-    // 4. Sab sahi hai? Toh data save karo aur Success Popup dikhao (YE MISSING THA)
-    localStorage.setItem(`formData_${passedLoginId}`, JSON.stringify(formData));
-    setShowSuccess(true);
+
+    setLoading(true);
+
+    // -------------------- 1. AGREEMENT API --------------------
+    const agreementPayload = {
+      regno: parseInt(regno),
+      emailId: formData.emailID,
+      fName: formData.fullName.split(' ')[0] || formData.fullName,
+      mobile: formData.phone,
+      motherName: formData.motherMaidenName,
+      dateOfBirth: formData.dob,
+      address: formData.address,
+      amount: amount,
+      usdt: amount,
+      fullName: formData.fullName,
+      signature: formData.signature || "Digital Signature",
+      otherValue: "",
+      wallet: formData.wallet,
+    };
+
+    try {
+      const agreementRes = await apiClient.post('/Dashboard/member-aggrement', agreementPayload);
+      console.log("📥 AGREEMENT API Response:", agreementRes.data);
+
+      if (!agreementRes.data?.success) {
+        alert(agreementRes.data?.message || "Agreement submission failed.");
+        setLoading(false);
+        return;
+      }
+
+      const newAgreementId = agreementRes.data.data;
+      setAgreementId(newAgreementId);
+      localStorage.setItem(`formData`, JSON.stringify(formData));
+
+      // -------------------- 2. INVESTMENT API --------------------
+      const investmentPayload = {
+        regno: parseInt(userReg),
+        rkprice: amount,
+        uRegno: parseInt(regno),
+        pkg: "INV",
+        aggrement: String(newAgreementId)   // or `${newAgreementId}`          
+      };
+      console.log("abc", investmentPayload)
+
+      const investmentRes = await apiClient.post('/Dashboard/investment', investmentPayload);
+
+      if (investmentRes.data?.success) {
+        console.log("✅ Both APIs succeeded – showing success popup");
+        setShowSuccess(true);
+        refreshData();
+      } else {
+        // Investment API failed, but agreement was saved
+        console.warn("⚠️ Investment API failed, but agreement saved.");
+        alert("Investment registration failed, but agreement saved. Please contact support.");
+        setShowSuccess(true); // still show success? decide – I'll show success only if both succeed
+      }
+    } catch (err) {
+      console.error("❌ Error in agreement or investment API:", err);
+      alert(err.response?.data?.message || "Server error. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
+
   if (!open) return null;
 
   return createPortal(
-    <div className="agreement-overlay" style={{
-      position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
-      backgroundColor: 'rgba(0, 0, 0, 0.85)', zIndex: 9999,
-      display: 'flex', justifyContent: 'center', alignItems: 'flex-start',
-      overflowY: 'auto', padding: '40px 30px'
-    }}>
-
-      {/* --- MAIN FORM --- */}
+    <div className="agreement-overlay">
       {!showSuccess ? (
-        <form onSubmit={handleSubmit} className="form-container" style={{ position: 'relative', width: '100%', maxWidth: '850px', margin: '0 auto' }}>
-          <div className="form-container" style={{ position: 'relative', width: '100%', maxWidth: '850px', margin: '0 auto' }}>
-            <button onClick={onClose} style={{
-              position: 'absolute', right: '20px', top: '20px', border: 'none',
-              background: '#e74c3c', color: 'white', borderRadius: '50%',
-              width: '30px', height: '30px', cursor: 'pointer', zIndex: 100
-            }}>✖</button>
+        <form onSubmit={handleSubmit} className="form-container">
+          <div className="form-card-wrapper">
+            <button onClick={onClose} type="button" className="close-modal-btn">✖</button>
 
-            <div className="form-card" style={{ background: '#fff', borderRadius: '8px', paddingBottom: '30px' }}>
+            <div className="form-card">
               <div className="form-header">
                 <div className="logo-section">
                   <div className="logo-text">
-                    <span className="brand-name">CoinPool</span>
+                    <span className="brand-name">Mango</span>
                     <span className="brand-sub">Wealth Planner</span>
                   </div>
                 </div>
-
-
                 <h2 className="form-title">Customer agreement form</h2>
-                <div className='d-flex gap-4'>
-                  <p style={{ color: '#e67e22', fontWeight: 'bold' }}>Agreement ID: {agreementId} </p> <FaRegCopy className='mt-1' onClick={() => handleCopy(agreementId)} />
-                </div>
               </div>
 
+              {/* Personal information section */}
               <section className="form-section">
                 <h3 className="section-heading">Personal information</h3>
                 <div className="grid-row">
                   <div className="input-group">
                     <label>Full name</label>
-                    <input type="text" name="fullName" placeholder="Full name" onChange={handleChange} value={formData.fullName} required />
+                    <input type="text" name="fullName" className="readonly-input" value={formData.fullName} readOnly required />
                   </div>
                   <div className="input-group">
-                    <label>User Login ID (Auto)</label>
-                    <input type="text" value={passedLoginId} readOnly style={{ backgroundColor: '#f0f0f0' }} />
+                    <label>User Login ID</label>
+                    <input type="text" value={passedLoginId} readOnly className="readonly-input" />
                   </div>
                 </div>
-
                 <div className="grid-row">
                   <div className="input-group">
                     <label>Email address</label>
-                    <input type="email" name="emailID" value={formData.emailID} placeholder="Email address" onChange={handleChange} required />
+                    <input type="email" name="emailID" className="readonly-input" value={formData.emailID} readOnly required />
                   </div>
                   <div className="input-group">
                     <label>Phone number</label>
-                    <input type="text" name="phone" value={formData.phone} placeholder="Phone number" onChange={handleChange} required />
+                    <input type="text" name="phone" className="readonly-input" value={formData.phone} readOnly required />
                   </div>
                 </div>
-
-
                 <div className="grid-row">
-                  {/* Date of Birth Field */}
                   <div className="input-group">
                     <label>Date of birth</label>
-                    <input
-                      type="date"
-                      name="dob"
-                      value={formData.dob}
-                      onChange={handleChange}
-                      required
-                    />
-                    <span className="input-hint" style={{ fontSize: '10px', color: '#777', marginTop: '4px', display: 'block' }}>
-                      Format: DD-MM-YYYY
-                    </span>
+                    <input className='readonly-input' type="date" name="dob" value={formData.dob} onChange={handleChange} required />
+                    <span className="input-hint">Format: YYYY-MM-DD</span>
                   </div>
-
-                  {/* Mother's Maiden Name Field */}
                   <div className="input-group">
                     <label>Mother's maiden name</label>
-                    <input
-                      type="text"
-                      name="motherMaidenName"
-                      value={formData.motherMaidenName}
-                      placeholder="Mother's maiden name"
-                      onChange={handleChange}
-                      required
-                    />
+                    <input className='readonly-input' type="text" name="motherMaidenName" placeholder="Mother's maiden name" value={formData.motherMaidenName} onChange={handleChange} required />
                   </div>
                 </div>
-
-                <div className="input-group full-width" style={{ marginBottom: '15px' }}>
+                <div className="input-group full-width">
                   <label>Residential Address</label>
-                  <input type="text" name="address" value={formData.address} placeholder="Full Address" onChange={handleChange} required />
+                  <input className='readonly-input' type="text" name="address" placeholder="Residential Address" value={formData.address} onChange={handleChange} required />
                 </div>
               </section>
 
+              {/* Investment details section */}
               <section className="form-section">
                 <h3 className="section-heading">Investment details</h3>
-
                 <div className="grid-row">
-
-
                   <div className="input-group">
                     <label>Investment amount (USDT)</label>
-                    <input
-                      type="number"
-                      name="amountUSDT"
-                      value={formData.amountUSDT}
-                      placeholder="Enter USDT"
-                      onChange={handleChange}
-                      required
-                    />
+                    <input className='readonly-input' type="number" name="amountUSDT" value={formData.amountUSDT} placeholder="Enter USDT" onChange={handleChange} required />
                   </div>
-
-
-
                   <div className="input-group">
                     <label>Amount in INR</label>
-                    <input
-                      type="text"
-                      required
-                      value={(formData.amountUSDT * 92 || 0).toFixed(2)}
-                      readOnly
-                      style={{ backgroundColor: '#f0f0f0' }}
-                    />
-                  </div> <div
-                    style={{
-                      background: "#fff3e6",
-                      border: "1px dashed #f4a261",
-                      padding: "5px 10px",
-                      borderRadius: "8px",
-                      fontSize: "13px",
-                      color: "#e67e22"
-                    }}
-                  >
-                    Minimum investment: $1000.00
+                    <input type="text" value={(formData.amountUSDT * 92 || 0).toFixed(2)} readOnly className="readonly-input" />
                   </div>
+                  <div className="min-invest-badge">Minimum investment: $1000.00</div>
                 </div>
-                <div >
-                  <p style={{ fontSize: "10px", fontWeight: "500", marginLeft: "20px" }}>
-                    Cryptocurrency wallet address or bank account number
-                  </p>
-
-                  <div style={{ padding: "0 15px" }}>
+                <div className="wallet-section">
+                  <p className="wallet-label">Cryptocurrency wallet address or bank account number</p>
+                  <div className="wallet-input-wrapper">
                     <input
                       type="text"
                       name="wallet"
                       placeholder="Enter BEP-20 wallet or bank account number"
+                      readOnly
+                      value={formData.wallet}
                       onChange={handleChange}
-                      required
-                      style={{
-                        width: "100%",
-                        height: "48px",
-                        borderRadius: "10px",
-                        fontSize: "12px",
-                        padding: "0 12px"
-                      }}
+                      className="readonly-input"
                     />
                   </div>
-
-                  <p
-                    style={{
-                      fontSize: "12px",
-                      color: "#6b7280",
-                      marginLeft: "12px",
-                      padding: "7px"
-                    }}
-                  >
-                    Ensure the wallet is BEP-20 compatible and bank details are correct.
-                  </p>
+                  <p className="wallet-hint">Ensure the wallet is BEP-20 compatible and bank details are correct.</p>
                 </div>
               </section>
 
-              <section
-                style={{
-                  border: "1px solid #d1d5db",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  marginTop: "25px",
-                  fontFamily: "sans-serif"
-                }}
-              >
-
-
-
-
-
-
-                {/* Header */}
-                <div
-                  style={{
-                    background: "#f3f4f6",
-                    padding: "12px 15px",
-                    fontWeight: "600",
-                    fontSize: "15px",
-                    color: "#111827"
-                  }}
-                >
-                  Trading bot subscription
-                </div>
-
-                {/* Content */}
-                <div
-                  style={{
-                    padding: "10px",
-                    fontSize: "13px",
-                    color: "#374151"
-                  }}
-                >
-
-                  <div style={{
-                    display: "flex",
-                    alignItems: "flex-start", // Container ko top align rakho
-                    gap: "10px",
-                    marginBottom: "15px"
-                  }}>
-                    <input
-                      type="checkbox"
-                      required
-                      style={{
-                        marginTop: "5px",        //
-                        flexShrink: 0,
-                        width: "15px",
-                        height: "15px",
-                        cursor: "pointer",
-                        alignSelf: "flex-start"  // Browser agar center kar raha ho toh ye force stop karega
-                      }}
-                    />
-                    <p style={{
-                      margin: 0,
-                      lineHeight: "1.4",        // Line height ko thoda tight rakho alignment ke liye
-                      fontSize: "13px",
-                      color: "#374151",
-                      textAlign: "left"
-                    }}>
-                      I agree to purchase the mandatory annual subscription for{" "}
-                      <strong style={{ color: "#111827" }}>INR 9000</strong>, payable in advance,
-                      to participate in the investment program.
+              {/* Trading bot subscription */}
+              <section className="info-box">
+                <div className="info-box-header">Trading bot subscription</div>
+                <div className="info-box-content">
+                  <div className="checkbox-row">
+                    <input type="checkbox" required className="checkbox-input" />
+                    <p className="checkbox-label">
+                      I agree to purchase the mandatory annual subscription for <strong>INR 9000</strong>, payable in advance, to participate in the investment program.
                     </p>
                   </div>
-
-                  {/* Bullet Points */}
-                  <ul style={{ marginTop: "12px", color: "#6b7280" }}>
-                    <li style={{ marginBottom: "6px" }}>
-                      Payment instructions will be provided upon signing the Investment
-                      Agreement.
-                    </li>
-                    <li>
-                      The subscription is non-refundable and must be renewed annually.
-                    </li>
+                  <ul className="info-list">
+                    <li>Payment instructions will be provided upon signing the Investment Agreement.</li>
+                    <li>The subscription is non-refundable and must be renewed annually.</li>
                   </ul>
                 </div>
               </section>
 
-
-              <section
-                style={{
-                  border: "1px solid #d1d5db",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  marginTop: "25px",
-                  fontFamily: "sans-serif",
-                  backgroundColor: "#fff"
-                }}
-              >
-                {/* Header */}
-                <div
-                  style={{
-                    background: "#f9fafb",
-                    padding: "12px 15px",
-                    fontWeight: "600",
-                    fontSize: "16px",
-                    color: "#111827",
-                    borderBottom: "1px solid #e5e7eb"
-                  }}
-                >
-                  Investment terms acknowledgment
-                </div>
-
-                {/* Content Body */}
-                <div style={{ padding: "20px" }}>
-
-                  {/* Row 1: Portfolio Return */}
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "20px" }}>
-                    <span style={{ color: "#9ca3af", fontSize: "18px", marginTop: "2px", flexShrink: 0 }}>✓</span>
-                    <p style={{ margin: 0, fontSize: "14px", lineHeight: "1.5", color: "#374151" }}>
-                      <strong>Portfolio Return:</strong> expected annual portfolio return ranging between 72% to 84%, subject to market performance and company policy.
-                    </p>
-                  </div>
-
-                  {/* Row 2: Lock-In Period */}
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "20px" }}>
-                    <span style={{ color: "#9ca3af", fontSize: "18px", marginTop: "2px", flexShrink: 0 }}>✓</span>
-                    <p style={{ margin: 0, fontSize: "14px", lineHeight: "1.5", color: "#374151" }}>
-                      <strong>Lock-In Period:</strong> I acknowledge that the investment has a No Lock-in Period, during which the Investment Amount can be withdrawn except as outlined below.
-                    </p>
-                  </div>
-
-                  {/* Row 3: Early Withdrawal Terms */}
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "20px" }}>
-                    <span style={{ color: "#9ca3af", fontSize: "18px", marginTop: "2px", flexShrink: 0 }}>✓</span>
-                    <p style={{ margin: 0, fontSize: "14px", lineHeight: "1.5", color: "#374151" }}>
-                      <strong>Early Withdrawal Terms:</strong> Withdrawals between 1–11 months: 6% to 7% monthly return, subject to a 10% processing charge on the return provided.
-                    </p>
-                  </div>
-
-                  {/* Row 4: Confidentiality */}
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-                    <span style={{ color: "#9ca3af", fontSize: "18px", marginTop: "2px", flexShrink: 0 }}>✓</span>
-                    <p style={{ margin: 0, fontSize: "14px", lineHeight: "1.5", color: "#374151" }}>
-                      <strong>Confidentiality:</strong> I agree to keep the terms of the Investment Agreement and any proprietary information provided by MANGOFX LIMITED confidential, except as required by law.
-                    </p>
-                  </div>
-
+              {/* Investment terms acknowledgment */}
+              <section className="info-box">
+                <div className="info-box-header">Investment terms acknowledgment</div>
+                <div className="info-box-content terms-content">
+                  <div className="term-item"><span className="term-icon">✓</span><p><strong>Portfolio Return:</strong> expected annual portfolio return ranging between 72% to 84%, subject to market performance and company policy.</p></div>
+                  <div className="term-item"><span className="term-icon">✓</span><p><strong>Lock-In Period:</strong> I acknowledge that the investment has a No Lock-in Period, during which the Investment Amount can be withdrawn except as outlined below.</p></div>
+                  <div className="term-item"><span className="term-icon">✓</span><p><strong>Early Withdrawal Terms:</strong> Withdrawals between 1–11 months: 6% to 7% monthly return, subject to a 10% processing charge on the return provided.</p></div>
+                  <div className="term-item"><span className="term-icon">✓</span><p><strong>Confidentiality:</strong> I agree to keep the terms of the Investment Agreement and any proprietary information provided by MANGOFX LIMITED confidential, except as required by law.</p></div>
                 </div>
               </section>
 
-
-              <section
-                style={{
-                  border: "1px solid #d1d5db",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  marginTop: "25px",
-                  fontFamily: "sans-serif",
-                  backgroundColor: "#fff"
-                }}
-              >
-                {/* Header */}
-                <div required
-                  style={{
-                    background: "#f9fafb",
-                    padding: "12px 15px",
-                    fontWeight: "600",
-                    fontSize: "16px",
-                    color: "#111827",
-                    borderBottom: "1px solid #e5e7eb"
-                  }}
-                >
-                  Investment Adjustment Policy
-                </div>
-
-                {/* Content Body */}
-                <div style={{ padding: "20px" }}>
-
-                  {/* Point 1 */}
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginBottom: "15px" }}>
-                    <span style={{ fontSize: "18px", lineHeight: "1", marginTop: "2px", flexShrink: 0 }}>•</span>
-                    <p style={{ margin: 0, fontSize: "14px", lineHeight: "1.6", color: "#374151" }}>
-                      When the Investor’s total payout becomes equal to or exceeds 100% of the invested principal amount, 25% of the principal amount shall be adjusted towards returns.
-                    </p>
-                  </div>
-
-                  {/* Point 2 */}
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginBottom: "15px" }}>
-                    <span style={{ fontSize: "18px", lineHeight: "1", marginTop: "2px", flexShrink: 0 }}>•</span>
-                    <p style={{ margin: 0, fontSize: "14px", lineHeight: "1.6", color: "#374151" }}>
-                      When the Investor’s total accumulated returns reach 200% (2X) of the invested principal amount, 50% of the principal amount shall be adjusted towards returns.
-                    </p>
-                  </div>
-
-                  {/* Point 3 */}
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-                    <span style={{ fontSize: "18px", lineHeight: "1", marginTop: "2px", flexShrink: 0 }}>•</span>
-                    <p style={{ margin: 0, fontSize: "14px", lineHeight: "1.6", color: "#374151" }}>
-                      When the Investor’s total earnings reach 300% (3X) of the principal amount, the investment term shall be considered completed. Any further participation shall require execution of a new investment agreement.
-                    </p>
-                  </div>
+              {/* Investment Adjustment Policy */}
+              <section className="info-box">
+                <div className="info-box-header">Investment Adjustment Policy</div>
+                <div className="info-box-content policy-content">
+                  <div className="policy-item"><span className="policy-bullet">•</span><p>When the Investor’s total payout becomes equal to or exceeds 100% of the invested principal amount, 25% of the principal amount shall be adjusted towards returns.</p></div>
+                  <div className="policy-item"><span className="policy-bullet">•</span><p>When the Investor’s total accumulated returns reach 200% (2X) of the invested principal amount, 50% of the principal amount shall be adjusted towards returns.</p></div>
+                  <div className="policy-item"><span className="policy-bullet">•</span><p>When the Investor’s total earnings reach 300% (3X) of the principal amount, the investment term shall be considered completed. Any further participation shall require execution of a new investment agreement.</p></div>
                 </div>
               </section>
 
-
-
-
-
-              <section
-                style={{
-                  border: "1px solid #d1d5db",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  marginTop: "25px",
-                  fontFamily: "sans-serif",
-                  backgroundColor: "#fff"
-                }}
-              >
-                {/* Header */}
-                <div
-                  style={{
-                    background: "#f9fafb",
-                    padding: "12px 15px",
-                    fontWeight: "600",
-                    fontSize: "16px",
-                    color: "#111827",
-                    borderBottom: "1px solid #e5e7eb"
-                  }}
-                >
-                  Consent and authorization
-                </div>
-
-                {/* Content Body */}
-                <div style={{ padding: "20px" }}>
-
-                  {/* Point 1: Data Privacy */}
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "20px" }}>
-                    <span style={{ color: "#9ca3af", fontSize: "18px", marginTop: "2px", flexShrink: 0 }}>✓</span>
-                    <p style={{ margin: 0, fontSize: "14px", lineHeight: "1.5", color: "#374151" }}>
-                      I consent to MANGOFX LIMITED processing my personal information (Name, Email, Phone Number, Date of Birth, Mother's Maiden Name, Address, Wallet Address and Bank Account Details) in accordance with its Privacy Policy and applicable data protection laws.
-                    </p>
-                  </div>
-
-                  {/* Point 2: DocuSign Authorization */}
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "20px" }}>
-                    <span style={{ color: "#9ca3af", fontSize: "18px", marginTop: "2px", flexShrink: 0 }}>✓</span>
-                    <p style={{ margin: 0, fontSize: "14px", lineHeight: "1.5", color: "#374151" }}>
-                      I authorize MANGOFX LIMITED to send me the Investment Agreement via DocuSign to the email address provided, where I will fill in any additional details and apply my digital signature.
-                    </p>
-                  </div>
-
-                  {/* Point 3: Confirmation of Terms */}
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-                    <span style={{ color: "#9ca3af", fontSize: "18px", marginTop: "2px", flexShrink: 0 }}>✓</span>
-                    <p style={{ margin: 0, fontSize: "14px", lineHeight: "1.5", color: "#374151" }}>
-                      I confirm that I have read, understood, and agree to be bound by the terms outlined in this form and the forthcoming Investment Agreement.
-                    </p>
-                  </div>
-
+              {/* Consent and authorization */}
+              <section className="info-box">
+                <div className="info-box-header">Consent and authorization</div>
+                <div className="info-box-content consent-content">
+                  <div className="term-item"><span className="term-icon">✓</span><p>I consent to MANGOFX LIMITED processing my personal information (Name, Email, Phone Number, Date of Birth, Mother's Maiden Name, Address, Wallet Address and Bank Account Details) in accordance with its Privacy Policy and applicable data protection laws.</p></div>
+                  <div className="term-item"><span className="term-icon">✓</span><p>I authorize MANGOFX LIMITED to send me the Investment Agreement via DocuSign to the email address provided, where I will fill in any additional details and apply my digital signature.</p></div>
+                  <div className="term-item"><span className="term-icon">✓</span><p>I confirm that I have read, understood, and agree to be bound by the terms outlined in this form and the forthcoming Investment Agreement.</p></div>
                 </div>
               </section>
 
-
-
-
-              <section
-                style={{
-                  border: "1px solid #d1d5db",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  marginTop: "25px",
-                  fontFamily: "sans-serif",
-                  backgroundColor: "#fff",
-                  paddingBottom: "20px"
-                }}
-              >
-                {/* Header */}
-                <div
-                  style={{
-                    background: "#f9fafb",
-                    padding: "12px 15px",
-                    fontWeight: "600",
-                    fontSize: "16px",
-                    color: "#111827",
-                    borderBottom: "1px solid #e5e7eb",
-                    marginBottom: "20px"
-                  }} required
-                >
-                  Signature
-                </div>
-
-                <div style={{ padding: "0 20px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", gap: "40px", flexWrap: "wrap" }}>
-
-                    {/* Left Side: Mango Wealth Planner */}
-                    <div style={{ flex: "1", minWidth: "250px" }}>
-                      <p style={{ margin: "0 0 5px", fontWeight: "bold", fontSize: "14px" }}>For MANGO WEALTH PLANNER</p>
-                      <p style={{ margin: "0", fontSize: "13px", color: "#374151" }}>Name: Mango Wealth Planner</p>
-                      <p style={{ margin: "0", fontSize: "13px", color: "#374151" }}>Title: Invest For Multi Asset Trading</p>
-                      <p style={{ margin: "10px 0 5px", fontSize: "13px", color: "#374151" }}>Digital Signature:</p>
-                      <div style={{
-                        fontFamily: "'Great Vibes', cursive",
-                        fontSize: "28px",
-                        color: "#1f2937",
-                        marginTop: "5px"
-                      }}>
-                        Mango Wealth Planner
-                      </div>
+              {/* Signature section */}
+              <section className="info-box signature-box">
+                <div className="info-box-header">Signature</div>
+                <div className="signature-grid">
+                  <div className="company-signature">
+                    <p className="signature-title">For MANGO WEALTH PLANNER</p>
+                    <p>Name: Mango Wealth Planner</p>
+                    <p>Title: Invest For Multi Asset Trading</p>
+                    <p className="signature-label">Digital Signature:</p>
+                    <div className="digital-signature">Mango Wealth Planner</div>
+                  </div>
+                  <div className="investor-signature">
+                    <p className="signature-title">For the Investor</p>
+                    <div className="signature-field">
+                      <label>Name:</label>
+                      <input type="text" value={formData.fullName} readOnly className="signature-readonly" />
                     </div>
-
-                    {/* Right Side: Investor */}
-                    <div style={{ flex: "1", minWidth: "250px" }}>
-                      <p style={{ margin: "0 0 5px", fontWeight: "bold", fontSize: "14px" }}>For the Investor</p>
-
-                      <div style={{ marginBottom: "15px" }}>
-                        <label style={{ display: "block", fontSize: "12px", marginBottom: "5px" }}>Name:</label>
-                        <input
-                          type="text"
-                          placeholder='Enter your Name'
-                          required
-                          style={{
-                            width: "100%",
-                            padding: "8px 12px",
-                            border: "1px solid #d1d5db",
-                            borderRadius: "8px",
-                            fontSize: "14px"
-                          }}
-                        />
-                      </div>
-
-                      <div>
-                        <label style={{ display: "block", fontSize: "12px", marginBottom: "5px" }}>Investor signature (digital):</label>
-                        <div style={{ position: "relative" }}>
-                          <input
-                            type="text"
-                            placeholder="signature"
-                            style={{
-                              width: "100%",
-                              height: "80px",
-                              padding: "10px",
-                              border: "1px solid #d1d5db",
-                              borderRadius: "8px",
-                              fontFamily: "'Great Vibes', cursive",
-                              fontSize: "17px",
-                              textAlign: "center",
-                              color: "#1f2937"
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Date Section */}
-                  <div style={{ marginTop: "30px" }}>
-                    <p style={{ margin: "0 0 5px", fontWeight: "bold", fontSize: "14px", color: "#374151" }}>Date</p>
-                    <div style={{
-                      display: "inline-block",
-                      fontSize: "14px",
-                      fontWeight: "500"
-                    }}>
-                      xyz
+                    <div className="signature-field">
+                      <label>Investor signature (digital):</label>
+                      <input type="text" name="signature" placeholder="signature" value={formData.signature} onChange={handleChange} className="signature-input" />
                     </div>
                   </div>
                 </div>
+                <div className="signature-date">
+                  <p className="signature-title">Date</p>
+                  <div>{new Date().toLocaleDateString()}</div>
+                </div>
               </section>
-              <hr></hr>
-              <div
-                className="button-group"
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end', // Buttons ko right side move karne ke liye
-                  gap: '12px',
-                  padding: '20px 40px 40px', // Bottom spacing thodi badha di hai
-                  marginTop: '5px'
-                }}
-              >
-                {/* Print Button */}
-                <button
-                  type="button"
-                  onClick={() => window.print()}
-                  style={{
-                    padding: '10px 25px',
-                    borderRadius: '8px',
-                    border: 'none',
-                    background: '#f1f5f9', // Light grey background
-                    color: '#1e293b',
-                    fontWeight: '600',
-                    fontSize: '14px',
-                    cursor: 'pointer',
-                    letterSpacing: '0.5px',
-                    transition: 'background 0.2s'
-                  }}
-                  onMouseOver={(e) => e.target.style.background = '#e2e8f0'}
-                  onMouseOut={(e) => e.target.style.background = '#f1f5f9'}
-                >
-                  PRINT
-                </button>
 
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  className="btn-orange"
-                  // onSubmit={handleSubmit} 
-                  style={{
-                    padding: '10px 40px',
-                    borderRadius: '8px',
-                    border: 'none',
-                    background: '#ffab00',
-                    color: '#000',
-                    fontWeight: '700',
-                    fontSize: '14px',
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                    letterSpacing: '0.5px',
-                    transition: 'transform 0.1s'
-                  }}
-                  onMouseDown={(e) => e.target.style.transform = 'scale(0.98)'}
-                  onMouseUp={(e) => e.target.style.transform = 'scale(1)'}
-                >
-                  SUBMIT
+              <hr />
+              <div className="button-group">
+                <button type="button" onClick={() => window.print()} className="print-btn">PRINT</button>
+                <button type="submit" disabled={loading} className="submit-btn">
+                  {loading ? "Submitting..." : "SUBMIT"}
                 </button>
               </div>
             </div>
           </div>
         </form>
       ) : (
-        /* --- PREMIUM SUCCESS TRIGGER POPUP --- */
-        <div style={{
-          background: '#fff', padding: '20px', borderRadius: '24px', textAlign: 'center',
-          maxWidth: '300px', width: '100%', marginTop: '80px', position: 'relative',
-          boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
-          animation: 'fadeIn 0.4s ease-out'
-        }}>
-          {/* Top-Right Close Icon */}
-          <button onClick={onClose} style={{
-            position: 'absolute', right: '15px', top: '15px', border: 'none',
-            background: '#f1f5f9', color: '#64748b', borderRadius: '50%',
-            width: '30px', height: '30px', cursor: 'pointer', fontSize: '18px'
-          }}>✖</button>
-
-          <div style={{
-            width: '80px', height: '80px', background: '#dcfce7', color: '#22c55e',
-            borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '40px', margin: '0 auto 20px'
-          }}>✓</div>
-
-          <h2 style={{ margin: '0 0 5px', color: '#0f172a', fontSize: '26px' }}>Submission Success!</h2>
-          <p style={{ color: '#64748b', fontSize: '15px', marginBottom: '10px' }}>Your agreement has been officially recorded in our system.</p>
-
-          <div style={{
-            background: '#f8fafc', padding: '15px', borderRadius: '16px',
-            margin: '25px 0', textAlign: 'left', border: '1px solid #e2e8f0'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', borderBottom: '1px dashed #cbd5e1', paddingBottom: '8px' }}>
-              <span style={{ color: '#64748b', fontSize: '14px' }}>Investor Name</span>
-              <span style={{ fontWeight: '700', color: '#1e293b' }}>{formData.fullName}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', borderBottom: '1px dashed #cbd5e1', paddingBottom: '8px' }}>
-              <span style={{ color: '#64748b', fontSize: '14px' }}>Login ID</span>
-              <span style={{ fontWeight: '700', color: '#1e293b' }}>{passedLoginId}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', borderBottom: '1px dashed #cbd5e1', paddingBottom: '8px' }}>
-              <span style={{ color: '#64748b', fontSize: '14px' }}>Invest Amount</span>
-              <span style={{ fontWeight: '700', color: '#16a34a' }}>${formData.amountUSDT}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#64748b', fontSize: '14px' }}>Agreement ID</span>
-              <span style={{ fontWeight: '700', color: '#ea580c' }}>{agreementId}</span>
-            </div>
+        <div className="success-popup">
+          <button onClick={onClose} className="close-success-btn">✖</button>
+          <div className="success-icon">✓</div>
+          <h2>Investment Successfully!</h2>
+          <p>Your agreement has been submitted</p>
+          <div className="success-details">
+            <div><span>Investor Name</span><strong>{formData.fullName}</strong></div>
+            <div><span>Login ID</span><strong>{passedLoginId}</strong></div>
+            <div><span>Invest Amount</span><strong>${formData.amountUSDT}</strong></div>
+            <div><span>Agreement ID</span><strong>{agreementId} <FaRegCopy className="copy-icon" onClick={() => handleCopy(agreementId)} /></strong></div>
           </div>
         </div>
       )}

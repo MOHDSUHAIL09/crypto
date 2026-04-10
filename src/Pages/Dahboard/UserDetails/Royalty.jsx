@@ -109,11 +109,7 @@ const BonusReport = () => {
     return rangeWithDots;
   };
 
-  // Handle items per page change
-  const handleItemsPerPageChange = (e) => {
-    setItemsPerPage(Number(e.target.value));
-    setPageIndex(1);
-  };
+
 
   const columns = [
     "Sl.No.",
@@ -130,48 +126,38 @@ const BonusReport = () => {
       <hr style={{ border: "1px solid #706e6e" }} />
 
 
-      <div className="d-flex justify-content-between align-items-center mt-2 mb-2 flex-wrap gap-2">
-        <div className="d-flex align-items-center gap-2">
-          <label className="mb-0" style={{ fontSize: "14px", fontWeight: "500", color: "#555" }}>
-            Show entries:
-          </label>
-          <select
-            className="form-select"
-            value={itemsPerPage}
-            onChange={handleItemsPerPageChange}
-            style={{
-              backgroundColor: "var(--inputcolor)",
-              width: "auto",
-              height:"38px",
-              borderRadius: "8px",
-              border: "1px solid rgba(102, 126, 234, 0.2)",
-              fontSize: "14px",
-              cursor: "pointer",
-            }}
-          >
-            <option value={10}>10</option>
-            <option value={30}>30</option>
-            <option value={50}>50</option>
-            <option value={100}>100</option>
-          </select>
-        </div>
-        
-        <div className="d-flex align-items-center gap-2">
-          <span style={{ fontSize: "14px", color: "#555" }}></span>
-          <input
-            className="form-control"
-            placeholder="Search records..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              backgroundColor: "var(--inputcolor)",
-              minWidth: "200px",
-              borderRadius: "8px",
-              border: "1px solid rgba(102, 126, 234, 0.2)",
-            }}
-          />
-        </div>
-      </div>
+<div className="entries-search-bar entries-control">
+  <div className="entries-control">
+    <label>Show entries:</label>
+    <select className="form-select" value={itemsPerPage} onChange={e => setItemsPerPage(Number(e.target.value))}>
+      {[10, 25, 50, 75, 100].map(n => <option key={n} value={n}>{n}</option>)}
+    </select>
+  </div>
+  <div className="search-wrapper">
+    <input 
+      className="form-control search-input" 
+      placeholder="Search records..." 
+      value={searchTerm} 
+      onChange={e => setSearchTerm(e.target.value)} 
+    />
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       <div className="report-card ">
         <CustomTable columns={columns} loading={loading}>

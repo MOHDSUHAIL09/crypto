@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useUser } from "../../../context/UserContext";
 import apiClient from "../../../api/apiClient";
@@ -134,15 +135,14 @@ const DepositHistory = () => {
     <div className="container-fluid p-3 mb-5">
       <div className="report-card p-3">
         <h4 className="fw-bold ms-3">{getTitle()}</h4>
-        <hr />
+        <hr style={{ border: "1px solid #999494" }} />
         
-        <div className="table-controls">
-          <div className="entries-control d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <div className="me-3 mt-2" style={{ fontWeight: "500" }}>Total Balance: $00</div>
-          </div>
-          
-          <div className="d-flex justify-content-end mt-2 mb-2">
-            <input className="form-control" placeholder="Search records..."
+        <div className="entries-search-bar entries-control">
+          <div className="entries-control">
+            <div className="p-2" style={{ fontWeight: "500" }}>Total Balance: $00</div>
+          </div>     
+          <div className="search-wrapper p-2">
+            <input className="search-wrapper" placeholder="Search records..."
               value={depositSearchTerm}
               onChange={(e) => setDepositSearchTerm(e.target.value)}
               style={{ backgroundColor: "var(--inputcolor)", minWidth: "250px", borderRadius: "8px", border: "1px solid rgba(102, 126, 234, 0.2)" }} />
@@ -175,14 +175,6 @@ const DepositHistory = () => {
           </div>
         )}
         
-        {/* Entry Info */}
-        {/* {depositTotalRecords > 0 && (
-          <div className="d-flex justify-content-between align-items-center mt-2 mb-2 flex-wrap gap-2">
-            <div style={{ fontSize: "14px", color: "#6c757d" }}>
-              Showing {depositStartIndex + 1} to {Math.min(depositStartIndex + depositItemsPerPage, depositTotalRecords)} of {depositTotalRecords} entries
-            </div>
-          </div>
-        )} */}
       </div>
     </div>
   );

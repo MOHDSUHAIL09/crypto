@@ -36,9 +36,7 @@ const CustomTable = ({
             {columns.map((col, i) => (
               <th key={i}>
                 <span
-                  className="th-content"
-                  style={{ color: col === "Sl.No." ? "black" : undefined }}
-                >
+                  className="th-content">
                   {col}
                 </span>
               </th>

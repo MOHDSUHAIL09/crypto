@@ -19,6 +19,7 @@ import ChangePassword from "./Profile/ChangePassword/ChangePassword";
 import { Epin } from "./Profile/Epin/Epin";
 import Support from "./UserDetails/Support/Support";
 import SupportHelp from "./UserDetails/Support/SupportHelp";
+import CapitalHistory from "./CapitalPayout/CapitalPayoutHistory";
 
 const Main = () => {
   return (
@@ -117,6 +118,15 @@ const Main = () => {
                     </ProtecedRoute>
                   }
                 />
+                <Route
+                  path="/CapitalPayOutHistory"
+                  element={
+                    <ProtecedRoute>
+                      <CapitalHistory/>
+                    </ProtecedRoute>
+                  }
+                />
+
                 <Route
                   path="/investmenthistory"
                   element={

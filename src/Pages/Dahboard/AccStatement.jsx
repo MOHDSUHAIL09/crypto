@@ -137,10 +137,10 @@ const AccStatement = () => {
     <div className="container-fluid p-2 mb-5">
       <div className="report-card p-3">
         <h4 className="fw-bold ms-3">{getTypeDisplayName(selectedType)} Statement</h4>
-        <hr />
+        <hr style={{ border: "1px solid #999494" }} />  
 
-        <div className="table-controls">
-          <div className="entries-control">
+        <div className="entries-search-bar entries-control">
+          <div className="">
             <select
               className="form-select w-auto"
               value={selectedType}
@@ -168,8 +168,8 @@ const AccStatement = () => {
                 <td className="text-center">
                   <div className="sr-no-circle">{(pageIndex - 1) * pageSize + index + 1}</div>
                 </td>
-                <td className="text-success">₹ {item.credit || 0}</td>
-                <td className="text-danger">₹ {item.debit || 0}</td>
+                <td className="text-success">$ {item.credit || 0}</td>
+                <td className="text-danger">$ {item.debit || 0}</td>
                 <td>
                   {item.TransDate
                     ? new Date(item.TransDate).toLocaleString("en-IN", {

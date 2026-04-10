@@ -36,12 +36,12 @@ export const Deposit2Deposit = () => {
     localStorage.getItem('regno')
   );
 
-  // ---------- State ----------
+  // ---------- State (FIXED) ----------
   const [amount1, setAmount1] = useState(100);
   const [investUserId1, setInvestUserId1] = useState("");
-  const [setCheckingUser1] = useState(false);
+  const [checkingUser1, setCheckingUser1] = useState(false);   // ✅ fixed
   const [validUser1, setValidUser1] = useState(false);
-  const [setUserName1] = useState("");
+  const [userName1, setUserName1] = useState("");              // ✅ fixed
   const [loading1, setLoading1] = useState(false);
   const [amount2, setAmount2] = useState(100);
   const [otp, setOtp] = useState("");
@@ -58,15 +58,14 @@ export const Deposit2Deposit = () => {
     return `$${num.toFixed(2)}`;
   };
 
-  // ---------- P2P user check ----------
+  // ---------- P2P user check (FIXED API call) ----------
   const checkUser1 = async (id) => {
     if (!id.trim()) return;
     setCheckingUser1(true);
     try {
-      const res = await apiClient(
-        `/User/check-user?loginid=${id}`
-      );
-      const data = await res.json();
+      // ✅ Use apiClient.get() correctly
+      const res = await apiClient.get(`/User/check-user?loginid=${id}`);
+      const data = res.data;   // Axios already parses JSON
       const name = data?.data?.Name || data?.data?.name || "";
       if (data?.success && data.data) {
         setValidUser1(true);
@@ -115,7 +114,7 @@ export const Deposit2Deposit = () => {
     }
   };
 
-  // ---------- SEND OTP using real API ----------
+  // ---------- SEND OTP ----------
   const sendOtp = async () => {
     if (!regno) {
       toast.error("Registration number not found. Please login again.");
@@ -164,7 +163,7 @@ export const Deposit2Deposit = () => {
 
     setLoading2(true);
     try {
-      // Verify OTP using /User/verify-otp (query params)
+      // Verify OTP
       const verifyResponse = await apiClient.post('/User/verify-otp', null, {
         params: { loginid, regno, otp }
       });
@@ -221,7 +220,7 @@ export const Deposit2Deposit = () => {
                     size={22}
                     style={{ cursor: "pointer", color: "#333" }}
                     onClick={() =>
-                      navigate("/dashboard/accstatement",{
+                      navigate("/dashboard/accstatement", {
                         state: { transtype: "fundtransfer" }
                       })
                     }
@@ -364,6 +363,9 @@ export const Deposit2Deposit = () => {
                       />
                     </div>
                   </div>
+
+                  {checkingUser1 && <small>Checking...</small>}
+                  {validUser1 && <small className="success-msg">✓ {userName1}</small>}
 
                   <div className="options-grid">
                     {depositOptions.map((opt) => (

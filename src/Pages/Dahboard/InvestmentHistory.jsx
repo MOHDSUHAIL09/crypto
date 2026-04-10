@@ -168,24 +168,13 @@ const BonusReport = () => {
       <hr style={{ border: "1px solid #282727" }} />
 
       {/* Search and Items per page */}
-      <div className="d-flex justify-content-between align-items-center mt-2 mb-2 flex-wrap gap-2">
-        <div className="d-flex align-items-center gap-2">
-          <label className="mb-0" style={{ fontSize: "14px", fontWeight: "500", color: "#555" }}>
-            Show entries:
-          </label>
+      <div className="entries-search-bar entries-control">
+        <div className="entries-control">
+          <label>Show entries:</label>
           <select
             className="form-select"
             value={itemsPerPage}
             onChange={handleItemsPerPageChange}
-            style={{
-              backgroundColor: "var(--inputcolor)",
-              width: "auto",
-              height:"38px",
-              borderRadius: "8px",
-              border: "1px solid rgba(102, 126, 234, 0.2)",
-              fontSize: "14px",
-              cursor: "pointer",
-            }}
           >
             <option value={10}>10</option>
             <option value={25}>25</option>

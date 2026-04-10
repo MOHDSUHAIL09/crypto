@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import { FaUpload } from "react-icons/fa";
+import apiClient from '../.././../../api/apiClient';
+import toast from 'react-hot-toast';
 import './Support.css';
 
 const SupportHelp = () => {
@@ -9,95 +11,137 @@ const SupportHelp = () => {
   const ticket = location.state?.ticket;
   const navigate = useNavigate();
 
-  const getLoginId = () => {
-    const storedUserData = localStorage.getItem('userData');
-    if (storedUserData) {
-      try {
-        const parsed = JSON.parse(storedUserData);
-        if (parsed.me) return parsed.me;
-        if (parsed.loginid) return parsed.loginid;
-      } catch (e) { }
-    }
-    return localStorage.getItem('loginid') || 'india';
+  const getRegNo = () => {
+    return localStorage.getItem('regno');
   };
 
-  const [messages, setMessages] = useState([
-    { id: 2, text: "Hello dear, please describe in detail the issue you encountered in the game. If possible, kindly send us a screenshot of the problem, this will help us resolve it more effectively and quickly.\nThank you for your cooperation!", sender: "bot", timestamp: new Date() }
-  ]);
+  const nextIdRef = useRef(1);
+  const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const [sending, setSending] = useState(false);
   const messagesEndRef = useRef(null);
-  const fileInputRef = useRef(null);  // 👈 hidden file input ke liye ref
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  useEffect(() => {
-    console.log('Received ticket:', ticket);
-  }, [ticket]);
+  const sendToSupportApi = async (messageText, imageFile = null, messageType = "general") => {
+    const regno = getRegNo();
+    if (!regno) {
+      toast.error("User registration not found. Please login again.");
+      return null;
+    }
+    if (!ticket?.id) {
+      toast.error("Ticket ID not found. Please go back and select a ticket.");
+      return null;
+    }
 
-  const handleSendMessage = () => {
-    if (!inputValue.trim()) return;
+    const formData = new FormData();
+    formData.append('From', parseInt(regno));
+    formData.append('Subject', ticket?.subject);
+    formData.append('MessageType', messageType);
+    formData.append('Message', messageText);
+    formData.append('MessageId', ticket.id.toString()); 
+    if (imageFile) {
+      formData.append('Image', imageFile);
+    }
 
+try {
+  const response = await apiClient.post('/Dashboard/support-chat', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  });
+
+  if (response.data?.success) {
+    const Message = response.data.data.message;
+    toast.success(Message);   
+    return null;                 
+  } else {
+    toast.error(response.data?.message || "Failed to send message");
+    return null;
+  }
+} catch (err) {
+  console.error("API Error:", err);
+  const errorMsg = err.response?.data?.message || err.response?.data?.title || "Server error. Please try again.";
+  toast.error(errorMsg);
+  return null;
+}
+  };
+
+  const handleSendMessage = async () => {
+    if (!inputValue.trim() || sending) return;
+
+    const userMessageText = inputValue.trim();
     const userMessage = {
-      id: messages.length + 1,
-      text: inputValue,
+      id: nextIdRef.current++,
+      text: userMessageText,
       sender: "user",
       timestamp: new Date(),
-      loginid: getLoginId()
     };
     setMessages(prev => [...prev, userMessage]);
     setInputValue("");
+    setSending(true);
 
-    setTimeout(() => {
-      const botReply = "Hello dear, could you please send us a screenshot of the issue you're experiencing? This will help us assist you more accurately and efficiently.";
-      setMessages(prev => [...prev, {
-        id: prev.length + 1,
-        text: botReply,
+    const botReplyText = await sendToSupportApi(userMessageText, null, "general");
+    setSending(false);
+
+    if (botReplyText) {
+      const botMessage = {
+        id: nextIdRef.current++,
+        text: botReplyText,
         sender: "bot",
         timestamp: new Date()
-      }]);
-    }, 800);
+      };
+      setMessages(prev => [...prev, botMessage]);
+    }
   };
 
-  // 👇 file picker kholega
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };
 
-  // 👇 file select hone par image upload karega
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const imageBase64 = reader.result;
-        const imageMessage = {
-          id: messages.length + 1,
-          text: "📷 Screenshot attached",
-          sender: "user",
-          timestamp: new Date(),
-          loginid: getLoginId(),
-          image: imageBase64   // image data store kar rahe hain
-        };
-        setMessages(prev => [...prev, imageMessage]);
-
-        // optional: bot reply
-        setTimeout(() => {
-          const botReply = "Thank you for sharing the screenshot. Our team will look into it and get back to you soon.";
-          setMessages(prev => [...prev, {
-            id: prev.length + 1,
-            text: botReply,
-            sender: "bot",
-            timestamp: new Date()
-          }]);
-        }, 800);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      alert("Kripya sirf image file upload karein (JPG, PNG, etc.)");
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      toast.error("Please upload only image files (JPG, PNG, etc.)");
+      event.target.value = '';
+      return;
     }
-    // reset file input so same file can be uploaded again
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image size should be less than 5MB");
+      event.target.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const imagePreview = reader.result;
+      const imageMessage = {
+        id: nextIdRef.current++,
+        text: "📷 Screenshot attached",
+        sender: "user",
+        timestamp: new Date(),
+        image: imagePreview
+      };
+      setMessages(prev => [...prev, imageMessage]);
+    };
+    reader.readAsDataURL(file);
+
+    setSending(true);
+    const botReplyText = await sendToSupportApi("Screenshot attached", file, "image");
+    setSending(false);
+
+    if (botReplyText) {
+      const botMessage = {
+        id: nextIdRef.current++,
+        text: botReplyText,
+        sender: "bot",
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, botMessage]);
+    }
+
     event.target.value = '';
   };
 
@@ -115,11 +159,7 @@ const SupportHelp = () => {
             <div className="header-title">
               <h2>Message Center</h2>
             </div>
-            <div
-              className="official-badge"
-              onClick={goBackToTicketList}
-              style={{ cursor: 'pointer' }}
-            >
+            <div className="official-badge" onClick={goBackToTicketList} style={{ cursor: 'pointer' }}>
               Back To Ticket List
             </div>
           </div>
@@ -148,19 +188,11 @@ const SupportHelp = () => {
           {messages.map(msg => (
             <div key={msg.id} className={`message ${msg.sender}`}>
               <div className="message-bubble">
-                {/* 👇 agar message mein image hai toh dikhao */}
                 {msg.image && (
-                  <img
-                    src={msg.image}
-                    alt="screenshot"
-                    style={{ maxWidth: '200px', maxHeight: '150px', borderRadius: '8px', marginBottom: '8px' }}
-                  />
+                  <img src={msg.image} alt="screenshot" style={{ maxWidth: '200px', maxHeight: '150px', borderRadius: '8px', marginBottom: '8px' }} />
                 )}
                 <div className="message-text">{msg.text}</div>
                 <div className="message-time">{formatTime(msg.timestamp)}</div>
-                {msg.sender === 'user' && msg.loginid && (
-                  <div className="message-loginid">{msg.loginid}</div>
-                )}
               </div>
             </div>
           ))}
@@ -174,20 +206,16 @@ const SupportHelp = () => {
               placeholder="Type a message..."
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
-              onKeyPress={e => e.key === 'Enter' && handleSendMessage()}
+              onKeyPress={e => e.key === 'Enter' && !sending && handleSendMessage()}
               className="chat-input"
+              disabled={sending}
             />
-            <FaUpload onClick={handleUploadClick} />  {/* 👈 click handler */}
-            {/* 👇 hidden file input */}
-            <input
-              type="file"
-              ref={fileInputRef}
-              style={{ display: 'none' }}
-              accept="image/*"
-              onChange={handleFileChange}
-            />
+            <FaUpload onClick={handleUploadClick} style={{ cursor: 'pointer', opacity: sending ? 0.5 : 1 }} />
+            <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept="image/*" onChange={handleFileChange} />
           </div>
-          <button onClick={handleSendMessage} className="send-btn">Send</button>
+          <button onClick={handleSendMessage} className="send-btn" disabled={sending || !inputValue.trim()}>
+            {sending ? "Sending..." : "Send"}
+          </button>
         </div>
       </div>
     </div>

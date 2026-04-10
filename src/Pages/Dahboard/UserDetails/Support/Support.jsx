@@ -64,13 +64,21 @@ const Support = () => {
       const data = response.data;
       if (data?.success && data?.data?.data) {
         const formatted = data.data.data.map(item => {
-          // ✅ Extract message from any possible field name
           const messageText = item.Message || item.Msg || item.MsgText || item.Description || item.messege || item.text || 'No message provided';
+          // ✅ Mapping for all ticket types
+          const typeMap = {
+            'withdraw': 'Withdrawal',
+            'income': 'Income',
+            'deposit': 'Deposit',
+            'purchase_bot': 'Purchase BOT',
+            'profile': 'Profile',
+            'other': 'Other'
+          };
           return {
             id: item.MsgId,
             ticketId: `FX${item.MsgId}`,
             date: formatDate(item.MsgDate),
-            type: item.MsgType === 'withdraw' ? 'Withdrawal' : item.MsgType === 'income' ? 'Income' : item.MsgType || 'N/A',
+            type: typeMap[item.MsgType] || item.MsgType || 'N/A',
             subject: item.MsgSubject || 'VIEW',
             message: messageText
           };
@@ -102,7 +110,10 @@ const Support = () => {
       const formDataPayload = new FormData();
       formDataPayload.append('From', regNo);
       formDataPayload.append('Subject', ticketData.subject);
-      formDataPayload.append('MessageType', ticketData.ticketType === 'withdrawal' ? 'withdraw' : 'income');
+      // ✅ Send the exact selected type (backend expects: withdraw, income, deposit, purchase_bot, profile, other)
+      let messageType = ticketData.ticketType;
+      if (messageType === 'withdrawal') messageType = 'withdraw'; // as per backend
+      formDataPayload.append('MessageType', messageType);
       formDataPayload.append('LoginId', loginId);
       formDataPayload.append('Message', ticketData.messege || '');
       if (selectedImage) formDataPayload.append('TicketImgage', selectedImage);
@@ -208,7 +219,17 @@ const Support = () => {
           <div className="modal-content01">
             <div className="modal-header01"><h2>Create New Ticket</h2><button className="modal-close" onClick={() => setShowModal(false)}>✕</button></div>
             <form className="modal-middle" onSubmit={handleSubmit}>
-              <div className="form-group01"><label>Ticket Type *</label><select name="ticketType" value={formData.ticketType} onChange={handleInputChange} required><option value="">-- Select Message Type --</option><option value="income">Income</option><option value="withdrawal">Withdrawal</option><option value="deposit">Deposit</option><option value="purchase_bot">Purchase BOT</option><option value="profile">Profile</option><option value="other">Other</option></select></div>
+              <div className="form-group01"><label>Ticket Type *</label>
+                <select name="ticketType" value={formData.ticketType} onChange={handleInputChange} required>
+                  <option value="">-- Select Message Type --</option>
+                  <option value="income">Income</option>
+                  <option value="withdrawal">Withdrawal</option>
+                  <option value="deposit">Deposit</option>
+                  <option value="purchase_bot">Purchase BOT</option>
+                  <option value="profile">Profile</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
               <div className="form-group"><label>Subject *</label><input type="text" name="subject" value={formData.subject} onChange={handleInputChange} placeholder="Enter ticket subject" required /></div>
               <div className="form-group"><label>Message *</label><textarea name="messege" value={formData.messege} onChange={handleInputChange} placeholder="Enter detailed message" rows="4" /></div>
               <div className="form-group"><label>Attachment (Optional)</label><input type="file" onChange={handleImageChange} accept="image/*" />{selectedImage && <p style={{ fontSize: '12px', marginTop: '5px' }}>Selected: {selectedImage.name}</p>}</div>

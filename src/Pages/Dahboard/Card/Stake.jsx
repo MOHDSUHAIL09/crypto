@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import toast from "react-hot-toast";
 import AgreementForm from "./InvestmentForm/AgreementForm";
 import apiClient from "../../../api/apiClient";
+import { useUser } from "../../../context/UserContext"
 
 // CSS injection – ek baar head mein daal do
 const injectStyles = () => {
@@ -138,6 +139,7 @@ const injectStyles = () => {
 };
 
 const Stake = () => {
+  const { userData: loggedInUser } = useUser(); // 🔥 Logged-in user ka data
   const [openAgreement, setOpenAgreement] = useState(false);
   const [loginId, setLoginId] = useState("");
   const [isBotActive, setIsBotActive] = useState(false);
@@ -145,7 +147,7 @@ const Stake = () => {
   const [hasChecked, setHasChecked] = useState(false);
   const [isValidUser, setIsValidUser] = useState(false);
   const [userName, setUserName] = useState("");
-  const [userRegNo, setUserRegNo] = useState(null);
+  const [userRegNo, setUserRegNo] = useState(null); // Bot owner ka regno (jo activate ho raha hai)
 
   const [subscriptionPopup, setSubscriptionPopup] = useState({
     visible: false,
@@ -157,7 +159,6 @@ const Stake = () => {
     onCancel: null,
   });
 
-  // Inject CSS on mount
   useEffect(() => {
     injectStyles();
   }, []);
@@ -187,13 +188,26 @@ const Stake = () => {
       cancelText: "Cancel",
       onConfirm: async () => {
         closeSubscriptionPopup();
+
+        // 🔥 Get logged-in user's regno from context
+        const loggedInRegNo = loggedInUser?.regno || localStorage.getItem("regno");
+        console.log("🔐 Logged-in user regno:", loggedInRegNo);
+        console.log("🤖 Bot being activated regno:", userRegNo);
+
+        if (!loggedInRegNo) {
+          toast.error("Logged-in user regno not found!");
+          return;
+        }
+
         try {
           const response = await apiClient.post("/Dashboard/investment", {
-            regno: userRegNo,
+            regno: userRegNo,        // Bot being activated
             rkprice: 100,
-            uRegno: userRegNo,
+            uRegno: loggedInRegNo,   // 🔥 Login user ka regno (from context)
+            pkg: "BOT",             // ✅ as requested
+            aggrement: ""                   // ✅ empty
           });
-          console.log("bot", response);
+          console.log("📥 Activation response:", response);
           if (response.data?.success) {
             toast.success("Subscribed Successfully!");
             setIsBotActive(true);
@@ -202,7 +216,7 @@ const Stake = () => {
             toast.error(response.data?.message || "Activation failed");
           }
         } catch (error) {
-          console.error("Activation error:", error);
+          console.error("🔥 Activation error:", error);
           toast.error("Activation failed. Please try again.");
         }
       },
@@ -216,11 +230,13 @@ const Stake = () => {
     setHasChecked(false);
     try {
       const res = await apiClient.get(`/User/check-user-bot-status?loginid=${id}`);
-      console.log("Bot status response:", res.data);
+      console.log("📥 Bot status response:", res.data);
       if (res.data?.success && res.data.data) {
         setIsValidUser(true);
         setUserName(res.data.data.name);
-        const regno = res.data.data.regno || res.data.data.RegNo || res.data.data.regNo;
+        const regno = res.data.data.regno;
+        localStorage.setItem('userregno', regno)
+        console.log("🔢 Extracted regno from API:", regno);
         setUserRegNo(regno);
         const activeStatus = res.data.data.BotStatus > 0;
         setIsBotActive(activeStatus);
@@ -347,7 +363,7 @@ const Stake = () => {
           {isBotActive ? "Investment" : "Subscription"}
         </button>
       </div>
-      <AgreementForm open={openAgreement} loginId={loginId} onClose={() => setOpenAgreement(false)} />
+      <AgreementForm open={openAgreement} onClose={() => setOpenAgreement(false)} />
       {subscriptionPopup.visible && ReactDOM.createPortal(renderPopup(), document.body)}
     </>
   );

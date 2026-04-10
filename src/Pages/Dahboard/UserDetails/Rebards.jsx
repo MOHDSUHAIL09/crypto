@@ -109,61 +109,34 @@ const BonusReport = () => {
     return rangeWithDots;
   };
 
-  // Handle items per page change
-  const handleItemsPerPageChange = (e) => {
-    setItemsPerPage(Number(e.target.value));
-    setPageIndex(1);
-  };
-
   return (
-    <div className=" downline-main-wrapper  mb-5">
-      
+    <div className="downline-main-wrapper mb-5">
       {/* Heading */}
       <div className="mb-3">
         <h2>Rewards Report</h2>
       </div>
       <hr style={{ border: "1px solid #282727" }} />
 
-      {/* Search and Items per page */}
-      <div className="d-flex justify-content-between align-items-center mt-2 mb-2 flex-wrap gap-2">
-        <div className="d-flex align-items-center gap-2">
-          <label className="mb-0" style={{ fontSize: "14px", fontWeight: "500", color: "#555" }}>
-            Show entries:
-          </label>
-          <select
-            className="form-select"
-            value={itemsPerPage}
-            onChange={handleItemsPerPageChange}
-            style={{
-              backgroundColor: "var(--inputcolor)",
-              width: "auto",
-              height:"38px",
-              borderRadius: "8px",
-              border: "1px solid rgba(102, 126, 234, 0.2)",
-              fontSize: "14px",
-              cursor: "pointer",
-            }}
+      {/* ===== FILTER BAR with same classes as CapitalPayoutHistory ===== */}
+      <div className="entries-search-bar entries-control">
+        <div className="entries-control">
+          <label>Show entries:</label>
+          <select 
+            className="form-select" 
+            value={itemsPerPage} 
+            onChange={(e) => setItemsPerPage(Number(e.target.value))}
           >
-            <option value={10}>10</option>
-            <option value={25}>25</option>
-            <option value={50}>50</option>
-            <option value={75}>75</option>
-            <option value={100}>100</option>
+            {[10, 25, 50, 75, 100].map(n => (
+              <option key={n} value={n}>{n}</option>
+            ))}
           </select>
         </div>
-        
-        <div className="d-flex align-items-center gap-2">
-          <input
-            className="form-control"
-            placeholder="Search records..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              backgroundColor: "var(--inputcolor)",
-              minWidth: "200px",
-              borderRadius: "8px",
-              border: "1px solid rgba(102, 126, 234, 0.2)",
-            }}
+        <div className="search-wrapper">
+          <input 
+            className="form-control search-input" 
+            placeholder="Search records..." 
+            value={searchTerm} 
+            onChange={(e) => setSearchTerm(e.target.value)} 
           />
         </div>
       </div>
@@ -184,40 +157,23 @@ const BonusReport = () => {
           {currentRecords.length > 0 ? (
             currentRecords.map((row, index) => (
               <tr key={row.rid}>
-                
-                {/* Sl.No with proper pagination */}
                 <td className="text-center">
                   <div className="sr-no-circle">
                     {startIndex + index + 1}
                   </div>
                 </td>
-
                 <td>{row.Ranks}</td>
-
-                <td>
-                  {row.PowerLeg} / {row.OtherLeg}
-                </td>
-
-                <td>
-                  {row.Remaining_PowerLeg || 0} /{" "}
-                  {row.Remaining_OtherLeg || 0}
-                </td>
-
+                <td>{row.PowerLeg} / {row.OtherLeg}</td>
+                <td>{row.Remaining_PowerLeg || 0} / {row.Remaining_OtherLeg || 0}</td>
                 <td>${row.Bot100_amt}</td>
-
-                {/* Status Color */}
                 <td
                   style={{
                     fontWeight: "600",
-                    color:
-                      row.rStatus === "Achieved"
-                        ? "green"
-                        : "red",
+                    color: row.rStatus === "Achieved" ? "green" : "red",
                   }}
                 >
                   {row.rStatus}
                 </td>
-
               </tr>
             ))
           ) : (
@@ -229,11 +185,10 @@ const BonusReport = () => {
           )}
         </CustomTable>
 
-
-
+        {/* Pagination (same as before) */}
         {totalPages > 1 && (
           <div className="d-flex justify-content-center align-items-center mt-5 mb-3 flex-wrap gap-md-2">
-    
+            {/* Previous Button */}
             <button
               onClick={goToPreviousPage}
               disabled={pageIndex === 1}
@@ -259,7 +214,7 @@ const BonusReport = () => {
               ←
             </button>
 
-  
+            {/* Page Numbers */}
             {getPagination().map((page, i) => (
               <button
                 key={i}
@@ -313,7 +268,7 @@ const BonusReport = () => {
               </button>
             ))}
 
-      
+            {/* Next Button */}
             <button
               onClick={goToNextPage}
               disabled={pageIndex === totalPages}
@@ -341,7 +296,6 @@ const BonusReport = () => {
           </div>
         )}
       </div>
-
     </div>
   );
 };
