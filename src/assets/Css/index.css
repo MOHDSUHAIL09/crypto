@@ -15,7 +15,7 @@ Version      : 1.1.9
 	06. MISSION SECTION
 	07. BENEFIT SECTION
 	08. TOKEN SECTION
-	09. TIMELINE SECTION
+	09. TIMELINE SECTIOmb
 	10. TEAM SECTION
 	11. BLOG SECTION
 	12. FAQ SECTION
@@ -41,6 +41,12 @@ a:hover, a:focus {
 	color: #f6aa35;
 	text-decoration: none;
 	outline:0; 
+}
+.mb-4{
+ margin-bottom: 60px !important;
+}
+.mb-5{
+ margin-bottom: 90px !important;
 }
 h1,
 h2,
@@ -1770,11 +1776,11 @@ img.play-btn-img{
 .carbon-layout .about-left{
 	padding-left:60px; 
 }
-.carbon-layout .about-left h2.section-heading{
+.carbon-layout .about-left h2.section-heading1{
 	margin:0px 0px 15px 0px;
 }
-h2.section-heading{
-	font-size: 3.5rem;
+h2.section-heading1{
+	font-size: 3.50rem;
 	margin:0px 0px 30px 0px;
 	color:#000000;
 	font-weight:bold;

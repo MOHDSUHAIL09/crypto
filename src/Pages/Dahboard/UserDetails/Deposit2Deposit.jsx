@@ -210,7 +210,7 @@ export const Deposit2Deposit = () => {
           <div className="deposit-col d-flex flex-lg-nowrap flex-wrap justify-content-between align-items-start p-1">
             {/* SELF TRANSFER CARD */}
             <div className="deposit-card">
-              <div className="d-flex justify-content-between align-items-center">
+              <div className="d-flex justify-content-between ">
                 <div className="deposit-title">
                   <RiP2pFill size={22} />
                   <h2>Income Wallet To Deposit Wallet</h2>
@@ -226,7 +226,7 @@ export const Deposit2Deposit = () => {
                     }
                     onMouseOver={(e) => (e.target.style.color = "#f909f9")}
                     onMouseOut={(e) => (e.target.style.color = "#333")}
-                    title="View Self Transfer History"
+                    title="Income Wallet To Deposit Wallet History"
                   />
                 </div>
               </div>
@@ -306,7 +306,7 @@ export const Deposit2Deposit = () => {
 
             {/* P2P TRANSFER CARD */}
             <div className="deposit-card">
-              <div className="d-flex justify-content-between align-items-center">
+              <div className="d-flex justify-content-between ">
                 <div className="deposit-title">
                   <RiP2pFill size={22} />
                   <h2>Deposit To Deposit</h2>
@@ -322,7 +322,7 @@ export const Deposit2Deposit = () => {
                     }
                     onMouseOver={(e) => (e.target.style.color = "#f909f9")}
                     onMouseOut={(e) => (e.target.style.color = "#333")}
-                    title="View P2P Transfer History"
+                    title="Deposit To Deposit History"
                   />
                 </div>
               </div>

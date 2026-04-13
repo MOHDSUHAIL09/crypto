@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   FaUsers,
   FaThLarge,
@@ -20,15 +20,43 @@ const menuItems = [
   { icon: <FaUndo />, title: "Rewards", path: "/dashboard/rewards" },
   { icon: <PiHandWithdrawBold />, title: "Capital Payout", path: "/dashboard/capitalpayout" },
   { icon: <PiTreeView />, title: "TreeView", path: "/dashboard/TreeView" },
-  { icon: <MdSupportAgent />, title: "Support", path: "/dashboard/Support" }, // fixed path (no space)
+  { icon: <MdSupportAgent />, title: "Support", path: "/dashboard/Support" },
 ];
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const floatingRef = useRef(null);
 
   const [isMobile, setIsMobile] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // ✅ Function to close floating menu
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
+  // ✅ Handle navigation + close menu
+  const handleNavigate = (path) => {
+    navigate(path);
+    closeMenu();
+  };
+
+  // ✅ Detect click outside floating menu to close (optional but good UX)
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        menuOpen &&
+        floatingRef.current &&
+        !floatingRef.current.contains(event.target) &&
+        !event.target.closest(".center-btn") // exclude center button
+      ) {
+        closeMenu();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuOpen]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -64,47 +92,52 @@ const Sidebar = () => {
       {isMobile && (
         <div className="mobile-bottom-nav">
           {/* Dashboard */}
-          <div className="pro-item" onClick={() => navigate("/dashboard")}>
+          <div className="pro-item" onClick={() => handleNavigate("/dashboard")}>
             <FaThLarge />
             <span className="nav-text">Dashboard</span>
           </div>
 
           {/* Downline Team */}
-          <div className="pro-item me-5" onClick={() => navigate("/dashboard/downline-team")}>
+          <div className="pro-item me-5" onClick={() => handleNavigate("/dashboard/downline-team")}>
             <FaUsers />
             <span className="nav-text">Team</span>
           </div>
 
-          {/* ✅ Floating Animated Menu – now with 4 items */}
-          <div className={`floating-menu ${menuOpen ? "show" : ""}`}>
-            <div className="float-icon" onClick={() => navigate("/dashboard/deposit2deposit")}>
+          {/* ✅ Floating Animated Menu – with ref to detect outside clicks */}
+          <div ref={floatingRef} className={`floating-menu ${menuOpen ? "show" : ""}`}>
+            <div className="float-icon" onClick={() => handleNavigate("/dashboard/deposit2deposit")}>
               <RiP2pFill />
+              <span className="float-text">P2P</span>
             </div>
-            <div className="float-icon" onClick={() => navigate("/dashboard/Royalty")}>
+            <div className="float-icon" onClick={() => handleNavigate("/dashboard/Royalty")}>
               <FaChartBar />
+              <span className="float-text">Royalty</span>
             </div>
-            <div className="float-icon" onClick={() => navigate("/dashboard/capitalpayout")}>
+            <div className="float-icon" onClick={() => handleNavigate("/dashboard/capitalpayout")}>
               <PiHandWithdrawBold />
+              <span className="float-text">Withdraw</span>
             </div>
-            {/* ✅ NEW – Support button */}
-            <div className="float-icon" onClick={() => navigate("/dashboard/Support")}>
+            <div className="float-icon" onClick={() => handleNavigate("/dashboard/Support")}>
               <MdSupportAgent />
+              <span className="float-text">Support</span>
             </div>
           </div>
 
-          {/* ✅ Center Button */}
+          {/* Center Button */}
           <div className="center-btn" onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? "✕" : "+"}
+            
+            <button className="modal-close01">✕</button>
+            
           </div>
 
           {/* Rewards */}
-          <div className="pro-item" onClick={() => navigate("/dashboard/rewards")}>
+          <div className="pro-item" onClick={() => handleNavigate("/dashboard/rewards")}>
             <FaUndo />
             <span className="nav-text">Rewards</span>
           </div>
 
           {/* TreeView */}
-          <div className="pro-item" onClick={() => navigate("/dashboard/TreeView")}>
+          <div className="pro-item" onClick={() => handleNavigate("/dashboard/TreeView")}>
             <PiTreeView />
             <span className="nav-text">Tree</span>
           </div>

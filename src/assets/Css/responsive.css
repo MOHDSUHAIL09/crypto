@@ -173,9 +173,9 @@
  	.copyrights.style-1{
 		margin-top: 0px;
 	}
-	.carbon-layout .hero-main h1, h2.section-heading{
+	/* .carbon-layout .hero-main h1, h2.section-heading1{
 		font-size: 2.8rem;
-	}
+	} */
 	.carbon-layout .about-left h4{
 		font-size:24px; 
 	}
@@ -611,7 +611,7 @@
 		top: 0;
 		transform: none;
 	}
-	.token-pricing-section .section-heading {
+	.token-pricing-section .section-heading1 {
 	    margin: 0 0 60px;
 	}
  } 
@@ -1052,7 +1052,7 @@
 	.footer-3 .footer-box-2, .footer-3 .footer-box-3 {
 	    padding-top: 30px;
 	}
-	.carbon-layout .hero-main h1, h2.section-heading{
+	.carbon-layout .hero-main h1, h2.section-heading1{
 		font-size: 2.1rem;
 	}
 	.c-l .col{
@@ -1221,7 +1221,7 @@
 	.token-pricing-section{
 		padding-top:60px; 
 	}
-	.token-pricing-section .section-heading {
+	.token-pricing-section .section-heading1 {
 	    margin: 0 0 60px;
 	}
 	.token-pricing-section::before, .token-pricing-section::after  {
@@ -1332,7 +1332,7 @@
 	.about-mercury-animation{
 		min-height:320px;
 	}
-	.token-pricing-section .section-heading span{
+	.token-pricing-section .section-heading1 span{
 		padding-left: 0;
 		margin-bottom: 15px;
 	}

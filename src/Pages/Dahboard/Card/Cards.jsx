@@ -13,6 +13,7 @@ import { IoSend } from 'react-icons/io5';
 const Cards = () => {
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
 
+
   // Withdraw modal states
   const [withdrawAmount, setWithdrawAmount] = useState('');
   const [withdrawOtp, setWithdrawOtp] = useState('');
@@ -22,11 +23,11 @@ const Cards = () => {
   const [verifyingOtp, setVerifyingOtp] = useState(false);
   const [otpTimer, setOtpTimer] = useState(0);
   const [otpIntervalId, setOtpIntervalId] = useState(null);
-
-  // Live rate states
   const [usdToInrRate, setUsdToInrRate] = useState(null);
-  const [fetchingRate, setFetchingRate] = useState(false);
-  const [rateError, setRateError] = useState(null);
+  const [setFetchingRate] = useState(false);
+  const [setRateError] = useState(null);
+  const [timeLeft, setTimeLeft] = useState("");
+
 
   // Payout input amount state
   const [payoutAmount, setPayoutAmount] = useState('');
@@ -60,7 +61,6 @@ const Cards = () => {
     navigator.clipboard.writeText(text);
     toast.success("Sponser ID Copied!");
   };
-
   // Fetch live USD/INR rate
   const fetchUsdToInrRate = async () => {
     setFetchingRate(true);
@@ -83,6 +83,41 @@ const Cards = () => {
     }
   };
 
+
+
+  useEffect(() => {
+    const DateString = userData?.topupdate;
+    
+
+
+    const targetDate = new Date(DateString);
+    targetDate.setDate(targetDate.getDate() + 365);
+    targetDate.setHours(0, 0, 0, 0); 
+
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const targetTime = targetDate.getTime();
+      const timeDiff = targetTime - now;
+
+
+      const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
+      const seconds = Math.floor((timeDiff / 1000) % 60);
+
+      setTimeLeft(`Remaining Days: ${days}d ${hours}h ${minutes}m ${seconds}s`);
+    };
+
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 1000);
+    return () => clearInterval(timer);
+  }, [userData?.topupdate]);
+
+
+
+
+
+
   // Fetch rate when modal opens
   useEffect(() => {
     if (showWithdrawModal) {
@@ -90,7 +125,7 @@ const Cards = () => {
     }
   }, [showWithdrawModal]);
 
-  // Handle Payout Button Click - prefill amount from payout input
+  // Handle Payout Button Click
   const handlePayoutClick = () => {
     if (payoutAmount && parseFloat(payoutAmount) > 0) {
       setWithdrawAmount(payoutAmount);
@@ -133,7 +168,7 @@ const Cards = () => {
     }
   };
 
-  // Withdraw function with API call
+  // Withdraw function
   const handleWithdraw = async () => {
     const amountNum = parseFloat(withdrawAmount);
     if (!withdrawAmount || isNaN(amountNum) || amountNum <= 0) {
@@ -169,7 +204,7 @@ const Cards = () => {
       }
       walletAddress = card;
       payMode = 'inr';
-      liveRate = usdToInrRate || 0; // optional for INR withdrawal
+      liveRate = usdToInrRate || 0;
     } else if (selectedMethod === 'USDT TRC20') {
       const address = localStorage.getItem('bep20Wallet');
       if (!address) {
@@ -178,7 +213,6 @@ const Cards = () => {
       }
       walletAddress = address;
       payMode = 'usdt';
-      // For USDT, we need the live USD to INR rate for conversion
       if (!usdToInrRate) {
         toast.error('Live conversion rate not available. Please try again.');
         return;
@@ -191,7 +225,6 @@ const Cards = () => {
 
     setVerifyingOtp(true);
     try {
-      // 1. Verify OTP
       const verifyRes = await apiClient.post('/User/verify-otp', null, {
         params: {
           loginid: loginid,
@@ -205,7 +238,6 @@ const Cards = () => {
         return;
       }
 
-      // 2. Call withdrawal API
       const payload = {
         regNo: parseInt(regno),
         amount: amountNum,
@@ -218,7 +250,7 @@ const Cards = () => {
 
       if (withdrawalRes.data?.success) {
         toast.success(`Withdrawal request for $${amountNum.toFixed(2)} submitted successfully!`);
-        refreshData(); // refresh balance
+        refreshData();
         setShowWithdrawModal(false);
         setWithdrawAmount('');
         setWithdrawOtp('');
@@ -239,11 +271,6 @@ const Cards = () => {
   };
 
   if (loading) return <div>Loading...</div>;
-
-  // Compute estimated INR amount for display
-  const estimatedInr = withdrawAmount && usdToInrRate && !isNaN(parseFloat(withdrawAmount))
-    ? (parseFloat(withdrawAmount) * usdToInrRate).toFixed(2)
-    : null;
 
   return (
     <>
@@ -276,18 +303,37 @@ const Cards = () => {
                     )}
                   </div>
                 </div>
-                <p className="mb-1"><strong>Me:</strong>&nbsp; {userData?.me || "N/A"}</p>
-                <p className="mb-1">
-                  <strong>Sponsor: &nbsp; {userData?.referral || "No Sponsor"}
-                    <FaRegCopy style={{ cursor: 'pointer', marginLeft: '5px' }} onClick={() => copyReferral(userData?.referral)} />
-                  </strong>
-                </p>
+                <div className= ' timer d-flex   justify-content-between'>
+                  <div className=''>
+                    <p className="mb-1"><strong>Me:</strong>&nbsp; {userData?.me || "N/A"}</p>
+                    <p className="mb-1">
+                      <strong>Sponsor: &nbsp; {userData?.referral || "No Sponsor"}
+                        <FaRegCopy style={{ cursor: 'pointer', marginLeft: '5px' }} onClick={() => copyReferral(userData?.referral)} />
+                      </strong>
+                    </p>
+                  </div>
+
+                  {timeLeft && (
+                    <div className="countdown-timer mb-2" style={{
+                      fontSize: "13px",
+                      background: "linear-gradient(to right, var(--primary-clr), var(--secondary-clr))",
+                      padding: "8px 12px",
+                      borderRadius: "12px",
+                      textAlign: "center",
+                      fontWeight: "500",
+                      color: "#ffffff"
+                    }}>
+                       {timeLeft}
+                    </div>
+                  )}
+
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* 2. Stake Card */}
+        {/* 2. Stake Card with Countdown Timer */}
         <div className="col-lg-4 col-md-5">
           <div className="card1 no-animate custom-card1 p-0 rounded_5">
             <div className="card1-body px-3 py-3">
@@ -295,6 +341,8 @@ const Cards = () => {
                 <h5 className='mb-0 fw-bold'>Subscription / Invest</h5>
                 <div className='mint-box'><FaMintbit /></div>
               </div>
+
+
               <div className="c-box py_1">
                 <Stake
                   walletBalance={stakeData?.walletBalance || 0}
@@ -311,10 +359,10 @@ const Cards = () => {
                           </span>
                         </p>
                       </Link>
-                      <button type="button" className="wallet-buttton b"><MdAddCard size={20} /></button>
+                      <button type="button" title='fund-deposit' className="wallet-buttton b "><MdAddCard size={20} /></button>
                     </div>
 
-                    <div className='investment-wrapper d-flex gap-3'>
+                    <div className='investment-wrapper d-flex gap-0 gap-md-4 flex-wrap '>
                       <Link to="/dashboard/investmenthistory">
                         <p className="mb-0">
                           <strong>Subscription : </strong>
@@ -324,7 +372,7 @@ const Cards = () => {
                         </p>
                       </Link>
                       <Link to="/dashboard/investmenthistory">
-                        <p className="mb-0">
+                        <p className="mb-0 ms-0 md:ms-4">
                           <strong>Investment : </strong>
                           <span className='Investment-text'>
                             ${(userData?.InvestAmount || 0).toLocaleString("en-IN")}
@@ -381,7 +429,7 @@ const Cards = () => {
         </div>
       </div>
 
-      {/* payout modal */}
+      {/* Withdraw Modal */}
       {showWithdrawModal && (
         <div className="modal-overlay">
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -447,7 +495,7 @@ const Cards = () => {
                   </div>
                 )}
 
-                {/* USDT TRC20 Details with Live Rate */}
+                {/* USDT TRC20 Details */}
                 {selectedMethod === 'USDT TRC20' && (
                   <div className="method-details">
                     <div className="bank-card-display d-flex justify-content-between">
@@ -462,26 +510,6 @@ const Cards = () => {
                           toast.success("USDT address copied!");
                         }}
                       />
-                    </div>
-                    {/* Live Rate Display */}
-                    <div className="live-rate-info mt-2">
-                      {fetchingRate && <div className="text-muted small">Fetching live rate...</div>}
-                      {rateError && <div className="text-danger small">{rateError}</div>}
-                      {!fetchingRate && usdToInrRate && (
-                        <div className="small" style={{ backgroundColor: '#f8f9fa', padding: '8px', borderRadius: '8px' }}>
-                          <div className="d-flex justify-content-between">
-                            <span>💱 Live USD → INR Rate:</span>
-                            <strong>1 USD = ₹{usdToInrRate.toFixed(2)}</strong>
-                          </div>
-                          {estimatedInr && (
-                            <div className="d-flex justify-content-between mt-1">
-                              <span>💰 You will receive approx:</span>
-                              <strong>₹{estimatedInr} INR</strong>
-                            </div>
-                          )}
-                          <small className="text-muted d-block mt-1">Rate updates when you open the modal.</small>
-                        </div>
-                      )}
                     </div>
                   </div>
                 )}
@@ -501,7 +529,7 @@ const Cards = () => {
                   </div>
                 </div>
 
-                {/* OTP Input with Send Button */}
+                {/* OTP Input */}
                 <div className="input-container01 mt-3">
                   <span className="currency-symbol1">OTP</span>
                   <span className="divider">|</span>
@@ -526,12 +554,8 @@ const Cards = () => {
                     )}
                   </button>
                 </div>
-                {!otpSent && (
-                  <small className="text-muted">Click the send icon to get OTP</small>
-                )}
-                {otpSent && (
-                  <small className="text-success">OTP sent! Enter the code above and click Withdraw Now.</small>
-                )}
+                {!otpSent && <small className="text-muted">Click the send icon to get OTP</small>}
+                {otpSent && <small className="text-success">OTP sent! Enter the code above and click Withdraw Now.</small>}
 
                 {/* Withdraw Button */}
                 <button

@@ -20,6 +20,7 @@ import { Epin } from "./Profile/Epin/Epin";
 import Support from "./UserDetails/Support/Support";
 import SupportHelp from "./UserDetails/Support/SupportHelp";
 import CapitalHistory from "./CapitalPayout/CapitalPayoutHistory";
+import DownlineUserHistory from "./UserDetails/DownlineUserHistory";
 
 const Main = () => {
   return (
@@ -54,6 +55,15 @@ const Main = () => {
                   element={
                     <ProtecedRoute>
                       <DownlineTeam />
+                    </ProtecedRoute>
+                  }
+                />
+
+                 <Route
+                  path="/downlineUserHistory"
+                  element={
+                    <ProtecedRoute>
+                      <DownlineUserHistory />
                     </ProtecedRoute>
                   }
                 />

@@ -278,14 +278,14 @@
   box-shadow: 0 25px 40px -14px rgba(0, 0, 0, 0.12);
 }
 
-.card-header {
+.card-header01 {
   margin: 20px;
   border-radius: 12px !important;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 1.4rem 1.8rem;
-    background: linear-gradient(95deg, #f1ccfb, #e8bcf5);
+  background: linear-gradient(95deg, #f1ccfb, #e8bcf5);
   border-bottom: 1px solid #eef2f8;
 }
 

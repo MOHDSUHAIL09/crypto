@@ -180,7 +180,7 @@ const Support = () => {
   useEffect(() => { fetchTickets(1); }, []);
 
   return (
-    <div className="downline-main-wrapper support-container">
+    <div className="downline-main-wrapper support-container mb-5">
       {toast.show && <div className={`toast-notification ${toast.type}`}><span className="toast-message">{toast.message}</span></div>}
       {error && <div className="error-message" style={{ backgroundColor: '#f8d7da', color: '#721c24', padding: '10px', borderRadius: '5px', marginBottom: '15px' }}>{error}</div>}
       <div className="support-header">

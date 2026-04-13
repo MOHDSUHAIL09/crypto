@@ -155,49 +155,59 @@ const CapitalPayout = () => {
   return (
     <div className="downline-main-wrapper report-container p-2 p-md-4 mb-5">
       <div className="mb-3 d-flex justify-content-between"><h2>Capital Status For Payout</h2>
-      <Link to="/dashboard/CapitalPayoutHistory">
-      <div className="text-small">Capital Payout history </div>
-      </Link>
+        <Link to="/dashboard/CapitalPayoutHistory">
+          <div className="text-small">Capital Payout history </div>
+        </Link>
       </div>
       <hr style={{ border: "1px solid #999494" }} />
 
       {/* Controls */}
-<div className="entries-search-bar entries-control">
-  <div className="entries-control">
-    <label>Show entries:</label>
-    <select className="form-select" value={itemsPerPage} onChange={e => setItemsPerPage(Number(e.target.value))}>
-      {[10, 25, 50, 75, 100].map(n => <option key={n} value={n}>{n}</option>)}
-    </select>
-  </div>
-  <div className="search-wrapper">
-    <input 
-      className="form-control search-input" 
-      placeholder="Search records..." 
-      value={searchTerm} 
-      onChange={e => setSearchTerm(e.target.value)} 
-    />
-  </div>
-</div>
+      <div className="entries-search-bar entries-control">
+        <div className="entries-control">
+          <label>Show entries:</label>
+          <select className="form-select" value={itemsPerPage} onChange={e => setItemsPerPage(Number(e.target.value))}>
+            {[10, 25, 50, 75, 100].map(n => <option key={n} value={n}>{n}</option>)}
+          </select>
+        </div>
+        <div className="search-wrapper">
+          <input
+            className="form-control search-input"
+            placeholder="Search records..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
 
       {/* Table */}
       <div className="report-card">
         <CustomTable columns={columns} loading={loading} loaderSize="md" loaderText="Loading capital data..." >
-          {!loading && currentRecords.map((row, idx) => (
-            <tr key={row.id}>
-              <td className="text-center"><div className="sr-no-circle">{start + idx + 1}</div></td>
-              <td className="text-center">{row.investmentDate}</td>
-              <td className="text-center amount-cell">${row.amount.toFixed(2)}</td>
-              <td className="text-center profit-cell">${row.profit.toFixed(2)}</td>
-              <td className="text-center">${row.withdrawal.toFixed(2)}</td>
-              <td className="text-center remaining-capital">${row.remainingCapital.toFixed(2)}</td>
-              <td className="text-center">{row.remainingDays === undefined ? "-" : row.remainingDays}</td>
-              <td className="text-center">
-                <Link to={`/dashboard/capitalwithdrawalrequest?Capital=${row.id}`}>
-                  <button className="capital-payout-btn">CAPITAL PAYOUT</button>
-                </Link>
-              </td>
-            </tr>
-          ))}
+          {!loading && currentRecords.map((row, idx) => {
+            const isRemainingZero = Number(row.remainingDays) === 0;
+            return (
+              <tr key={row.id}>
+                <td className="text-center"><div className="sr-no-circle">{start + idx + 1}</div></td>
+                <td className="text-center">{row.investmentDate}</td>
+                <td className="text-center amount-cell">${row.amount.toFixed(2)}</td>
+                <td className="text-center profit-cell">${row.profit.toFixed(2)}</td>
+                <td className="text-center">${row.withdrawal.toFixed(2)}</td>
+                <td className="text-center remaining-capital">${row.remainingCapital.toFixed(2)}</td>
+                <td className="text-center">{row.remainingDays === undefined ? "-" : row.remainingDays}</td>
+                <td className="text-center">
+                  <Link to={isRemainingZero ? `/dashboard/capitalwithdrawalrequest?Capital=${row.id}` : "#"}>
+                    <button
+                      className="capital-payout-btn"
+                      disabled={!isRemainingZero}
+                      title={!isRemainingZero ? `Withdraw available only after remaining days become 0 (Current: ${row.remainingDays})` : "Click to withdraw capital"}
+                      style={{ opacity: !isRemainingZero ? 0.6 : 1, cursor: !isRemainingZero ? "not-allowed" : "pointer" }}
+                    >
+                      CAPITAL PAYOUT
+                    </button>
+                  </Link>
+                </td>
+              </tr>
+            );
+          })}
         </CustomTable>
 
         <Pagination pageIndex={pageIndex} totalPages={totalPages} onPageChange={setPageIndex} />

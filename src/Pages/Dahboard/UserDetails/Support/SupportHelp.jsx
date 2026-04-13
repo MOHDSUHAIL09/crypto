@@ -11,9 +11,7 @@ const SupportHelp = () => {
   const ticket = location.state?.ticket;
   const navigate = useNavigate();
 
-  const getRegNo = () => {
-    return localStorage.getItem('regno');
-  };
+  const getRegNo = () => localStorage.getItem('regno');
 
   const nextIdRef = useRef(1);
   const [messages, setMessages] = useState([]);
@@ -22,9 +20,21 @@ const SupportHelp = () => {
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
 
+  // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // 🔥 Fix keyboard issue: update container height on resize
+  useEffect(() => {
+    const setViewportHeight = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+    setViewportHeight();
+    window.addEventListener('resize', setViewportHeight);
+    return () => window.removeEventListener('resize', setViewportHeight);
+  }, []);
 
   const sendToSupportApi = async (messageText, imageFile = null, messageType = "general") => {
     const regno = getRegNo();
@@ -42,30 +52,28 @@ const SupportHelp = () => {
     formData.append('Subject', ticket?.subject);
     formData.append('MessageType', messageType);
     formData.append('Message', messageText);
-    formData.append('MessageId', ticket.id.toString()); 
-    if (imageFile) {
-      formData.append('Image', imageFile);
+    formData.append('MessageId', ticket.id.toString());
+    if (imageFile) formData.append('Image', imageFile);
+
+    try {
+      const response = await apiClient.post('/Dashboard/support-chat', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
+      if (response.data?.success) {
+        const botMessage = response.data.data.message;
+        toast.success("Message sent");
+        return botMessage;   // ✅ return bot reply so it appears in chat
+      } else {
+        toast.error(response.data?.message || "Failed to send message");
+        return null;
+      }
+    } catch (err) {
+      console.error("API Error:", err);
+      const errorMsg = err.response?.data?.message || err.response?.data?.title || "Server error. Please try again.";
+      toast.error(errorMsg);
+      return null;
     }
-
-try {
-  const response = await apiClient.post('/Dashboard/support-chat', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-  });
-
-  if (response.data?.success) {
-    const Message = response.data.data.message;
-    toast.success(Message);   
-    return null;                 
-  } else {
-    toast.error(response.data?.message || "Failed to send message");
-    return null;
-  }
-} catch (err) {
-  console.error("API Error:", err);
-  const errorMsg = err.response?.data?.message || err.response?.data?.title || "Server error. Please try again.";
-  toast.error(errorMsg);
-  return null;
-}
   };
 
   const handleSendMessage = async () => {
@@ -96,9 +104,7 @@ try {
     }
   };
 
-  const handleUploadClick = () => {
-    fileInputRef.current.click();
-  };
+  const handleUploadClick = () => fileInputRef.current.click();
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -141,15 +147,11 @@ try {
       };
       setMessages(prev => [...prev, botMessage]);
     }
-
     event.target.value = '';
   };
 
   const formatTime = (date) => date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  const goBackToTicketList = () => {
-    navigate('/dashboard/Support');
-  };
+  const goBackToTicketList = () => navigate('/dashboard/Support');
 
   return (
     <div className="chat-wrapper">
@@ -200,22 +202,28 @@ try {
         </div>
 
         <div className="input-area">
-          <div className="input-wrapper">
+          <div className="whatsapp-input-container">
+            <div className="attachment-icon" onClick={handleUploadClick}>
+              <FaUpload />
+            </div>
             <input
               type="text"
               placeholder="Type a message..."
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
               onKeyPress={e => e.key === 'Enter' && !sending && handleSendMessage()}
-              className="chat-input"
+              className="whatsapp-message-input"
               disabled={sending}
             />
-            <FaUpload onClick={handleUploadClick} style={{ cursor: 'pointer', opacity: sending ? 0.5 : 1 }} />
-            <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept="image/*" onChange={handleFileChange} />
+            <button 
+              className="whatsapp-send-btn" 
+              onClick={handleSendMessage} 
+              disabled={sending || !inputValue.trim()}
+            >
+              {sending ? "..." : "➤"}
+            </button>
           </div>
-          <button onClick={handleSendMessage} className="send-btn" disabled={sending || !inputValue.trim()}>
-            {sending ? "Sending..." : "Send"}
-          </button>
+          <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept="image/*" onChange={handleFileChange} />
         </div>
       </div>
     </div>

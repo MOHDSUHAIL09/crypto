@@ -44,13 +44,12 @@
   cursor: pointer;
   color: #024b27;
   transition: all 0.25s ease; 
-}
+} 
 
 .opt-button:hover {
-  border-color: #025a0a;
-  color: #007a4d;
+  border-color: #bdbdbf;
   transform: translateY(-2px);
-}
+} 
 
 .opt-button.active {
   background: linear-gradient(to right, var(--primary-clr), var(--secondary-clr)) ;
@@ -128,7 +127,7 @@ span .label-light {
   gap: 10px;
   background: #CCCFFA;
   padding: 5px 15px;
-  border-radius: 50px;
+  border-radius: 12px;
   margin-bottom: 20px;
   border: 1px solid #eee;
 }
@@ -138,7 +137,7 @@ span .label-light {
   gap: 15px;
   background: #CCCFFA;
   padding: 1px 12px;
-  border-radius: 50px;
+  border-radius: 12px;
   border: 1px solid #eee;
 }
 
@@ -208,7 +207,7 @@ span .label-light {
   color: white;
   padding: 14px;
   border: none;
-  border-radius: 30px;
+  border-radius: 12px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;

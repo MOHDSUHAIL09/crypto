@@ -79,6 +79,9 @@ export const UserProvider = ({ children }) => {
           rightCarry: apiData.rightCarry,
           LeftPerMonth: apiData.LeftPerMonth,
           RightPerMonth: apiData.RightPerMonth,
+          LeftBusiness: apiData.LeftBusiness,
+          RightBusiness: apiData.RightBusiness,
+          topupdate: apiData.topupdate,
         };
         
         setUserData(newUserData);

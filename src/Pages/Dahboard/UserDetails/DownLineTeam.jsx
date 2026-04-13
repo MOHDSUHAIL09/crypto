@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import apiClient from "../../../api/apiClient";
 import CustomTable from "../CustomTable/CustomTable";
 import "./UserDetails.css";
+import { Link } from "react-router-dom";
 
 const DownlineTeam = () => {
   const [level, setLevel] = useState(0);
@@ -10,21 +11,26 @@ const DownlineTeam = () => {
   const [loading, setLoading] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
-  const pageSize = 10; 
+  const pageSize = 10;
   const regno = localStorage.getItem("regno");
 
   // ================= API =================
-  const fetchUsers = async (selectedLevel, page) => {
-    if (!regno) return;
-    setLoading(true);
-    try {
-      const payload = {
-        mregno: Number(regno),
-        type: 1,
-        findlvl: selectedLevel === 0 ? -1 : selectedLevel - 1,
-        pageIndex: page,
-        pageSize: pageSize,
-      };
+const fetchUsers = async (selectedLevel, page) => {
+  if (!regno) return;
+  setLoading(true);
+  try {
+    let findlvl;
+    if (selectedLevel === 0) findlvl = -1;
+    else findlvl = selectedLevel - 1; // 0-based (change to selectedLevel if 1-based)
+
+    const payload = {
+      mregno: Number(regno),
+      type: 1,
+      findlvl: findlvl,
+      pageIndex: page,
+      pageSize: pageSize,
+    };
+    console.log("📤 Payload:", payload);
 
       const response = await apiClient.post("/Dashboard/downline-team", payload);
       
@@ -42,15 +48,12 @@ const DownlineTeam = () => {
       setUsers(resData);
       setTotalRecords(count);
       
-      console.log("Total Records:", count);
-      console.log("Current Page Data:", resData.length);
-      console.log("Page Size:", pageSize);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     fetchUsers(level, pageIndex);
@@ -84,25 +87,25 @@ const DownlineTeam = () => {
 
     const pages = [];
     pages.push(1);
-    
+
     let start = Math.max(2, current - 1);
     let end = Math.min(total - 1, current + 1);
-    
-    
+
+
     for (let i = start; i <= end; i++) {
       if (!pages.includes(i)) {
         pages.push(i);
       }
     }
-    
+
     if (end < total - 1) {
       pages.push("...");
     }
-    
+
     if (total > 1 && !pages.includes(total)) {
       pages.push(total);
     }
-    
+
     return pages;
   };
 
@@ -118,7 +121,7 @@ const DownlineTeam = () => {
     }
   };
 
-  const columns = ["Sl.No.", "DOWNLINE INFO", "SPONSOR", "INVESTED AMOUNT", "STATUS"];
+  const columns = ["Sl.No.", "DOWNLINE INFO", "SPONSOR", "INVESTED AMOUNT", "STATUS", "Action"];
 
   return (
     <div className="downline-main-wrapper mb-5">
@@ -145,7 +148,7 @@ const DownlineTeam = () => {
             }}
           >
             <option value={0}>All</option>
-            {Array.from({ length: 15 }, (_, i) => (
+            {Array.from({ length: 30 }, (_, i) => (
               <option key={i} value={i + 1}>Level {i + 1}</option>
             ))}
           </select>
@@ -180,15 +183,15 @@ const DownlineTeam = () => {
                   <div className="sr-no-circle mx-auto">
                     {formattedNo}
                   </div>
-                 </td>
+                </td>
                 <td className="text-center">
                   <div className="user-name-text">{user.loginid}</div>
                   <div className="user-id-subtext">{user.Name || "N/A"}</div>
-                 </td>
+                </td>
                 <td className="text-center">
                   <div className="sponsor-id-text">{user.Sponsor}</div>
                   <div className="user-id-subtext">{user.sponsername}</div>
-                 </td>
+                </td>
                 <td className="text-center">
                   <div className="amount-text-green">
                     {user.FundInvest > 0 ? `$${user.FundInvest.toLocaleString()}` : "$0"}
@@ -196,22 +199,33 @@ const DownlineTeam = () => {
                   <div className="date-subtext">
                     {user.TopupDate}
                   </div>
-                 </td>
+                </td>
                 <td className="pe-3">
                   <div className={`status-pill mx-auto ${user.kitPrice > 0 ? "active" : "inactive"}`}>
                     <span className="dot"></span>
                     {user.kitPrice > 0 ? "Active" : "Inactive"}
                   </div>
-                 </td>
+                </td>
+
+                <td className="pe-3">
+                  <Link
+                    to={`/dashboard/downlineUserHistory?regno=${user.regno}&loginid=${user.loginid}`}
+                    className="capital-payout-btn"
+                    style={{ padding: "12px 20px" }}
+                  >
+                    View
+                  </Link>
+                </td>
               </tr>
+
             );
           })}
         </CustomTable>
-        
-      
+
+
         {totalPages > 1 && (
           <div className="d-flex justify-content-center align-items-center mt-3 mb-3 flex-wrap gap-2 gap-md-3">
-         
+
             <button
               onClick={goToPreviousPage}
               disabled={pageIndex === 1}
@@ -237,7 +251,7 @@ const DownlineTeam = () => {
               ←
             </button>
 
-       
+
             {getPagination().map((page, i) => (
               <button
                 key={i}
@@ -255,14 +269,14 @@ const DownlineTeam = () => {
                   cursor: page === "..." ? "default" : "pointer",
                   transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
                   background: pageIndex === page
-                    ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" 
+                    ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
                     : "white",
                   color: pageIndex === page ? "#fff" : "#667eea",
                   boxShadow: pageIndex === page
-                    ? "0 8px 20px rgba(102, 126, 234, 0.3), 0 2px 4px rgba(0,0,0,0.1)" 
+                    ? "0 8px 20px rgba(102, 126, 234, 0.3), 0 2px 4px rgba(0,0,0,0.1)"
                     : "0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05)",
-                  border: page === "..." 
-                    ? "none" 
+                  border: page === "..."
+                    ? "none"
                     : pageIndex === page
                       ? "none"
                       : "1px solid rgba(102, 126, 234, 0.2)",
@@ -291,7 +305,7 @@ const DownlineTeam = () => {
               </button>
             ))}
 
-         
+
             <button
               onClick={goToNextPage}
               disabled={pageIndex === totalPages}

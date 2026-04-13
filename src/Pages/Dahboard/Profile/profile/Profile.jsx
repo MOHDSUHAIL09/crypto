@@ -196,7 +196,7 @@ const ProfilePage = () => {
               
               {/* Personal Details Card - Enhanced */}
               <div className="profile-card personal-card">
-                <div className="card-header">
+                <div className="card-header01">
                   <div className="header-icon-wrapper">
                     <FaUser className="card-icon" />
                   </div>
@@ -249,7 +249,7 @@ const ProfilePage = () => {
             
               {/* Bank Account Details Card - Enhanced */}
               <div className="profile-card bank-card">
-                <div className="card-header">
+                <div className="card-header01">
                   <div className="header-icon-wrapper">
                     <FaUniversity className="card-icon" />
                   </div>
