@@ -227,7 +227,7 @@ const SupportHelp = () => {
         </div>
       </div>
     </div>
-  );
+  );  
 };
 
 export default SupportHelp;
