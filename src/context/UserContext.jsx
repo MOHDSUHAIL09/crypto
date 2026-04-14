@@ -82,6 +82,7 @@ export const UserProvider = ({ children }) => {
           LeftBusiness: apiData.LeftBusiness,
           RightBusiness: apiData.RightBusiness,
           topupdate: apiData.topupdate,
+          Working: apiData.Working,
         };
         
         setUserData(newUserData);

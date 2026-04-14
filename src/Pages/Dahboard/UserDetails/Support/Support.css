@@ -113,8 +113,7 @@ form {
 }
 
 
-/* Inputs */
-.form-group01 input,
+
 .form-group01 select,
 .form-group01 textarea,
 .form-group input,
@@ -466,7 +465,7 @@ form {
   height: 100vh;                      /* fallback */
   height: calc(var(--vh, 1vh) * 100); /* JS-updated */
   height: 100dvh;                     /* modern browsers */
-  padding: 0;
+  padding: 20px;
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
 }
 
@@ -663,7 +662,7 @@ form {
   padding: 12px 20px;
   background: #ffffff;
   border-top: 1px solid #ffefcf;
-  flex-shrink: 0;   /* prevents shrinking when keyboard opens */
+  flex-shrink: 0;  
 }
 
 .whatsapp-input-container {
@@ -671,9 +670,8 @@ form {
   display: flex;
   align-items: center;
   gap: 10px;
-  border: 1px solid #de9dd9;
-  border-radius: 24px;
-  padding: 5px 12px;
+  border-radius: 50px;
+  padding: 1px 10px;
   background-color: white;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }

@@ -34,7 +34,7 @@ const Income = () => {
         style={{ cursor: 'pointer' }}
       >
         All income <br />
-        <strong>${userData?.Working || 0.00}</strong>
+       <strong>{(userData.Working || 0).toFixed(2)}</strong>
       </div>
 
       <div className="flowchart-line-vertical"></div>

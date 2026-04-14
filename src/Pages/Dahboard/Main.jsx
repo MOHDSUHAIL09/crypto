@@ -21,43 +21,19 @@ import Support from "./UserDetails/Support/Support";
 import SupportHelp from "./UserDetails/Support/SupportHelp";
 import CapitalHistory from "./CapitalPayout/CapitalPayoutHistory";
 import DownlineUserHistory from "./UserDetails/DownlineUserHistory";
+import WithdrawalHistory from "./WithdrawalHistory";
 
 const Main = () => {
   return (
     <Routes>
-
-      {/* 🔥 TreeView Full Screen */}
-      <Route
-        path="/TreeView"
-        element={
-          <ProtecedRoute>
-            <TreeView />
-          </ProtecedRoute>
-        }
-      />
-     <Route path="/supporthelp/:id" element={<SupportHelp />} />
- 
-      {/* 🔥 Dashboard Layout */}
-      <Route
-        path="/*"
-        element={
-          <div className="dashboard-container">
-            <Sidebar />
-
-            <div className="layout">
-              <Header />
-
-              <Routes>
-                <Route index element={<Dashboard />} />
-
-                <Route
-                  path="downline-team"
-                  element={
-                    <ProtecedRoute>
-                      <DownlineTeam />
-                    </ProtecedRoute>
-                  }
-                />
+      <Route path="/TreeView" element={<ProtecedRoute> <TreeView /></ProtecedRoute>} />
+      <Route path="/supporthelp/:id" element={<SupportHelp />} />
+      <Route path="/*" element={<div className="dashboard-container"> <Sidebar />
+    <div className="layout">
+      <Header />
+    <Routes>
+      <Route index element={<Dashboard />} />
+      <Route path="downline-team" element={<ProtecedRoute><DownlineTeam /></ProtecedRoute>}/>
 
                  <Route
                   path="/downlineUserHistory"
@@ -169,6 +145,18 @@ const Main = () => {
                     </ProtecedRoute>
                   }
                 />
+
+                 <Route
+                  path="/WithdrawalHistory"
+                  element={
+                    <ProtecedRoute>
+                      <WithdrawalHistory />
+                    </ProtecedRoute>
+                  }
+                />
+
+
+
               </Routes>
             </div>
           </div>
