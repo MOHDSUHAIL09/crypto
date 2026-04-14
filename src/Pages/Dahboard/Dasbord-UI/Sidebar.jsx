@@ -31,26 +31,16 @@ const Sidebar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // ✅ Function to close floating menu
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
+  const closeMenu = () => setMenuOpen(false);
 
-  // ✅ Handle navigation + close menu
   const handleNavigate = (path) => {
     navigate(path);
     closeMenu();
   };
 
-  // ✅ Detect click outside floating menu to close (optional but good UX)
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        menuOpen &&
-        floatingRef.current &&
-        !floatingRef.current.contains(event.target) &&
-        !event.target.closest(".center-btn") // exclude center button
-      ) {
+      if (menuOpen && floatingRef.current && !floatingRef.current.contains(event.target) && !event.target.closest(".center-btn")) {
         closeMenu();
       }
     };
@@ -67,7 +57,7 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* ✅ Desktop Sidebar */}
+      {/* Desktop Sidebar (unchanged) */}
       {!isMobile && (
         <aside className="pro-sidebar">
           <div className="pro-sidebar-header">
@@ -88,36 +78,54 @@ const Sidebar = () => {
         </aside>
       )}
 
-      {/* ✅ Mobile Bottom Navbar */}
+      {/* ✅ Mobile Bottom Navbar – with active class added */}
       {isMobile && (
         <div className="mobile-bottom-nav">
           {/* Dashboard */}
-          <div className="pro-item" onClick={() => handleNavigate("/dashboard")}>
+          <div
+            className={`pro-item ${location.pathname === "/dashboard" ? "active" : ""}`}
+            onClick={() => handleNavigate("/dashboard")}
+          >
             <FaThLarge />
             <span className="nav-text">Dashboard</span>
           </div>
 
           {/* Downline Team */}
-          <div className="pro-item me-5" onClick={() => handleNavigate("/dashboard/downline-team")}>
+          <div
+            className={`pro-item ${location.pathname === "/dashboard/downline-team" ? "active" : ""} me-5`}
+            onClick={() => handleNavigate("/dashboard/downline-team")}
+          >
             <FaUsers />
             <span className="nav-text">Team</span>
           </div>
 
-          {/* ✅ Floating Animated Menu – with ref to detect outside clicks */}
+          {/* Floating Menu */}
           <div ref={floatingRef} className={`floating-menu ${menuOpen ? "show" : ""}`}>
-            <div className="float-icon" onClick={() => handleNavigate("/dashboard/deposit2deposit")}>
+            <div
+              className={`float-icon ${location.pathname === "/dashboard/deposit2deposit" ? "active" : ""}`}
+              onClick={() => handleNavigate("/dashboard/deposit2deposit")}
+            >
               <RiP2pFill />
               <span className="float-text">P2P</span>
             </div>
-            <div className="float-icon" onClick={() => handleNavigate("/dashboard/Royalty")}>
+            <div
+              className={`float-icon ${location.pathname === "/dashboard/Royalty" ? "active" : ""}`}
+              onClick={() => handleNavigate("/dashboard/Royalty")}
+            >
               <FaChartBar />
               <span className="float-text">Royalty</span>
             </div>
-            <div className="float-icon" onClick={() => handleNavigate("/dashboard/capitalpayout")}>
+            <div
+              className={`float-icon ${location.pathname === "/dashboard/capitalpayout" ? "active" : ""}`}
+              onClick={() => handleNavigate("/dashboard/capitalpayout")}
+            >
               <PiHandWithdrawBold />
               <span className="float-text">Withdraw</span>
             </div>
-            <div className="float-icon" onClick={() => handleNavigate("/dashboard/Support")}>
+            <div
+              className={`float-icon ${location.pathname === "/dashboard/Support" ? "active" : ""}`}
+              onClick={() => handleNavigate("/dashboard/Support")}
+            >
               <MdSupportAgent />
               <span className="float-text">Support</span>
             </div>
@@ -125,19 +133,23 @@ const Sidebar = () => {
 
           {/* Center Button */}
           <div className="center-btn" onClick={() => setMenuOpen(!menuOpen)}>
-            
             <button className="modal-close01">✕</button>
-            
           </div>
 
           {/* Rewards */}
-          <div className="pro-item" onClick={() => handleNavigate("/dashboard/rewards")}>
+          <div
+            className={`pro-item ${location.pathname === "/dashboard/rewards" ? "active" : ""}`}
+            onClick={() => handleNavigate("/dashboard/rewards")}
+          >
             <FaUndo />
             <span className="nav-text">Rewards</span>
           </div>
 
           {/* TreeView */}
-          <div className="pro-item" onClick={() => handleNavigate("/dashboard/TreeView")}>
+          <div
+            className={`pro-item ${location.pathname === "/dashboard/TreeView" ? "active" : ""}`}
+            onClick={() => handleNavigate("/dashboard/TreeView")}
+          >
             <PiTreeView />
             <span className="nav-text">Tree</span>
           </div>

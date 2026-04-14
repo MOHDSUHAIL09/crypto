@@ -119,6 +119,11 @@ body {
 }
 
 @media (max-width: 768px) {
+.mobile-bottom-nav .pro-item.active {
+  color: #1e068b !important;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 8px;
+}
 
   /* Hide the actual title attribute tooltip */
   .pro-item {
@@ -3514,4 +3519,22 @@ input {
     margin-top: 12px;
     border-radius: 8px !important;
   }
+}
+
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+.status-approved {
+    background: #a8dfb4;
+    color: #194222;
+}
+.status-rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
+.status-completed {
+    background: #d1ecf1;
+    color: #0c5460;
 }

@@ -354,7 +354,7 @@ const Cards = () => {
                     <div className="d-flex flex-wrap justify-content-between">
                       <Link to="/dashboard/depositHistory">
                         <p className="mb-1">
-                          <strong>Deposit Fund : </strong><span className='Investment-text'>
+                          <strong title='Deposit History'>Deposit Fund : </strong><span className='Investment-text'>
                             ${userData?.Depositfund || 0}
                           </span>
                         </p>
@@ -365,15 +365,15 @@ const Cards = () => {
                     <div className='investment-wrapper d-flex gap-0 gap-md-4 flex-wrap '>
                       <Link to="/dashboard/investmenthistory">
                         <p className="mb-0">
-                          <strong>Subscription : </strong>
-                          <span className='Investment-text'>
+                          <strong title='Subscription History'>Subscription : </strong>
+                          <span  className='Investment-text'>
                             ${(userData?.BotAmount || 0).toLocaleString("en-IN")}
                           </span>
                         </p>
                       </Link>
                       <Link to="/dashboard/investmenthistory">
                         <p className="mb-0 ms-0 md:ms-4">
-                          <strong>Investment : </strong>
+                          <strong title='Investment History'>Investment : </strong>
                           <span className='Investment-text'>
                             ${(userData?.InvestAmount || 0).toLocaleString("en-IN")}
                           </span>
@@ -392,10 +392,8 @@ const Cards = () => {
           <div className="card1 no-animate custom-card1 p-0 rounded_5">
             <div className="card1-body px-3 py-3">
               <div className="d-flex justify-content-between align-items-center mb-2">
-                <h5 className='mb-0 fw-bold'>Payout</h5>
-                <Link to= "/dashboard/WithdrawalHistory">
-                <div className='mint-box' title='WithdrawalHistory'><GiProfit /></div>
-                </Link>
+                <h5 className='mb-0 fw-bold'>Payout</h5>              
+                <div className='mint-box' ><GiProfit /></div>
               </div>
               <div className="c-box gap-3 py_3">
                 <div className="payout-input-box">
@@ -407,9 +405,11 @@ const Cards = () => {
                     onChange={(e) => setPayoutAmount(e.target.value)}
                   />
                   <div className="d-flex align-items-center justify-content-between">
-                    <h6 className='hover-text small-text mb-1'>
+                    <Link to= "/dashboard/WithdrawalHistory">
+                    <h6 className='hover-text small-text mb-1' title='WithdrawalHistory'>
                       Payout Amt : <span className="pay-badge pay-bg"><strong>${parseFloat(userData?.Remaining || 0).toFixed(2)}</strong></span>
                     </h6>
+                    </Link>
                     <button
                       type="button"
                       className="wallet-buttton"
