@@ -359,8 +359,9 @@ const Cards = () => {
                           </span>
                         </p>
                       </Link>
-                      <button type="button" title='fund-deposit' className="wallet-buttton b "><MdAddCard size={20} /></button>
-                    </div>
+                      <div className='fundbtn'>
+                   <button type="button" title='fund-deposit' className="wallet-buttton b"><MdAddCard size={20} /></button>
+                    </div></div>
 
                     <div className='investment-wrapper d-flex gap-0 gap-md-4 flex-wrap '>
                       <Link to="/dashboard/investmenthistory">
