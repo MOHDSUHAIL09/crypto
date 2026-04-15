@@ -147,7 +147,7 @@ const LevelIncome = () => {
                           <>
                             <div className="popup-backdrop" onClick={() => setShow(false)} />
                             <div className="popup-modal">
-                              <button className="close-btn" onClick={() => setShow(false)} > ✕ </button>
+                              <button className="close-btn1" onClick={() => setShow(false)} > ✕ </button>
                               <div className="menu-container">
                                 <div className={`ring-menu ${animate ? "open" : ""}`}>
                                   {menuItems.map((item, index) => (
@@ -160,8 +160,8 @@ const LevelIncome = () => {
                                     </div>
                                   ))}
                                 </div>
-                              </div>
-                              <button className="circle-btn2">Team
+                               </div>
+                             <button className="circle-btn2">Team
                               </button>
                             </div>
                           </>

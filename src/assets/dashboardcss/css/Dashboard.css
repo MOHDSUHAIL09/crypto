@@ -1880,6 +1880,17 @@ select:focus {
   cursor: pointer;
   color: red;
 }
+.close-btn1 {
+  position: absolute;
+  top: -50px;
+  margin-left: 270px;
+  background: none;
+  border: none;
+  font-size: 30px;
+  font-weight: 700;
+  cursor: pointer;
+  color: red;
+}
 
 
 .circle-btn2 {

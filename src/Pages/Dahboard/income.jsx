@@ -120,7 +120,6 @@ const Income = () => {
           </div>
         </div>
 
-
         <div className="flowchart-node flowchart-orange" onClick={() => goToPage("ALL")}>
           Company Profit <br />
           <span style={{ color: "#105614", fontWeight: "700" }}>
