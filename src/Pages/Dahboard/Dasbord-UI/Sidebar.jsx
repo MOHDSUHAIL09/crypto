@@ -15,12 +15,12 @@ import "../../../assets/dashboardcss/css/Dashboard.css";
 const menuItems = [
   { icon: <FaThLarge />, title: "Dashboard", path: "/dashboard" },
   { icon: <FaUsers />, title: "Downline-Team", path: "/dashboard/downline-team" },
+  { icon: <PiTreeView />, title: "TreeView", path: "/dashboard/TreeView" },
   { icon: <RiP2pFill />, title: "Deposit To Deposit", path: "/dashboard/deposit2deposit" },
-  { icon: <FaChartBar />, title: "Rewards Royalty", path: "/dashboard/Royalty" },
+  { icon: <FaChartBar />, title: "Royalty", path: "/dashboard/Royalty" },
   { icon: <FaUndo />, title: "Rewards", path: "/dashboard/rewards" },
   { icon: <PiHandWithdrawBold />, title: "Capital Payout", path: "/dashboard/capitalpayout" },
-  { icon: <PiTreeView />, title: "TreeView", path: "/dashboard/TreeView" },
-  { icon: <MdSupportAgent />, title: "Support", path: "/dashboard/Support" },
+  // { icon: <MdSupportAgent />, title: "Support", path: "/dashboard/Support" },
 ];
 
 const Sidebar = () => {

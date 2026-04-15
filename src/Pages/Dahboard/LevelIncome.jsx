@@ -44,6 +44,7 @@ const LevelIncome = () => {
       setAnimate(false);
     }
   }, [show]);
+  
 
   const teamData = levels[0] || {};
   const menuItems = [
@@ -68,7 +69,7 @@ const LevelIncome = () => {
                     <div className="  d-flex align-items-center gap-3">
                       
                       
-                      <div className="level-box">
+                      <div className="level-box ">
                         <button className={`circle-btn ${open ? "active" : ""}`} onClick={() => { setOpen(true); }}>
                           Business
                         </button>
@@ -78,13 +79,15 @@ const LevelIncome = () => {
                             {open && (
                               <>
                                 <div className="popup-backdrop" onClick={() => setOpen(false)} />
-                                <div className="popup-modal">
-                                  <button className="close-btn" onClick={() => setOpen(false)} >
-                                    ✕
-                                  </button>
+                                <div className="popup-modal modal-a ">
+          
+                                 
                                   {open && (
                                     <>
-                                      <div className="level-counts-wrapper">
+                                      <div className="level-counts-wrapper ">
+                                           <button className="close-btn" onClick={() => setOpen(false)} >
+                                    ✕
+                                  </button>
                                         <div className="coins">
                                           <div className="level-card">
                                             <span className="stext">Direct Id</span>

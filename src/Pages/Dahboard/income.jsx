@@ -1,17 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../../context/UserContext"; 
+import { useUser } from "../../context/UserContext";
 import "../../assets/dashboardcss/css/Dashboard.css";
 
 const Income = () => {
   const navigate = useNavigate();
-  
-  const { userData, loading } = useUser(); 
+
+  const { userData, loading } = useUser();
 
   // Modified function to accept type parameter
   const goToPage = (type) => {
     navigate(`/dashboard/accstatement?type=${type}`);
   };
+
+  
 
   // Loading state
   if (loading && !userData) {
@@ -26,7 +28,7 @@ const Income = () => {
   }
 
   return (
-    <div className="flowchart-container">
+    <div className="flowchart-container ">
       {/* 🏠 MAIN NODE: All Income */}
       <div
         className="p-3 flowchart-node wallet-buttton"
@@ -34,46 +36,53 @@ const Income = () => {
         style={{ cursor: 'pointer' }}
       >
         All income <br />
-       <strong>{(userData.Working || 0).toFixed(2)}</strong>
+        <strong>{(userData.Working || 0).toFixed(2)}</strong>
       </div>
 
       <div className="flowchart-line-vertical"></div>
       <div className="flowchart-line-horizontal"></div>
 
       <div className="flowchart-row">
-        
+
         {/* 🟢 Column 1: Level & Matching */}
         <div className="flowchart-column">
           <div className="flowchart-node flowchart-green" onClick={() => goToPage("LEVEL INCOME")}>
-            M-Bot Level Income <br />
+            M-Subscription Level Income <br />
             <span style={{ color: "#105614", fontWeight: "700" }}>
               ${userData?.LevelIncome || 0}
             </span>
           </div>
           <div className="flowchart-line-vertical-small"></div>
           <div className="flowchart-node flowchart-orange" onClick={() => goToPage("MATCHING INCOME")}>
-            M-Bot Matching Income <br />
+            M-Subscription Matching Income <br />
             <span style={{ color: "#105614", fontWeight: "700" }}>
               ${userData?.MatchingBonus || 0}
             </span>
           </div>
         </div>
 
+
         {/* 🟢 Column 2: IB & Reward */}
         <div className="flowchart-column">
-          <div className="flowchart-node flowchart-green" onClick={() => goToPage("LOST IB INCOME")}>
-            IB Income <br />
+          <div className="flowchart-node flowchart-green" onClick={() => goToPage("TRADING PASSIVE INCOME")}>
+            Trading Passive Income <br />
             <span style={{ color: "#105614", fontWeight: "700" }}>
-              ${userData?.IBIncome || 0}
+              ${userData?.TradingPassiveIncome || 0}
             </span>
           </div>
           <div className="flowchart-line-vertical-small"></div>
-          <div className="flowchart-node flowchart-orange" onClick={() => goToPage("ALL")}>
-            Reward Income <br />
-            <span style={{ color: "#105614", fontWeight: "700" }}>
-              ${userData?.Reward || 0}
-            </span>
+
+          <div className="flowchart-column">
+            <div className="flowchart-node flowchart-green" onClick={() => goToPage("LOST IB INCOME")}>
+              IB Income <br />
+              <span style={{ color: "#105614", fontWeight: "700" }}>
+                ${userData?.IBIncome || 0}
+              </span>
+            </div>
           </div>
+
+
+
         </div>
 
         {/* 🟢 Column 3: Royalty & Profit */}
@@ -85,10 +94,11 @@ const Income = () => {
             </span>
           </div>
           <div className="flowchart-line-vertical-small"></div>
+
           <div className="flowchart-node flowchart-orange" onClick={() => goToPage("ALL")}>
-            Company Profit <br />
+            Reward Income <br />
             <span style={{ color: "#105614", fontWeight: "700" }}>
-              ${userData?.notvalue || 0}
+              ${userData?.Reward || 0}
             </span>
           </div>
         </div>
@@ -110,20 +120,13 @@ const Income = () => {
           </div>
         </div>
 
-        {/* 🟢 Column 5: Trading & Payment */}
-        <div className="flowchart-column">
-          <div className="flowchart-node flowchart-green" onClick={() => goToPage("TRADING PASSIVE INCOME")}>
-            Trading Passive Income <br />
-            <span style={{ color: "#105614", fontWeight: "700" }}>
-              ${userData?.TradingPassiveIncome || 0}
-            </span>
-          </div>
-          {/* <div className="flowchart-line-vertical-small"></div>
-          <div className="flowchart-node flowchart-orange" onClick={() => goToPage("ALL")}>
-            Method of Payment
-          </div> */}
-        </div>
 
+        <div className="flowchart-node flowchart-orange" onClick={() => goToPage("ALL")}>
+          Company Profit <br />
+          <span style={{ color: "#105614", fontWeight: "700" }}>
+            ${userData?.notvalue || 0}
+          </span>
+        </div>
       </div>
     </div>
   );

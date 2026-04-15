@@ -3,6 +3,7 @@ import { FaHome, FaKey, FaLockOpen, FaSignOutAlt, FaUser } from "react-icons/fa"
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../../context/UserContext";
 import "../../../assets/dashboardcss/css/Dashboard.css";
+import { MdSupportAgent } from "react-icons/md";
 
 const Header = () => {
 
@@ -178,6 +179,44 @@ const Header = () => {
     <FaKey/> Active With ePin
   </p>
 </div>
+
+
+
+
+
+
+<div
+  onClick={() => {
+    setIsDropdownOpen(false);
+    navigate("/dashboard/Support");
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.backgroundColor = "#e2e8f0";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.backgroundColor = "#f8fafc";
+  }}
+  style={{
+    padding: '12px 16px',
+    backgroundColor: '#f8fafc',
+    cursor: "pointer",
+    transition: "all 0.2s ease"
+  }}
+>
+  <p style={{
+    margin: 0,
+    fontWeight: '500',
+    fontSize: '14px',
+    color: '#1e293b',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px'
+  }}>
+    <MdSupportAgent size={16}/> Support
+  </p>
+</div>
+
+
 
 
             {/* Logout Button */}

@@ -327,7 +327,7 @@ const TreeComponent = () => {
       .attr("text-anchor", "middle")
       .text("⟳")
       .attr("fill", "#ff9800")
-      .attr("font-size", "14px")
+      .attr("font-size", "15px")
       .attr("font-weight", "bold")
       .style("animation", "spin 1s linear infinite");
 
@@ -344,7 +344,7 @@ const TreeComponent = () => {
       .attr("stroke", "white")
       .attr("stroke-width", 3)
       .attr("paint-order", "stroke")
-      .style("font-size", "12px")
+      .style("font-size", "20px")
       .style("font-weight", d => d.depth === 0 ? "bold" : "normal");
 
     // Login ID below name
@@ -357,7 +357,7 @@ const TreeComponent = () => {
       .attr("stroke", "white")
       .attr("stroke-width", 1)
       .attr("paint-order", "stroke")
-      .style("font-size", "8px");
+      .style("font-size", "15px");
 
     // Tooltips
     node.append("title")
@@ -398,6 +398,8 @@ const TreeComponent = () => {
           </button>
         </div>
       </div>
+.
+
 
       {error && !loading && (
         <div className="error-container">

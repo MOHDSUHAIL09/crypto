@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import { FaUpload } from "react-icons/fa";
-import apiClient from '../.././../../api/apiClient';
+import apiClient from '../../../../api/apiClient';
 import toast from 'react-hot-toast';
 import './Support.css';
 
