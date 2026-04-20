@@ -1745,9 +1745,7 @@ ul.testi-rating li {
   font-weight: 600;
   color: #fff;
 }
-
-.style-1.mediic-appoinment .mediic-shape-2 {
-  top: -30px;
+.mediic-appoinment .mediic-shape-2 {
   right: 0;
   left: inherit;
 }
@@ -2720,6 +2718,7 @@ ul.footer-menu li a:hover:before {
   color: var(--secondary-color);
 }
 
+
 /* label */
 
 label.widget-check {
@@ -3006,7 +3005,7 @@ span.fill {
   background-image: url(../images/resource/appoinment.png);
   background-repeat: no-repeat;
   background-position: center;
-  padding: 100px 0 100px;
+  padding: 50px;
   border-radius: 30px;
   background-size: contain;
 }
@@ -3032,18 +3031,18 @@ span.fill {
 .form-box input {
   width: 100%;
   height: 60px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   padding: 0 20px;
   outline: 0;
   display: inline-block;
-  border-radius: 15px;
+  border-radius: 12px;
   background-color: rgba(255, 255, 255, 0);
   border: 1px solid rgba(0, 37, 112, 0.5);
   font-weight: 500;
   font-family: "DM Sans";
 }
 
-.form-box textarea {
+/* .form-box textarea {
   width: 100%;
   padding: 15px 22px;
   outline: 0;
@@ -3056,12 +3055,12 @@ span.fill {
   border: 1px solid rgba(0, 37, 112, 0.5);
   font-weight: 500;
   font-family: "DM Sans";
-}
+} */
 
-.form-box textarea::placeholder {
+/* .form-box textarea::placeholder {
   color: #002570;
   font-size: 17px;
-}
+} */
 
 .mediken-shape-2 {
   position: absolute;

@@ -62,6 +62,7 @@ const Sidebar = () => {
         <aside className="pro-sidebar">
           <div className="pro-sidebar-header">
             {/* <img src={logo} className="pro-logo" alt="logo" /> */}
+            LOGO
           </div>
           <ul className="pro-menu">
             {menuItems.map((item, index) => (

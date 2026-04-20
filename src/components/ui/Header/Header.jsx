@@ -107,7 +107,7 @@ const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isInfoGroupActive, setIsInfoGroupActive] = useState(false);
-  const [isCartGroupActive, setIsCartGroupActive] = useState(false);
+  // const [isCartGroupActive, setIsCartGroupActive] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Sticky header on scroll
@@ -300,24 +300,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Cart Group (optional – same pattern) */}
-      {/* <div className={`xs-sidebar-group cart-group ${isCartGroupActive ? 'isActive' : ''}`}>
-        <div className="xs-overlay xs-bg-black" onClick={() => setIsCartGroupActive(false)}></div>
-        <div className="xs-sidebar-widget">
- 
-          <div className="sidebar-widget-container">
-            <div className="widget-heading">
-              <a href="#" className="close-side-widget" onClick={(e) => { e.preventDefault(); setIsCartGroupActive(false); }}>
-                <i className="fa-solid fa-xmark"></i>
-              </a>
-            </div>
-            <div className="sidebar-textwidget">
-              <h3>Your Cart</h3>
-              <p>No items in cart.</p>
-            </div>
-          </div>
-        </div>
-      </div> */}
 
       {/* Mobile Menu Drawer (meanmenu replacement) */}
       {isMobileMenuOpen && (

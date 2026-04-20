@@ -214,9 +214,9 @@
     font-size: 16px;
   }
 
-  .mediic-appoinment {
+  /* .mediic-appoinment {
     background-size: cover;
-  }
+  } */
 
   .mediic-icons {
     float: inherit;
@@ -557,11 +557,11 @@
 
   /* Appointment */
 
-  .mediic-appoinment {
+  /* .mediic-appoinment {
     padding: 0;
     background-size: cover;
     background-position: right;
-  }
+  } */
 
   .mediic-shape-2 {
     left: 0;
@@ -955,10 +955,8 @@
 
   /* Appointment */
 
-  .mediic-appoinment {
-    padding: 0;
-    background-size: cover;
-    background-position: right;
+  .mediic-appoinment   {
+
   }
 
   /* Error Page */
@@ -1209,10 +1207,10 @@
 
   /* Appointment */
 
-  .mediic-appoinment {
+  /* .mediic-appoinment {
     background-size: cover;
     background-position: right;
-  }
+  } */
 
   .mediic-shape-2 {
     top: -70px;
@@ -1765,11 +1763,11 @@
 
   /* Appoinment Section */
 
-  .mediic-appoinment {
+  /* .mediic-appoinment {
     padding: 0;
     background-size: cover;
     background-position: right;
-  }
+  } */
 
   .style-1 .testi-single-box {
     margin-bottom: 35px;
@@ -1956,9 +1954,9 @@
     font-size: 16px;
   }
 
-  .mediic-appoinment {
+  /* .mediic-appoinment {
     padding: 0px 0 0px;
-  }
+  } */
 
   .mediic-section-title2 h3 {
     font-size: 21px;
@@ -2609,9 +2607,9 @@
     margin-top: 20px;
   }
 
-  .mediic-appoinment.style-2 {
+  /* .mediic-appoinment.style-2 {
     background-size: cover;
-  }
+  } */
 
   /*  */
 }

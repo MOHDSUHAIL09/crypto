@@ -1,17 +1,232 @@
+// import React, { useState, useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import toast from "react-hot-toast";
+// import "../../assets/Css/Auth.css";
+// import apiClient from "../../api/apiClient";
+
+// const SignupPage = () => {
+//   const navigate = useNavigate();
+//   const [loading, setLoading] = useState(false);
+
+
+//   const [formData, setFormData] = useState({
+//     introRegNo: "", 
+//     referrer_Id: "",
+//     sponsorName: "",
+//     fName: "",
+//     lName: " ",
+//     mobile: "",
+//     email: "",
+//     password: "",
+//     address: "India",
+//     private_Key: "N/A",
+//     affiliate_Level: 0,
+//     referrer: "",
+//     country: 91,
+//     introSide: "L"
+//   });
+
+
+  
+//   const handleChange = (e) => {
+//     console.log("payload" ,formData)
+//     const { name, value } = e.target;
+
+//     if (name === "introRegNo") {
+//       setFormData((prev) => ({
+//         ...prev,
+//         referrer_Id: value
+//       }));
+//     } else {
+//       setFormData((prev) => ({
+//         ...prev,
+//         [name]: value
+//       }));
+//     }
+//   };
+
+//   useEffect(() => {
+//     const fetchSponsor = async () => {
+//       const loginId = formData.referrer_Id;
+
+//       if (loginId) {
+//         try {
+//           const res = await apiClient.get(
+//             `/User/check-user?loginid=${loginId}`
+//           );
+
+//           if (res.data?.success && res.data.data) {
+//             setFormData((prev) => ({
+//               ...prev,
+//               sponsorName: res.data.data.Name,
+//               introRegNo: res.data.data.regno
+//             }));
+//           } else {
+//             setFormData((prev) => ({
+//               ...prev,
+//               sponsorName: "Invalid Sponsor",
+//               introRegNo: ""
+//             }));
+//           }
+//         } catch {
+//           setFormData((prev) => ({
+//             ...prev,
+//             sponsorName: "Not Found",
+//             introRegNo: ""
+//           }));
+//         }
+//       } else {
+//         setFormData((prev) => ({
+//           ...prev,
+//           sponsorName: "",
+//           introRegNo: ""
+//         }));
+//       }
+//     };
+
+//     const timer = setTimeout(fetchSponsor, 500);
+//     return () => clearTimeout(timer);
+//   }, [formData.referrer_Id]);
+
+
+//   const handleSignup = async (e) => {
+//   e.preventDefault();
+  
+//   if (!formData.sponsorName || formData.sponsorName === "Invalid Sponsor") {
+//     toast.error("Valid Sponsor ID daalein!");
+//     return;
+//   }
+
+//   setLoading(true);
+
+
+//   const payload = {
+//     IntroRegNo: formData.introRegNo,
+//     IntroSide: formData.introSide,
+//     FName: formData.fName,
+//     LName: formData.lName,
+//     Mobile: formData.mobile,
+//     Email: formData.email,
+//     LoginId: "###", 
+//     Password: formData.password,
+//     Address: formData.address,
+//     Country: formData.country,
+//     Referrer: formData.referrer,
+//     Created_At: new Date().toISOString(),
+//     Private_Key: formData.private_Key,
+//     Affiliate_Level: formData.affiliate_Level,
+//     Referrer_Id: formData.referrer_Id
+//   };
+
+//   try {
+//     const response = await apiClient.post(
+//       "/Authentication/register",
+//       payload
+//     );
+
+// if (response.data.success === true || response.status === 200) {
+//   const userData = response.data.data;
+
+//   localStorage.setItem("token", response.data.token || "authenticated_via_signup");
+//   localStorage.setItem("user", JSON.stringify(userData));
+//   localStorage.setItem("regno", userData.Regno); 
+//   localStorage.setItem("isLoggedIn", "true");
+
+//   toast.success("Registration Successful! Redirecting...");
+
+//   setTimeout(() => {
+//     navigate("/dashboard");
+//   }, 800);
+
+//     } else {
+//       toast.error(response.data.message || "Registration Failed");
+//     }
+//   } catch (error) {
+//     console.error("Signup Error:", error);
+//     toast.error(error.response?.data?.message || "Server Error");
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
+//   return (
+//   <>
+//     <div classNameName="signup-v3-page-wrapper">
+//       <div classNameName="signup-v3-main-card">
+
+
+//         <div classNameName="signup-v3-form-section">
+//           <div classNameName="signup-v3-header">
+//             <h1>Signup</h1>
+//             <p>Sign up to your account to get started</p>
+//           </div>
+
+//           <form onSubmit={handleSignup} classNameName="signup-v3-form">
+
+//             <div classNameName="signup-v3-input-row">
+//               <input type="text" name="introRegNo" placeholder="Sponsor ID" classNameName="signup-v3-input" value={formData.referrer_Id} onChange={handleChange} required />
+//               <input type="text" value={formData.sponsorName} readOnly classNameName="signup-v3-input signup-v3-readOnly" placeholder="Sponsor Name" />
+//             </div>
+//               <input type="text" name="fName" placeholder="Full Name" classNameName="signup-v3-input" value={formData.fName} onChange={handleChange} required />
+//               <input type="email" name="email" placeholder="Email Address" classNameName="signup-v3-input" value={formData.email} onChange={handleChange} required />
+//             <div classNameName="signup-v3-mobile-wrap">
+//               <div classNameName="signup-v3-country-code">91</div>
+//               <input type="text" name="mobile" placeholder="Mobile Number" maxLength="10" classNameName="signup-v3-input signup-v3-number-input" value={formData.mobile} onChange={handleChange} required />
+//             </div>
+//               <input type="password" name="password" placeholder="Create Password" classNameName="signup-v3-input" value={formData.password} onChange={handleChange} required />
+//               <button type="submit" classNameName="signup-v3-submit-btn" disabled={loading} >
+//               {loading ? "Creating Account..." : "Signup Now"}
+//             </button>
+//           </form>
+
+//           <p classNameName="signup-v3-footer-text">
+//             Already have an account?{" "}
+//             <span onClick={() => navigate("/login")}>Login Here</span>
+//           </p>
+//         </div>
+
+       
+//         <div classNameName="signup-v3-visual-section">
+//           <img
+//             src="https://mangowealthplanner.com/img/hero-img.png"
+//             alt="Hero"
+//             classNameName="signup-v3-hero-img"
+//           />
+//         </div>
+//       </div>
+
+    
+//     </div>
+//     </>
+//   );
+// };
+
+// export default SignupPage;   
+
+ 
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, NavLink } from "react-router-dom";
 import toast from "react-hot-toast";
+import { CgMenuGridR } from "react-icons/cg"; // or use any icon library
 import "../../assets/Css/Auth.css";
 import apiClient from "../../api/apiClient";
 
-const SignupPage = () => {
+// Import images (adjust paths as needed)
+import logoImg from "../../assets/images/logo.png";
+import logo2Img from "../../assets/images/logo2.png";
+import arrowImg from "../../assets/images/resource/arrow.png";
+import heart2  from "../../assets/images/resource/heart2.png"
+
+const Signup = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  // const [showModal, setShowModal] = useState(false);
-  // const [generatedID, setGeneratedID] = useState("");
+  const [isSticky, setIsSticky] = useState(false);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isInfoGroupActive, setIsInfoGroupActive] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const [formData, setFormData] = useState({
-    introRegNo: "", 
+    introRegNo: "",
     referrer_Id: "",
     sponsorName: "",
     fName: "",
@@ -27,44 +242,23 @@ const SignupPage = () => {
     introSide: "L"
   });
 
-  // const copyIdAction = (id) => {
-  //   if (!id) return;
-  //   navigator.clipboard.writeText(id)
-  //     .then(() => toast.success("ID Copied to Clipboard!"))
-  //     .catch(() => toast.error("Failed to copy!"));
-  // };
-  // 🔥 Input Change
+  // ... (keep all handlers: handleChange, useEffect for sponsor, handleSignup unchanged) ...
 
-
-  
   const handleChange = (e) => {
-    console.log("payload" ,formData)
     const { name, value } = e.target;
-
     if (name === "introRegNo") {
-      setFormData((prev) => ({
-        ...prev,
-        referrer_Id: value
-      }));
+      setFormData((prev) => ({ ...prev, referrer_Id: value }));
     } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value
-      }));
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
-  // 🔥 Sponsor Fetch
   useEffect(() => {
     const fetchSponsor = async () => {
       const loginId = formData.referrer_Id;
-
       if (loginId) {
         try {
-          const res = await apiClient.get(
-            `/User/check-user?loginid=${loginId}`
-          );
-
+          const res = await apiClient.get(`/User/check-user?loginid=${loginId}`);
           if (res.data?.success && res.data.data) {
             setFormData((prev) => ({
               ...prev,
@@ -72,143 +266,308 @@ const SignupPage = () => {
               introRegNo: res.data.data.regno
             }));
           } else {
-            setFormData((prev) => ({
-              ...prev,
-              sponsorName: "Invalid Sponsor",
-              introRegNo: ""
-            }));
+            setFormData((prev) => ({ ...prev, sponsorName: "Invalid Sponsor", introRegNo: "" }));
           }
         } catch {
-          setFormData((prev) => ({
-            ...prev,
-            sponsorName: "Not Found",
-            introRegNo: ""
-          }));
+          setFormData((prev) => ({ ...prev, sponsorName: "Not Found", introRegNo: "" }));
         }
       } else {
-        setFormData((prev) => ({
-          ...prev,
-          sponsorName: "",
-          introRegNo: ""
-        }));
+        setFormData((prev) => ({ ...prev, sponsorName: "", introRegNo: "" }));
       }
     };
-
     const timer = setTimeout(fetchSponsor, 500);
     return () => clearTimeout(timer);
   }, [formData.referrer_Id]);
 
-  // 🔥 Signup
   const handleSignup = async (e) => {
-  e.preventDefault();
-  
-  if (!formData.sponsorName || formData.sponsorName === "Invalid Sponsor") {
-    toast.error("Valid Sponsor ID daalein!");
-    return;
-  }
-
-  setLoading(true);
-
-  // Exact payload jo backend maang raha hai
-  const payload = {
-    IntroRegNo: formData.introRegNo,
-    IntroSide: formData.introSide,
-    FName: formData.fName,
-    LName: formData.lName,
-    Mobile: formData.mobile,
-    Email: formData.email,
-    LoginId: "###", // Backend generate karega
-    Password: formData.password,
-    Address: formData.address,
-    Country: formData.country,
-    Referrer: formData.referrer,
-    Created_At: new Date().toISOString(),
-    Private_Key: formData.private_Key,
-    Affiliate_Level: formData.affiliate_Level,
-    Referrer_Id: formData.referrer_Id
+    e.preventDefault();
+    if (!formData.sponsorName || formData.sponsorName === "Invalid Sponsor") {
+      toast.error("Valid Sponsor ID daalein!");
+      return;
+    }
+    setLoading(true);
+    const payload = {
+      IntroRegNo: formData.introRegNo,
+      IntroSide: formData.introSide,
+      FName: formData.fName,
+      LName: formData.lName,
+      Mobile: formData.mobile,
+      Email: formData.email,
+      LoginId: "###",
+      Password: formData.password,
+      Address: formData.address,
+      Country: formData.country,
+      Referrer: formData.referrer,
+      Created_At: new Date().toISOString(),
+      Private_Key: formData.private_Key,
+      Affiliate_Level: formData.affiliate_Level,
+      Referrer_Id: formData.referrer_Id
+    };
+    try {
+      const response = await apiClient.post("/Authentication/register", payload);
+      if (response.data.success === true || response.status === 200) {
+        const userData = response.data.data;
+        localStorage.setItem("token", response.data.token || "authenticated_via_signup");
+        localStorage.setItem("user", JSON.stringify(userData));
+        localStorage.setItem("regno", userData.Regno);
+        localStorage.setItem("isLoggedIn", "true");
+        toast.success("Registration Successful! Redirecting...");
+        setTimeout(() => navigate("/dashboard"), 800);
+      } else {
+        toast.error(response.data.message || "Registration Failed");
+      }
+    } catch (error) {
+      console.error("Signup Error:", error);
+      toast.error(error.response?.data?.message || "Server Error");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  try {
-    const response = await apiClient.post(
-      "/Authentication/register",
-      payload
-    );
+  useEffect(() => {
+    const handleScroll = () => setIsSticky(window.scrollY > 100);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-if (response.data.success === true || response.status === 200) {
-  const userData = response.data.data;
+  useEffect(() => {
+    document.body.classList.add('loaded');
+    return () => document.body.classList.remove('loaded');
+  }, []);
 
-  localStorage.setItem("token", response.data.token || "authenticated_via_signup");
-  localStorage.setItem("user", JSON.stringify(userData));
-  localStorage.setItem("regno", userData.Regno); // ⭐ important
-  localStorage.setItem("isLoggedIn", "true");
-
-  toast.success("Registration Successful! Redirecting...");
-
-  setTimeout(() => {
-    navigate("/dashboard");
-  }, 800);
-
+  useEffect(() => {
+    if (isSearchActive) {
+      document.body.classList.add('search-active');
     } else {
-      toast.error(response.data.message || "Registration Failed");
+      document.body.classList.remove('search-active');
     }
-  } catch (error) {
-    console.error("Signup Error:", error);
-    toast.error(error.response?.data?.message || "Server Error");
-  } finally {
-    setLoading(false);
-  }
-};
+  }, [isSearchActive]);
+
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') setIsSearchActive(false);
+    };
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, []);
 
   return (
-  <>
-    <div className="signup-v3-page-wrapper">
-      <div className="signup-v3-main-card">
+    <>
+      <div className="bd-bg">
+        {/* Main Header */}
+        <div id="sticky-header" className={`mediic_nav_manu ${isSticky ? 'sticky' : ''}`}>
+          <div className="container-fluid">
+            <div className="row align-items-center">
+              <div className="col-lg-2 col-6">
+                <div className="logo cursor-scale small">
+                  <Link className="logo_img" to="/" title="mediic">
+                    <img src={logoImg} alt="logo" />
+                  </Link>
+                  <Link className="main_sticky" to="/" title="mediic">
+                    <img src={logo2Img} alt="logo" />
+                  </Link>
+                </div>
+              </div>
 
-        {/* LEFT FORM SECTION */}
-        <div className="signup-v3-form-section">
-          <div className="signup-v3-header">
-            <h1>Signup</h1>
-            <p>Sign up to your account to get started</p>
+              {/* Desktop Navigation */}
+              <div className="col-lg-10 d-none d-lg-block">
+                <nav className="mediic_menu">
+                  <ul className="nav_scroll">
+                    <li><NavLink className="mdy-hover cursor-scale small" to="/">Home</NavLink></li>
+                    <li><NavLink className="mdy-hover cursor-scale small" to="/about">Why Healthcare?</NavLink></li>
+                    <li><NavLink className="mdy-hover cursor-scale small" to="#">Our Approach</NavLink></li>
+                    <li>
+                      <NavLink className="mdy-hover cursor-scale small" to="#">Services</NavLink>
+                      <ul className="sub-menu">
+                        <li><Link to="/service">Our Service</Link></li>
+                        <li><Link to="/service-details">Certifications</Link></li>
+                      </ul>
+                    </li>
+                    <li><NavLink className="mdy-hover cursor-scale small" to="/contact">Contact Us</NavLink></li>
+                  </ul>
+                  <div className="mediic-right-side cursor-scale small">
+                    <div className="search-box-btn search-box-outer" onClick={() => setIsSearchActive(true)}>
+                      <i className="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <div className="mediic-button">
+                      <Link to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"} className="wallet-header">
+                        Get Dashboard
+                        <img src={arrowImg} alt="" />
+                        <div className="mediic-hover-btn hover-btn"></div>
+                        <div className="mediic-hover-btn hover-btn2"></div>
+                        <div className="mediic-hover-btn hover-btn3"></div>
+                        <div className="mediic-hover-btn hover-btn4"></div>
+                      </Link>
+                    </div>
+                    <div className="sidebar">
+                      <div className="nav-btn navSidebar-button" onClick={() => setIsInfoGroupActive(true)}>
+                        <span><i><CgMenuGridR /></i></span>
+                      </div>
+                    </div>
+                  </div>
+                </nav>
+              </div>
+
+              {/* Mobile Menu Toggle Button */}
+              <div className="col-6 d-lg-none text-end">
+                <button className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                  <i className="fa-solid fa-bars"></i>
+                </button>
+              </div>
+            </div>
           </div>
+        </div>
 
-          <form onSubmit={handleSignup} className="signup-v3-form">
-
-            <div className="signup-v3-input-row">
-              <input type="text" name="introRegNo" placeholder="Sponsor ID" className="signup-v3-input" value={formData.referrer_Id} onChange={handleChange} required />
-              <input type="text" value={formData.sponsorName} readOnly className="signup-v3-input signup-v3-readOnly" placeholder="Sponsor Name" />
+        {/* Search Popup */}
+        <div className={`search-popup ${isSearchActive ? 'search-active' : ''}`}>
+          <button className="close-search style-two" onClick={() => setIsSearchActive(false)}>
+            <span className="flaticon-multiply"><i className="fa-solid fa-xmark"></i></span>
+          </button>
+          <form method="get" action="#">
+            <div className="form-group">
+              <input type="search" name="search-field" placeholder="Search..." required />
+              <button type="submit"><i className="fa fa-search"></i></button>
             </div>
-              <input type="text" name="fName" placeholder="Full Name" className="signup-v3-input" value={formData.fName} onChange={handleChange} required />
-              <input type="email" name="email" placeholder="Email Address" className="signup-v3-input" value={formData.email} onChange={handleChange} required />
-            <div className="signup-v3-mobile-wrap">
-              <div className="signup-v3-country-code">91</div>
-              <input type="text" name="mobile" placeholder="Mobile Number" maxLength="10" className="signup-v3-input signup-v3-number-input" value={formData.mobile} onChange={handleChange} required />
-            </div>
-              <input type="password" name="password" placeholder="Create Password" className="signup-v3-input" value={formData.password} onChange={handleChange} required />
-              <button type="submit" className="signup-v3-submit-btn" disabled={loading} >
-              {loading ? "Creating Account..." : "Signup Now"}
-            </button>
           </form>
-
-          <p className="signup-v3-footer-text">
-            Already have an account?{" "}
-            <span onClick={() => navigate("/login")}>Login Here</span>
-          </p>
         </div>
 
-        {/* RIGHT IMAGE SECTION */}
-        <div className="signup-v3-visual-section">
-          <img
-            src="https://mangowealthplanner.com/img/hero-img.png"
-            alt="Hero"
-            className="signup-v3-hero-img"
-          />
+        {/* Info Group Sidebar */}
+        <div className={`xs-sidebar-group info-group ${isInfoGroupActive ? 'isActive' : ''}`}>
+          <div className="xs-overlay xs-bg-black" onClick={() => setIsInfoGroupActive(false)}></div>
+          <div className="xs-sidebar-widget">
+            <div className="sidebar-widget-container">
+              <div className="widget-heading">
+                <a href="#" className="close-side-widget" onClick={(e) => { e.preventDefault(); setIsInfoGroupActive(false); }}>
+                  <i className="fa-solid fa-xmark"></i>
+                </a>
+              </div>
+              <div className="sidebar-textwidget">
+                <div className="sidebar-info-contents">
+                  {/* <div className="content-thumb-box">
+                     <img src={sidebar-img} alt="" />
+                  </div> */}
+                  <div className="contact-info">
+                    <h2>About Company</h2>
+                    <p>Rapidiously expedite strategic expertise with customer directed synergy.</p>
+                    <ul className="list-style-one">
+                      <li><span className="icon fa-phone"></span>+1 800 123 456 789</li>
+                      <li><span className="icon fa-envelope"></span>info@example.com</li>
+                    </ul>
+                    <ul className="social-box">
+                      <li><a href="#"><i className="fa-brands fa-facebook-f"></i></a></li>
+                      <li><a href="#"><i className="fa-brands fa-twitter"></i></a></li>
+                      <li><a href="#"><i className="fa-brands fa-instagram"></i></a></li>
+                      <li><a href="#"><i className="fa-brands fa-linkedin-in"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-    
+        {/* Mobile Menu Drawer */}
+        {isMobileMenuOpen && (
+          <div className="mobile-menu-drawer-overlay" onClick={() => setIsMobileMenuOpen(false)}>
+            <div className="mobile-menu-drawer" onClick={e => e.stopPropagation()}>
+              <button className="close-mobile-menu" onClick={() => setIsMobileMenuOpen(false)}>✕</button>
+              <nav className="mediic_menu">
+                <ul className="nav_scroll">
+                  <li><NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink></li>
+                  <li><NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>Why Healthcare?</NavLink></li>
+                  <li><NavLink to="#" onClick={() => setIsMobileMenuOpen(false)}>Our Approach</NavLink></li>
+                  <li><NavLink to="#" onClick={() => setIsMobileMenuOpen(false)}>Services</NavLink></li>
+                  <li><NavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</NavLink></li>
+                  <div className="mediic-button01">
+                    <Link
+                      to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
+                      className="wallet-header01"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Dashboard
+                      <div className="mediic-hover-btn hover-btn"></div>
+                      <div className="mediic-hover-btn hover-btn2"></div>
+                      <div className="mediic-hover-btn hover-btn3"></div>
+                      <div className="mediic-hover-btn hover-btn4"></div>
+                    </Link>
+                  </div>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        )}
+
+        {/* Signup Form Section */}
+        <div className="mediic-appoinment">
+          <div className="container">
+            <div className="row appoinment">
+              <div className="col-lg-6"></div>
+              <div className="col-lg-6">
+                <div className="mediic-section-title2">
+                  <h4>SIGNUP ACCOUNT</h4>
+                  <h3 className="cursor-scale small">Sign up to your account</h3>
+                </div>
+                <div className="contact-form-box">
+                  <form onSubmit={handleSignup} id="signup-form">
+                    <div className="row">
+                      <div className="col-lg-12 col-md-12">
+                        <div className="form-box">
+                          <input type="text" name="introRegNo" placeholder="Sponsor ID*" value={formData.referrer_Id} onChange={handleChange} required />
+                        </div>
+                      </div>
+                      <div className="col-lg-12 col-md-12">
+                        <div className="form-box">
+                          <input type="text" value={formData.sponsorName} readOnly placeholder="Sponsor Name" className="readonly-input" />
+                        </div>
+                      </div>
+                      <div className="col-lg-12 col-md-12">
+                        <div className="form-box">
+                          <input type="text" name="fName" placeholder="Full Name*" value={formData.fName} onChange={handleChange} required />
+                        </div>
+                      </div>
+                      <div className="col-lg-12 col-md-12">
+                        <div className="form-box">
+                          <input type="email" name="email" placeholder="Email Address*" value={formData.email} onChange={handleChange} required />
+                        </div>
+                      </div>
+                      <div className="col-lg-12 col-md-12">
+                        <div className="form-box d-flex" style={{ gap: "10px" }}>
+                          <span style={{ padding: "1px 15px", background: "#f0f0f0", borderRadius: "5px" }}>+91</span>
+                          <input type="text" name="mobile" placeholder="Mobile Number*" maxLength="10" value={formData.mobile} onChange={handleChange} required style={{ flex: 1 }} />
+                        </div>
+                      </div>
+                      <div className="col-lg-12 col-md-12">
+                        <div className="form-box">
+                          <input type="password" name="password" placeholder="Create Password*" value={formData.password} onChange={handleChange} required />
+                        </div>
+                      </div>
+                      <div className="col-lg-12">
+                        <p className="signup-footer-text">
+                          Already have an account? <a href="/login" onClick={(e) => { e.preventDefault(); navigate("/login"); }}>Login Here</a>
+                        </p>
+                      </div>
+                      <div className="col-lg-12 col-md-6">
+                        <div className="submit-button">
+                          <button type="submit" className="submit-btn cursor-scale small" disabled={loading}>
+                            {loading ? "Creating Account..." : "Signup Now"} <i className="bi bi-arrow-return-right"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div className="appointment-shape">
+                <div className="mediic-shape-2" data-aos="fade-down">
+                  <img src={heart2} alt="shape" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
     </>
   );
 };
 
-export default SignupPage;   
+export default Signup;
