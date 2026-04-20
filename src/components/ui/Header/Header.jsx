@@ -89,6 +89,7 @@
 // src/components/Header.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { CgMenuGridR } from "react-icons/cg";
 
 // CSS imports
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -233,7 +234,7 @@ const Header = () => {
                   {/* Sidebar (info-group) Button */}
                   <div className="sidebar">
                     <div className="nav-btn navSidebar-button" onClick={() => setIsInfoGroupActive(true)}>
-                      <span><i class="bi bi-grid-3x3-gap-fill"></i></span>
+                      <span><i><CgMenuGridR /></i></span>
                     </div>
                   </div>
                 </div>

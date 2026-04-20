@@ -5216,7 +5216,13 @@ span.flaticon-multiply i {
 .grow-small {
   transform: scale(1.7);
 }
+.hero-thumb01 {
+  width: 550px;
+  padding-right: 70px;
+  margin-top: 60px;
+  position: relative;
 
+}
 /* End curser point */
 
 /*===========================
@@ -5224,6 +5230,7 @@ span.flaticon-multiply i {
 =============================*/
 .loader-wrapper01 {
   position: fixed;
+  margin-left: 30px;
   top: 0;
   bottom: 0;
   left: 0;

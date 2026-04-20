@@ -56,7 +56,7 @@ const Hero = () => {
           {/* Right Content with Images */}
           <div className="col-lg-6 col-md-6">
             <div className="hero-thumb">
-              <img src={heroThumb} alt="hero" />
+              <img className='hero-thumb01' src={heroThumb} alt="hero" />
             </div>
             <div className="hero-all-shape">
               <div className="hero-shape">

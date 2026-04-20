@@ -10,7 +10,7 @@ import serviceIcon1 from '../assets/images/resource/service-icon.png';
 import serviceIcon2 from '../assets/images/resource/service-icon2.png';
 import serviceIcon3 from '../assets/images/resource/service-icon3.png';
 import serviceIcon4 from '../assets/images/resource/service-icon4.png';
-import serviceIcon5 from '../assets/images/resource/service-icon5.png';
+// import serviceIcon5 from '../assets/images/resource/service-icon5.png';
 import arrowImg from '../assets/images/resource/arrow.png';
 
 const Service = () => {
@@ -40,12 +40,12 @@ const Service = () => {
       paragraph: 'Stringent regulations and patent protections provide investment security and competitive advantages in pharmaceutical and medical device sectors.',
       className: 'update'
     },
-    {
-      title: 'Internal Medicine',
-      icon: serviceIcon5,
-      paragraph: 'Comprehensive adult healthcare focusing on prevention, diagnosis, and management of chronic diseases such as diabetes, hypertension, and heart conditions.',
-      className: 'update'
-    },
+    // {
+    //   title: 'Internal Medicine',
+    //   icon: serviceIcon5,
+    //   paragraph: 'Comprehensive adult healthcare focusing on prevention, diagnosis, and management of chronic diseases such as diabetes, hypertension, and heart conditions.',
+    //   className: 'update'
+    // },
   ];
 
   return (

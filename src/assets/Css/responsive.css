@@ -1105,8 +1105,9 @@
   }
 
   .hero-thumb {
-    top: 153px;
+    /* top: 153px; */
     left: 0;
+    margin-bottom: 20px;
   }
 
   /* Brand Section */
@@ -1447,7 +1448,7 @@
   }
 
   .hero-thumb {
-    top: 155px;
+    top: 100px;
     left: 0;
   }
 
@@ -1875,11 +1876,11 @@
   }
 
   .hero-thumb {
-    top: 110px;
     left: 0;
+    /* margin-bottom: 40px; */
   }
 
-  .hero-thumb img {
+  .hero-thumb01 {
     width: 100%;
   }
 

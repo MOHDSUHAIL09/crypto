@@ -9,7 +9,7 @@ import Choosehelthcare from './components/Choosehelthcare'
 import Newsletter from './components/Newsletter'
 import Fotter from './components/ui/fotter/Fotter'
 import AiPowered from './components/AiPowered'
-// import Investmentprocess from './components/Investmentprocess'
+import Investmentprocess from './components/Investmentprocess'
 
 
 const Index = () => {
@@ -24,7 +24,7 @@ const Index = () => {
         <Investmentadvantages/>
         <Choosehelthcare/>
         <AiPowered/>
-        {/* <Investmentprocess/> */}
+        <Investmentprocess/>
         <Newsletter/>
 
       </div>
