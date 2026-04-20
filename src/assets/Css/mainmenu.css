@@ -13,6 +13,7 @@
     border-radius: 10px;  
     width: calc(100% - 10px) !important;
     margin: 0 5px 20px 5px;
+    padding: 12px;
 }
 .wallet-header01{
   color: #fff;
@@ -30,13 +31,12 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  border-radius: 0;
   margin: 0;
 }
 
 .mobile-menu-toggle span {
   display: block;
-  background: #fff;
+  /* background: #fff; */
   height: 3px;
   width: 22px;
   margin: 3px 0;
@@ -65,7 +65,7 @@
   left: 0;
   width: 280px;
   height: 100%;
-  background: var(--primary-color, #ffffff);  /* same as mean-nav background */
+  background: var(--primary-color); 
   overflow-y: auto;
   animation: slideInLeft 0.3s ease;
   z-index: 100000;

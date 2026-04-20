@@ -666,7 +666,6 @@ span.wood-animation img {
 .mediic-section-title h1 {
   font-size: 50px;
   font-weight: 700;
-  line-height: 40px;
 }
 
 .mediic-desc p {
@@ -2053,7 +2052,8 @@ ul.testi-rating li {
 .blog-single-box {
   position: relative;
   z-index: 1;
-  padding: 30px 30px 30px;
+  /* padding: 30px 30px 30px; */
+  padding: 15px;
   display: flex;
   align-items: center;
   border-radius: 25px;
@@ -5039,7 +5039,6 @@ ul.social-box li a:hover {
   margin: -35px auto 0;
   transform: scaleX(0);
   transform-origin: center;
-  background-color: #111111;
   -webkit-transition: all 300ms ease;
   transition: all 300ms ease;
 }
