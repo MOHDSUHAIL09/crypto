@@ -17,14 +17,14 @@
   /* --primary-clr: #7426ef; */
 }
 
-body {
+/* body {
   width: 100%;
   font-family: "Noto Sans", sans-serif;
   background: linear-gradient(#dae3fa, #e6ecfa, #fce1f6);
   background-repeat: no-repeat;
   overflow-x: hidden;
 
-}
+} */
 
 
 /* ================= RESET ================= */
@@ -2378,7 +2378,7 @@ select:focus {
 }
 
 .row {
-  padding: 20px;
+  padding: 10px;
   z-index: 1;
 }
 

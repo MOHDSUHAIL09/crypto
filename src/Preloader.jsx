@@ -1,112 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import './assets/Css/Main.css';
 
 const Preloader = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 1500); 
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <>
-      <style>
-        {`
-          #page {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #f9f9f9;
-            z-index: 9999;
-          }
-
-          #container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-          }
-
-          #h3 {
-            color: rgb(82, 79, 79);
-            font-size: 20px;
-            margin-top: 250px;
-            position: absolute;
-          }
-
-          #ring {
-            width: 190px;
-            height: 190px;
-            border: 1px solid transparent;
-            border-radius: 50%;
-            position: absolute;
-          }
-
-          #ring:nth-child(1) {
-            border-bottom: 8px solid rgb(240, 42, 230);
-            animation: rotate1 2s linear infinite;
-          }
-
-          @keyframes rotate1 {
-            from {
-              transform: rotateX(50deg) rotateZ(110deg);
-            }
-            to {
-              transform: rotateX(50deg) rotateZ(470deg);
-            }
-          }
-
-          #ring:nth-child(2) {
-            border-bottom: 8px solid rgb(240, 19, 67);
-            animation: rotate2 2s linear infinite;
-          }
-
-          @keyframes rotate2 {
-            from {
-              transform: rotateX(20deg) rotateY(50deg) rotateZ(20deg);
-            }
-            to {
-              transform: rotateX(20deg) rotateY(50deg) rotateZ(380deg);
-            }
-          }
-
-          #ring:nth-child(3) {
-            border-bottom: 8px solid rgb(3, 170, 170);
-            animation: rotate3 2s linear infinite;
-          }
-
-          @keyframes rotate3 {
-            from {
-              transform: rotateX(40deg) rotateY(130deg) rotateZ(450deg);
-            }
-            to {
-              transform: rotateX(40deg) rotateY(130deg) rotateZ(90deg);
-            }
-          }
-
-          #ring:nth-child(4) {
-            border-bottom: 8px solid rgb(207, 135, 1);
-            animation: rotate4 2s linear infinite;
-          }
-
-          @keyframes rotate4 {
-            from {
-              transform: rotateX(70deg) rotateZ(270deg);
-            }
-            to {
-              transform: rotateX(70deg) rotateZ(630deg);
-            }
-          }
-        `}
-      </style>
-     <div id="page">
-        <div id="container">
-            <div id="ring"></div>
-            <div id="ring"></div>
-            <div id="ring"></div>
-            <div id="ring"></div>
-            <div id="h3">loading...</div>
-        </div>
-</div>
-    </>
+    <div className={`loader-wrapper01 ${isLoaded ? 'loaded01' : ''}`}>
+      <div className="loader01"></div>
+      <div className="loder-section left-section"></div>
+      <div className="loder-section right-section"></div>
+    </div>
   );
 };
 

@@ -1,1508 +1,2616 @@
- /* Responsive css start */
- /* ========================================
-   FIX: EXTRA SPACE FROM HIDDEN TEXT (image.png content)
-   ======================================== */
-@media (max-width: 2000px) {
-  /* Kill any hidden elements that might be taking space */
-  [hidden],
-  [style*="display: none"],
-  [style*="visibility: hidden"],
-  [aria-hidden="true"],
-  .d-none,
-  .hidden,
-  .invisible {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    min-height: 0 !important;
-    max-height: 0 !important;
-    width: 0 !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    top: -9999px !important;
-    left: -9999px !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-  
-
-  /* Lock body width */
-  html, body {
-    overflow-x: hidden !important;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  /* Fix hero section height */
-  .hero-main {
-    height: auto !important;
-    min-height: 100vh !important;
-    overflow-x: hidden !important;
-  }
-
-  /* Fix timer section */
-  .pre-sale-timer {
-    height: auto !important;
-    display: block !important;
-    margin-bottom: 0 !important;
-  }
-
-  .pre-sale-timer > div {
-    display: block !important;
-  }
-
-  /* Fix any fixed width elements */
-  [style*="width:"] {
-    max-width: 100% !important;
-  }
-
-
-  img {
-    max-width: 100% !important;
-    height: auto !important;
-  }
-
-  .diamond-animation,
-  .platinum-animation,
-  .mercury-animation {
-    height: auto !important;
-    min-height: 200px !important;
-    transform: scale(1) !important;
-    width: 100% !important;
-    overflow: hidden !important;
-  }
+/* Normal desktop :1300px. */
+@media (min-width: 1371px) and (max-width: 1600) {
 }
 
- @media only screen and (max-width: 1600px) {
- 	.our-mission-boxes h4 {
- 		font-size: 20px;
- 		line-height: 30px;
- 		bottom: 15px;
- 		left: 15px;
- 		right: 15px;
- 	}
- 	.our-mission-boxes .col {
- 		padding: 15px;
- 		padding-top: 20px;
- 		min-height: 450px;
- 	}
- 	.layout-2 .row{
- 		padding:80px 0px; 
- 	}
- 	.pre-sale-timer{
- 		padding-top: 40px;
-		padding-bottom: 50px;
- 	}
- 	.layout-3 .container > .row{
- 		padding: 50px 0px;
- 	}
- 	.layout-3 .sec-title{
- 		max-width:940px;
- 		margin: auto; 
- 	}
- 	.layout-3 .sec-title h1{
- 		font-size:42px; 
- 	}
- 	.pre-sale-timer-outer{
- 		margin-top:15px; 
- 	}
- 	.layout-3 .we-accept-section{
- 		margin-top:15px;
- 	}
-	.animation-circle-main {
-		right: 0%;
-	}
-	.diamond-animation{
-		transform: scale(0.7);
-		width: 580px;
-	}
-	.platinum-animation{
-		transform: scale(0.7);
-		margin-top: -100px;
-	}
- }
- @media only screen and (max-width: 1199px) {
- 	.doughnutChartContainer {
- 		margin-right: 20px;
- 	}
- 	.team img {
- 		max-width: 200px;
- 		max-height: 200px;
- 	}
- 	.footer-2 .socials li{
- 		margin: 0px 3px 10px;
- 	}
- 	.footer-2 .socials li a{
- 		width:48px;
- 		height:48px;
- 		line-height:48px;
- 		font-size: 20px;
- 	}
- 	.footer-2 .socials li a i{
- 		line-height:48px;
- 	}
- 	.team-section.style-2::before{
- 		right:calc(((100% - 960px) / 2) + ((990px * 75) / 100)) 
- 	}
- 	.expert-slider .team-img{
- 		-ms-flex: 0 0 40%;
-		flex: 0 0 40%;
-		width: 40%;
-		max-width: 40%;
- 	}
- 	.expert-slider .team-detils{
- 		-ms-flex: 0 0 60%;
-		flex: 0 0 60%;
-		width: 60%;
-		max-width: 60%;
- 	}
- 	h1{
- 		font-size:42px; 
- 	}
- 	.layout-3 .container > .row{
- 		padding:50px 0px; 
- 	}
- 	.pre-sale-timer-outer{
- 		margin-top:10px; 
- 	}
- 	.we-accept-section{
- 		margin-top:30px; 
- 	}
- 	.copyrights.style-1{
-		margin-top: 0px;
-	}
-	/* .carbon-layout .hero-main h1, h2.section-heading1{
-		font-size: 2.8rem;
-	} */
-	.carbon-layout .about-left h4{
-		font-size:24px; 
-	}
-	.carbon-layout .about-left h5{
-		font-size:18px; 
-	}
-	.token-allocation-box .sale-list .price-tag{
-		font-size:15px; 
-	}
-	.benefits-box h3{
-		font-size:20px; 
-	}
-	.carbon-layout .about-left{
- 		padding-left: 15px;
- 	}
- 	.animation-circle-main {
-		max-width: 600px;
-		max-height: 600px;
-	}
-	.convertor-widget{
-		margin-top: 0;
-	}
-	.currency-calulator{
-		padding: 50px 15px 20px 20px;
-		margin-left: 0;
-	}
-	.convertor-widget .current-ico{
-		transform: none;
-		position: static;
-		margin-bottom: -45px;
-		margin-left:20px; 
-	}
-	.cryptonatorwidget td{
-		padding: 2px;
-	}
-	.cryptonatorwidget td select, .cryptonatorwidget td input{
-		height: 45px !important;
-	}
-	.token-sale .button-wrapper .btn{
-		min-width: calc(50% - 24px);
-	}
-	.diamond-layout .token-sale-left{
-		padding: 0px 0px;
-	}
-	.counter-value{
-		font-size: 42px;
-	}
-	.style-2.accordion .card-header a h5{
-		font-size:16px; 
-	}
-	.horizontal-roadmap .roadmap-text{
-		padding: 30px 30px 0px;
-	}
-	.horizontal-roadmap .roadmap-item.even .roadmap-text{
-		padding: 0px 30px 30px;
-	}
-	.team-minimal-section .team-box{
-		text-align: center;
-	}
-	.team-minimal-section .team-img{
-		display: table;
-		margin: 0px auto 15px;
-		flex: 0 0 100%;
-	}
-	.team-minimal-section .text{
-		padding: 0px 0px 0px 0px;
-		width: 100%;
-		text-align:center; 
-	}
-	ul.horizontal-menu li:not(:last-child)::after{
-		margin: 0px 7px;
-	}
-	.diamond-layout.team-section::after{
-		left: 0;
-		margin-left: 0;
-	}
-	.tollfree-list li strong{
-		display: block;
-	}
-	.exchange-list-section .heading h2{
-		font-size:24px; 
-	}
-	.exchange-list .item{
-		margin-top: 10px;
-	}
-	.video-section{
-		padding:150px 0px; 
-	}
-	.banafits-circle{
-		height: 300px;
-		width: 300px;
-		margin-bottom: -110px;
-	}
-	.banafits-circle::before {
-		height: 312px;
-		width: 312px;
-	}
-	.banafits-circle .icon img{
-		max-width: 150px;
-	}
-	.banafits-list-items .banafits-item:first-child{
-		top:290px;
-		left:-40px;
-	}
-	.banafits-list-items .banafits-item:nth-child(2){
-		top: 150px;
-		left: 30px;
-	}
-	.banafits-list-items .banafits-item:nth-child(3){
-		top: 15px;
-	}
-	.banafits-list-items .banafits-item:nth-child(4){
-		top: 150px;
-		right: 30px;
-	}
-	.banafits-list-items .banafits-item:nth-child(5){
-		top:290px;
-		right:-40px;
-	}
-	.blog-grid-layout .article-img{
-		width:100%; 
-	}
-	.blog-grid-layout .article-img a{
-		padding-top:75%; 
-	}
-	.blog-grid-layout .article-details{
-		width: 100%;
-	}
-	.teamslider .owl-nav{
-		left: calc(100% - 930px);
-		bottom:0; 
-	}
-	.visible.about-mercury-animation .mercury-base{
-		min-width:680px;
-	}
- }
-  @media only screen and (max-width: 991px) {
-	.light{
-		width: 140px;
-		height: auto;
-	}
-	.dark{
-		width: 140px;
-		height: auto;
-	}
- 	nav {
- 		margin-top: 3px;
- 	}
- 	nav ul li {
- 		margin-left: 5px;
- 	}
- 	nav ul li a {
- 		font-size: 14px;
- 	}
- 	.hero-main{
- 		height:auto;  
- 	}
- 	.pre-sale-timer {
- 		padding: 120px 15px 200px;
- 	}
- 	.pre-sale-timer h3 {
- 		font-size: 26px;
- 	}
- 	.sec-title h1 {
- 		font-size: 40px
- 	}
- 	.sec-title h3 {
- 		font-size: 28px
- 	}
- 	.sec-title:after,
- 	.sec-title.text-center:after {
- 		margin: 20px 0;
- 	}
- 	.hero-btns a {
- 		min-width: 210px;
- 	}
- 	#clock li {
- 		padding: 0 8px;
- 	}
- 	#clock ul {
- 		margin: 0 -8px;
- 	}
- 	#clock li span {
- 		font-size: 30px;
- 		padding: 10px 2px;
- 	}
- 	#clock li span em {
- 		font-size: 14px;
- 	}
- 	.about-section,
- 	.token-sale,
- 	.roadmap-sec,
- 	.team-section,
- 	.blog-section,
- 	footer {
- 		padding: 60px 0;
- 	}
- 	.our-mission {
- 		padding-top: 60px
- 	}
- 	.our-mission-boxes span {
- 		font-size: 28px;
- 	}
- 	.our-mission-boxes .col {
- 		width: 50%;
- 		flex-basis: inherit;
- 		border-bottom: 1px solid rgba(54, 54, 54, 0.8);
- 	}
- 	.doughnut {
- 		display: block;
- 	}
- 	.doughnut .chart-legend {
- 		width: 100%;
- 		padding-left: 30px;
- 		padding-top: 30px;
- 	}
- 	.team h4 {
- 		margin: 15px 0 5px;
- 		font-size: 20px;
- 	}
- 	.footer-box-3 p br {
- 		display: none;
- 	}
- 	
- 	.blog-list + .blog-list,
- 	.blog-list {
- 		margin-top: 30px;
- 	}
- 	.blog-section .blogmain > div {
- 		flex-basis: inherit;
- 		max-width: 100%;
- 	}
- 	img.play-btn-img{
- 		max-width:90px; 
- 	}
- 	.stage-detail span{
- 		width:49%;
- 		display:block;  
- 		font-size: 13px;
- 		line-height:1.2; 
- 	}
- 	.stage-detail span.sale-date{
- 		text-align:left;
- 		display:inline-block; 
- 	}
- 	.stage-detail span.token-discount{
- 		display:inline-block; 
- 	}
- 	.about-section.style-2 h5{
- 		font-size: 18px;
- 	}
- 	.layout-2 .hero-left p{
- 		font-size: 18px;
- 	}
- 	.team-section.style-2::before{
- 		right:calc(((100% - 720px) / 2) + ((750px * 75) / 100)) 
- 	}
- 	.expert-slider{
- 		background:none; 
- 	}
- 	.expert-slider .team-img{
- 		align-self: center;
- 	}
- 	.about-section.c-l::before{
- 		right: 70%;
- 	}
-	
-	.token-sale-left{
-		flex: 0 0 100%;
-		max-width: 100%;
-	}
-	.token-sale-right{
-		flex: 0 0 100%;
-		max-width: 100%;
-	}
-	.current-prices{
-		max-width: 100%;
-		margin: 0;
-	}
-	.convertor-widget{
-		padding: 0 15px;
-		margin-top: 30px;
-		max-width:100%;
-	}
-	.counter-icon{
-		padding:15px;
-	}
-	.counter-icon img{
-		max-width:48px; 
-	}
-	.counter-value {
-	    font-size: 36px;
-	}
-	.count-text {
-		font-size: 1.2rem;
-	}
-	.style-2.accordion .card-header a h5{
-		line-height:24px; 
-	}
-	.diamond-layout.team-section::before{
-		height: 167px;
-	}
-	.tollfree-list li strong{
-		display:inline-block;
-	}
-	.exchange-list-section .heading{
-		text-align: center;
-		margin-right: 0;
-		background:transparent; 
-	}
-	.exchange-list-section .heading::before {
-		left: 50%;
-	}
-	.exchange-list-section .heading h2{
-		margin-right:0;
-		margin-bottom:30px;  
-	}
-	.banafits-circle{
-		display:none; 
-	}
-	.banafits-list-items .banafits-item{
-		position: static;
-		max-width: 100%;
-		opacity: 1 !important;
-		visibility: visible !important;
-		transform: none !important;
-	}
-	.banafits-list-items{
-		padding-top: 50px;
-		padding-bottom: 90px;
-	}
-	.banafits-list-items .benefit-box{
-		flex-direction: inherit;
-		display:table;
-		width:100%;
-		margin-bottom:30px;   
-	}
-	.benefit-box .benefit-icon, .banafits-list-items .banafits-item:nth-child(2) .benefit-icon, .banafits-list-items .banafits-item:first-child .benefit-icon, .banafits-list-items .banafits-item:nth-child(4) .benefit-icon, .banafits-list-items .banafits-item:nth-child(5) .benefit-icon{
-		max-width:100px;
-		width:100%;  
-		display: table;
-		margin: 0px auto 15px;
-	}
-	.banafits-list-items .banafits-item:nth-child(2) .benefit-box, .banafits-list-items .banafits-item:first-child .benefit-box, .banafits-list-items .banafits-item:nth-child(4) .benefit-box, .banafits-list-items .banafits-item:nth-child(5) .benefit-box{
-		text-align: center !important;
-		display: table;
-		width:100%; 
-	}
-	.banafits-list-items .banafits-item:nth-child(2) .text, .banafits-list-items .banafits-item:first-child .text, .banafits-list-items .banafits-item:nth-child(4) .text, .banafits-list-items .banafits-item:nth-child(5) .text{
-		padding-right: 0;
-		max-width: 100%;
-	}
-	.mercury-layout .benefit-icon{
-		max-width:116px;
-		margin-bottom: 30px;
-	}
-	.video-section{
-		padding:100px 0px; 
-	}
-	.ipad-center{
-		text-align:center; 
-	}
-	.chart-img{
-		padding-bottom:60px; 
-	}
-	.blog-grid-layout .footer-meta .entry-readmore{
-		width: 100%;
-		float: left;
-	}
-	.teamslider .owl-nav{
-		position: static;
-		display: table;
-		margin: 15px auto;
-	}
-	.teamslider.owl-carousel .owl-nav button{
-		margin-right: 5px !important;
-		margin-left: 5px !important;
-	}
-	.faq-section .tab-section .nav-tabs .nav-item{
-		margin: 0px 8px;
-	}
-	.faq-section .tab-section .nav-tabs .nav-link{
-		font-size:16px; 
-	}
-	.style-3.accordion .card-header a h5{
-		font-size: 18px;
-		line-height: 28px;
-		font-weight: 600;
-	}
-	.platinum-footer ul.horizontal-menu li:not(:last-child)::after{
-		margin: 0px 12px;
-	}
- }
- @media (min-width: 768px) and (max-width: 991px) {
- 	.footer-box-2 li {
- 		width: 100%
- 	}
- 	.footer-box-1,
- 	.footer-box-2,
- 	.footer-box-3 {
- 		flex-basis: inherit;
- 		margin-bottom: 30px;
- 	}
- 	.footer-box-2 {
- 		max-width: 25%;
- 	}
- 	.footer-box-3 {
- 		max-width: 41.66%;
- 	}
- 	.benefits-boxes .item .bf-image, .benefits-boxes .item .bf-details{
- 		display:block;
- 	}
- 	.benefits-boxes .item .bf-image{
- 		margin-bottom:30px;  
- 	}
- 	.hero-left .hero-btns a + a{
- 		margin:15px 0 0;
- 	}
- 	.pre-sale-timer{
- 		margin-bottom:-60px; 
- 	}
- 	.team-section.c-l .row .col{
-		-ms-flex: 0 0 50%;
-		flex: 0 0 50%;
-		max-width: 50%;
-		margin: 15px 0px;
-	}
-	.carbon-layout .hero-main .hero-btns .btn + .btn { margin-top:15px;  margin-left:0px;  }
-	.token-pricing-section{
-		padding-top: 60px;
-	}
-	.token-pricing-section::before, .token-pricing-section::after  {
-		top: 0;
-		transform: none;
-	}
-	.token-pricing-section .section-heading1 {
-	    margin: 0 0 60px;
-	}
- } 
+/* large Desktop */
 
-
-
-/* ========================================
-   MOBILE MENU STYLES - SLIDE FROM RIGHT
-   ======================================== */
-@media (max-width: 991px) {
- /* Hamburger Button */
-  .menu-icon {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 45px !important;
-    height: 45px !important;
-    background: linear-gradient(135deg, #fbbd18, #f0931e) !important;
-    border-radius: 12px !important;
-    cursor: pointer !important;
-    position: relative !important;
-    z-index: 1003 !important;
-    transition: all 0.3s ease !important;
+@media (min-width: 1371px) and (max-width: 1600px) {
+  .service-section .swiper {
+    height: 428px !important;
   }
 
-  /* Hamburger Lines */
-  .menu-icon span {
-    display: block !important;
-    position: absolute !important;
-    height: 3px !important;
-    width: 24px !important;
-    background: #1d1d1d !important;
-    border-radius: 3px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    transition: all 0.3s ease !important;
+  .service-content {
+    left: 30px;
   }
 
-  .menu-icon span:nth-child(1) {
-    top: 14px !important;
+  .service-content h2 a {
+    font-size: 23px;
   }
 
-  .menu-icon span:nth-child(2) {
-    top: 21px !important;
+  .row.service-bg {
+    padding: 0 50px 0;
   }
 
-  .menu-icon span:nth-child(3) {
-    top: 28px !important;
+  .portfolio-thumb img {
+    width: auto;
   }
 
-  /* Active State - X Icon */
-  .menu-icon.active span:nth-child(1) {
-    top: 21px !important;
-    transform: translateX(-50%) rotate(45deg) !important;
-  }
-
-  .menu-icon.active span:nth-child(2) {
-    opacity: 0 !important;
-    transform: translateX(-50%) scale(0) !important;
-  }
-
-  .menu-icon.active span:nth-child(3) {
-    top: 21px !important;
-    transform: translateX(-50%) rotate(-45deg) !important;
-  }
-
-
-
-    /* ========== MOBILE MENU PANEL - NO LOGO ========== */
-  nav.onepage {
-    position: fixed !important;
-    top: 0 !important;
-    right: -100% !important;
-    width: 280px !important;
-    max-width: 75% !important;
-    height: 100vh !important;
-    background: #ffffff !important;
-    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2) !important;
-    padding: 100px 20px 30px !important;  /* Top padding increased, no logo inside */
-    transition: right 0.3s ease-in-out !important;
-    z-index: 1002 !important;
-    overflow-y: auto !important;
-    margin-top: 0 !important;
-  }
-
-  /* Remove any logo inside menu */
-  nav.onepage .logo,
-  nav.onepage img {
-    display: none !important;
-  }
-
-  /* Menu Open State */
-  nav.onepage.show {
-    right: 0 !important;
-  }
-
-  /* Menu List */
-  nav.onepage ul {
-    display: flex !important;
-    flex-direction: column !important;
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  nav.onepage ul li {
-    margin: 8px 0 !important;
-    padding: 0 !important;
-    text-align: center !important;
-  }
-
-  nav.onepage ul li a {
-    display: block !important;
-    color: #1d1d1d !important;
-    font-size: 16px !important;
-    font-weight: 600 !important;
-    padding: 12px 15px !important;
-    text-transform: uppercase !important;
-    border-radius: 8px !important;
-    transition: all 0.3s ease !important;
-  }
-
-  nav.onepage ul li a:hover {
-    color: #fbbd18 !important;
-    background: rgba(251, 189, 24, 0.1) !important;
-  }
-
-  nav.onepage ul li.active a {
-    color: #fbbd18 !important;
-    background: rgba(251, 189, 24, 0.1) !important;
-  }
-
-  /* Dashboard Button */
-  nav.onepage ul li.nav-btn {
-    margin-top: 20px !important;
-  }
-
-  nav.onepage ul li.nav-btn button {
-    width: 100% !important;
-    background: linear-gradient(135deg, #fbbd18, #f0931e) !important;
-    color: #1d1d1d !important;
-    padding: 12px 20px !important;
-    border: none !important;
-    border-radius: 8px !important;
-    font-weight: 700 !important;
-    font-size: 16px !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-  }
-
-  nav.onepage ul li.nav-btn button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 12px rgba(251, 189, 24, 0.4) !important;
-  }
-
-  /* Body scroll lock when menu open */
-  body.menu-open {
-    overflow: hidden !important;
-  }
+  /*  */
 }
 
-
-@media (max-width: 480px) {
-  nav {
-    max-width: 100%;
-    padding: 70px 20px 20px;
+/* Mediam desktop :1200px. */
+@media (min-width: 1200px) and (max-width: 1370px) {
+  .logo a img {
+    width: 100%;
+  }
+  nav.mediic_menu {
+    text-align: left;
   }
 
-  nav ul li a {
-    font-size: 16px;
-    padding: 10px 0;
+  .mediic_menu > ul > li > a {
+    padding: 0px 11px;
+    margin: 16px 0px;
   }
 
-  nav ul li.nav-btn a {
-    padding: 10px 25px;
+  /* Hero Section */
+
+  .hero-content {
+    padding-left: 60px;
+  }
+
+  .hero-content h1 {
+    font-size: 52px;
+  }
+
+  .hero-thumb {
+    left: 52px;
+  }
+
+  .mediic-section-title h1 {
+    font-size: 45px;
+    line-height: 45px;
+  }
+
+  /* About Section */
+
+  .about-section {
+    margin: 0;
+  }
+
+  /* Portfolio Section */
+
+  .portfolio-thumb img {
+    width: auto;
+  }
+
+  /* Servces Box */
+
+  .content {
+    width: calc((42% / 3) - var(--gap));
+  }
+
+  .row.service-bg {
+    padding: 0 30px 0;
+  }
+
+  .medical-icon {
+    left: 12px;
+  }
+
+  .content:hover {
+    padding: 0 30px 55px;
+  }
+
+  /* Style 2 */
+
+  .feature-single-box-2 .feature-content {
+    padding-left: 30px;
+  }
+
+  .feature-single-box-2 {
+    padding: 25px 25px 25px;
+  }
+
+  .feature-title h3 {
+    font-size: 20px;
+  }
+
+  .head-title h2 {
+    font-size: 22px;
+  }
+
+  /* top Section */
+  .mediic-top-section {
+    padding: 110px 50px 0px 5px;
+  }
+
+  .service-section .swiper {
+    height: 475px;
+  }
+
+  .service-thumb:before {
+    display: none;
+  }
+
+  /* Style 2 */
+
+  .mediic-service-box {
+    padding: 35px 30px 28px;
+  }
+
+  .style-2 .service-thumb:before {
+    right: -208px;
+  }
+
+  .service-content {
+    left: 25px;
+  }
+
+  .service-content h2 a {
+    font-size: 22px;
+  }
+
+  .service-content h6 {
     font-size: 14px;
   }
+
+  .box-2.mediic-service-box {
+    padding: 30px 15px 30px;
+  }
+
+  .box-2 .mediic-title h4 {
+    font-size: 20px;
+    padding: 0 0 0 20px;
+  }
+
+  .thumbs-bxs {
+    right: 12px;
+  }
+
+  /* Why Choose Us */
+
+  .why-choose-thumb {
+    left: 0;
+  }
+
+  .why-choose-thumb img {
+    width: 100%;
+  }
+
+  .mdy-shapae {
+    right: -95px;
+  }
+
+  .mdy-shapae img {
+    width: 71%;
+  }
+
+  .thumbs-bxs3 {
+    top: 0;
+    left: 0;
+  }
+
+  .testi-single-box {
+    padding: 40px 30px 40px;
+  }
+
+  .user-info {
+    padding: 23px 0 0;
+  }
+
+  .testi-desc p {
+    font-size: 17px;
+  }
+
+  .subscribe-title h1 {
+    font-size: 30px;
+  }
+
+  /* Start Inner Page Section */
+
+  .breatcome-section {
+    background-size: cover;
+  }
+
+  .single-services-box {
+    padding: 38px 25px 32px;
+  }
+
+  .services-title h3 {
+    font-size: 22px;
+  }
+
+  .services-desc p {
+    font-size: 16px;
+  }
+
+  .mediic-appoinment {
+    background-size: cover;
+  }
+
+  .mediic-icons {
+    float: inherit;
+
+    margin-bottom: 30px;
+  }
+
+  /* Blog section */
+
+  .blog-single-box {
+    padding: 30px 20px 30px;
+  }
+
+  .blog-content {
+    padding: 23px 12px 0 20px;
+  }
+
+  .blog-title h2 a {
+    font-size: 16px;
+  }
+
+  .blog-description p {
+    padding: 15px 0 0px;
+    font-size: 15px;
+  }
+
+  .footer-thumb {
+    display: none;
+  }
+
+  .footer-thumb1 {
+    display: none;
+  }
+
+  /*  */
 }
 
+/* Mediam desktop :992px. */
+@media (min-width: 992px) and (max-width: 1199px) {
 
+.mediic-button01{
+    font-size: 15px;
+    padding: 15px;
+    color: #fff !important;
+    background: #002570;
+    text-transform: uppercase;
+    display: inline-block; 
+    transition: 0.5s;
+    margin-bottom: 5px;
+    width: 100%;
+}
+.wallet-header01{
+  color: #fff;
+  font-weight: 600;
+}
+  .logo a img {
+    width: 100%;
+  }
+  nav.mediic_menu {
+    text-align: left;
+  }
+  ul.nav_scroll {
+    padding: 0 22px 0 28px;
+  }
+  .mediic_menu > ul > li > a {
+    font-size: 14px;
+    padding: 0px 7px;
+    margin: 15px 0px;
+  }
 
+  .mediic-button a img {
+    padding-left: 0;
+  }
 
+  .mediic-button a {
+    padding: 14px 18px;
+    font-size: 14px;
+  }
 
+  .mediic-button a {
+    font-size: 14px;
+    padding: 13px 23px;
+  }
 
+  .search-box-btn.search-box-outer {
+    display: none;
+  }
 
+  .nav-btn.navSidebar-button span i {
+    font-size: 18px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+  }
 
+  /* Hero Section */
 
+  .hero-content {
+    padding-left: 60px;
+  }
 
+  .hero-content h1 {
+    font-size: 45px;
+    line-height: 55px;
+  }
+  .hero-thumb {
+    top: 52px;
+    left: 0;
+    z-index: 1;
+  }
 
+  .hero-section .mediic-btn a {
+    padding: 18px 25px;
+    font-size: 17px;
+  }
 
+  /* Brand */
 
+  .brand-bg {
+    padding: 70px 45px 50px;
+  }
 
+  /* Section title */
 
+  .mediic-section-title h1 {
+    font-size: 35px;
+    line-height: 35px;
+  }
 
- 	body {
- 		font-size: 14px;
- 		line-height: 25px;
- 	}
- 	.sub-txt {
- 		font-size: 16px;
- 	}
- 	.sec-title h1 {
- 		font-size: 34px;
- 	}
- 	#clock li span em {
- 		font-size: 13px;
- 	}
- 	.we-accept-section ul li span {
- 		height: 45px;
- 		width: 45px;
- 		font-size: 20px;
- 		line-height: 45px;
- 	}
- 	.about-right {
- 		margin-bottom:30px;
- 	}
- 	.watch-link {
- 		margin-top: 0;
- 	}
- 	.footer-box-1,
- 	.footer-box-2,
- 	.footer-box-3 {
- 		margin-bottom: 30px;
- 	}
- 	.about-left{
- 		text-align:justify;
- 	}
- 	.hero-left {
- 		padding-top: 20px;
- 		text-align: center;
- 	}
- 	/* .hero-left .sec-title::after{
+  .mediic-desc p {
+    padding: 10px 0 5px;
+  }
 
- 		background: url(../images/line2.png) no-repeat top center;
- 	} */
- 	.pre-sale-timer {
- 		padding: 50px 10px;
- 		height: auto;
- 		margin-bottom: -60px;
- 	}
- 	.btn {
- 		padding: 10px 20px;
- 	}
- 	.our-mission-boxes .col {
- 		width: 100%;
- 	}
- 	.sale-box + .sale-box {
- 		margin-top: 30px;
- 	}
- 	.doughnutChartContainer {
- 		margin-right: 0;
- 		margin: 0 auto;
- 	}
- 	.roadmap-slider {
- 		margin-top: 10px;
- 	}
-  	.blog-single-cont h4 {
- 		font-size: 18px;
- 	}
- 	.vertical-roadmap::before{
- 		left:7px; 
- 	}
- 	.roadmap-item .title{
- 		text-align:left;
- 		padding-right:0px;
- 		padding-left:30px; 
- 		width:100%;
- 		margin-bottom:0px;    
- 	}
- 	.roadmap-item .title::before{
- 		right: auto;
- 		left: 0;
- 	}
- 	.roadmap-text{
- 		text-align:left;
- 		width:100%;
- 	}
- 	.layout-2{
- 		height:auto; 
- 	}
- 	.layout-2 .row{
- 		padding:0px; 
- 	}
-	.pre-sale-timer{
-		max-width:100%;
-	}
-	.layout-2 .hero-left{
-		order:2; 
-	}
-	.layout-2 .hero-right{
-		order:1; 
-	}
-	.footer-2 .sec-title h4{
-		font-size: 28px;
-	}
-	.footer-2 .socials li a {
-    	width: 36px;
-    	height: 36px;
-    	line-height: 36px;
-	}
-	.footer-2 .socials li a i{
-		font-size: 20px;
-		line-height: 36px;
-	}
-	.expert-slider{
-		margin-left:0px; 
-		width:100%; 
-	}
-	.team-section.style-2::before{
-		display:none; 
-	}
-	.expert-slider .team-img{
-		border:none;
-	}
-	.expert-slider .owl-nav{
-		display:none; 
-	}
-	.expert-slider .owl-dots{
-		display:block; 
-	}
-	.expert-slider .team-img, .expert-slider .team-detils{
-		-ms-flex: 0 0 100%;
-		flex: 0 0 100%;
-		width: 100%;
-		max-width: 100%;
-	}
-	.expert-slider .team-detils{
-		padding:30px 0px 0px; 
-	}
-	
-	
-	.pre-sale-timer.style-2{
-	    padding: 30px 5px;
-	}
-	img.play-btn-img{
-		/*display: none;*/
-		margin: 0 0 15px;
-		display: table;
-		float: none;
-	}
-	.single-post .sidebar{
-		margin-top: 50px;
-	}
-	.watch-link {
-	    margin: 30px auto 0;
-	}
-	.sale-chart-view{
-		display: table;
-		width: 100%;
-		margin-bottom: 15px;
-	}
-	.doughnut .chart-legend li .doughnut-legend-text, .doughnut .chart-legend li .line-legend-text{
-		font-size:16px; 
-	}
-	.about-section.c-l::before {
-	    height: 250px;
-    	right: 0;
-    	width: 100%;
-    	top: 0;
-	}
-	.carbon-layout .about-left{
-		padding-left:15px;
-		padding-top:30px;  
-	}
-	.token-sale-left {
-	   -ms-flex: 0 0 100%;
-    	flex: 0 0 100%;
-    	max-width: 100%;
-    	padding: 0px 30px;
-	}
-	.token-sale-right {
-    	-ms-flex: 0 0 100%;
-    	flex: 0 0 100%;
-    	max-width: 100%;
-    	padding: 0px 30px;
- 	}
- 	.token-allocation-box .sale-list{
- 		width:49%;
- 		text-align:center; 
- 	}
- 	.token-allocation-box .sale-list:last-child{
- 		width:100%; 
- 	}
- 	.roadmap-item:nth-child(2n+1) .roadmap-day{
- 		left: 0; 
- 		right: auto;
-		text-align: left;
-		margin-left: 40px;
-		margin-right: 0;
-		top: 0;
- 	}
- 	.mercury-roadmap .roadmap-item .roadmap-day{
- 		top: 20px;
- 		margin-right: 0px;
- 		margin-left: 0px;
- 		left: 50%;
- 	}
- 	.mercury-roadmap .roadmap-item .roadmap-text{
- 		text-align: center;
- 	}
- 	.c-l .roadmap-text{
- 		text-align:left;
- 	}
- 	.c-l .roadmap-item:nth-child(2n+1) .roadmap-text{
- 		width: 100%;
- 	}
- 	.roadmap-item .roadmap-day{
- 		top:0;
- 		left:0;  
- 		margin-left:40px; 
- 	}
- 	.c-l .roadmap-item .roadmap-text::before{
- 		top: 0;
-		right: auto;
-		left:-2px; 
- 	}
- 	.c-l .roadmap-item{
- 		margin-bottom: 50px;
- 	}
- 	.roadmap-item:nth-child(2n+1) .roadmap-day::after{
- 		width: 0;
-		height: 0;
-		border-top: 8px solid transparent;
-		border-right: 13px solid #fbbd18;
-		border-left:none;
-		border-bottom: 8px solid transparent;
-		content: "";
-		display: block;
-		position: absolute;
-		top: 50%;
-		left: -13px;
-		margin-top: -8px;
- 	}
- 	.c-l .roadmap-item:nth-child(2n+1) .roadmap-text::before {
-	    left:-2px;
-    	right: auto;
-	}
-	.footer-3 .footer-box-2, .footer-3 .footer-box-3 {
-	    padding-top: 30px;
-	}
-	.carbon-layout .hero-main h1, h2.section-heading1{
-		font-size: 2.1rem;
-	}
-	.c-l .col{
-		-ms-flex: 0 0 50%;
-		flex: 0 0 50%;
-		max-width: 50%;
-		margin-bottom:30px; 
-	}
-	.carbon-layout  .hero-btns a + a.btn{
-		margin-top:0; 
-	}
-	.carbon-layout .hero-main .row > div {
-	    order: 2;
-	}
-	.carbon-layout .hero-main .row > div + div {
-	    order: 1;
-	}
-	.animation-circle-main{
-		top: 0;
-		transform: none;
-		margin: auto;
-		position:relative;
-		margin-top: -70px;
-	}
-	.current-prices .item{
-		max-width: 420px;
-		margin: 0 auto 15px;
-		flex:0 0 100%;
-	}
-	.convertor-widget .current-ico{
-		margin: 0 0 -45px 0;
-		width: 100%;
-		text-align: center; 
-	}
-	.currency-calulator {
-	    padding:65px 15px 20px 20px;
-	    margin-left: 0;
-	    max-width: 390px;
-		margin: auto;
-	}
-	.mercury-layout .currency-calulator{
-		max-width: 100%;
-	}
-	.mercury-layout .cryptonatorwidget td:first-child {
-	    width: calc(100% - 200px) !important;
-	}
-	.mercury-layout .cryptonatorwidget td:last-child{
-		width: 200px !important;
-	}
-	.token-sale .button-wrapper {
-	    text-align: center;
-    	margin-bottom: 30px;
-	}
-	.token-sale .button-wrapper .btn{
-		min-width: inherit;
-	}
-	.horizontal-roadmap .roadmap-item{
-		line-height: 28px;
-		font-size: 15px;
-	}
-	.horizontal-roadmap .roadmap-item .roadmap-text{
-		padding: 30px 15px 0px;
-		text-align:center;
-	}
-	.horizontal-roadmap .roadmap-item.even .roadmap-text{
-		padding: 0px 15px 30px;
-		text-align:center;
-	}
-	.horizontal-roadmap .roadmap-item .roadmap-day{
-		text-align: center;
-		margin-left: 0;
-	}
-	.team-box{
-		margin: 15px auto;
-		max-width: 320px;
-	}
-	.diamond-layout.team-section::before {
-	    height: 163px;
-	}
-	.partner-logo-grid .item{
-		flex: 0 0 50%;
-		max-width: 50%;
-	}
-	.partner-logo-grid .item:nth-child(2n + 1){
-		border-left: 0px;
-	}
-	.partner-logo-grid:last-child .item{
-		border-bottom:1px solid rgba(255,255,255,0.2);
-	}
-	.partner-logo-grid:last-child .item:nth-child(3), .partner-logo-grid:last-child .item:last-child{
-		border-bottom:0px;
-	}
-	.diamond-footer ul.horizontal-menu{
-		text-align: center;
-		margin-bottom:15px; 
-	}
-	.copy-text {
-	    text-align: center;
-	}
-	.footer-widget-area .widget-area{
-		margin:15px 0px; 
-	}
-	.diamond-footer .widget-area{
-		text-align:center; 
-	}
-	.contact-info ul li{
-		display: table;
-		margin: 10px auto 10px;
-	}
-	.diamond-layout .token-allocation-box .row:last-child .sale-list{
-		width: 100%;
-	}
-	.mobile-hidden{
-		display:none; 
-	}
-	.mobile-visible{
-		display: block;
-	}
-	.icon-box.contact-details{
-		padding:15px 30px; 
-	}
-	.form-block.style-2{
-		padding: 50px 30px;
-	}
-	.video-section{
-		padding:60px 0px; 
-	}
-	.mobile-center{
-		text-align:center; 
-	}
-	.platinum-footer .footer-widget-area .widget-area{
-		margin-bottom: 60px;
-	}
-	.exchange-list{
-		flex-wrap:wrap; 
-	}
-	.exchange-list .item{
-		flex: 0 0 50%;
-		max-width: 50%;
-		padding: 10px 0 10px 0;
-		margin-top:15px;
-		margin-bottom:15px;
-	}
-	.exchange-list .item:nth-child(2n)::after{
-		display:none; 
-	}
-	header .col-sm-6{
-		-ms-flex: 0 0 50%;
-		flex: 0 0 50%;
-		max-width: 50%;
-		padding-right: 15px;
-		padding-left: 15px;
-	}
-	.platinum-move-4{
-		right: -20px;
-	}
-	.platinum-move-5{
-		left: -20px;
-	}
-	.video-section .play-button{
-		margin:0px auto;
-	}
-	.video-section img{
-		position:absolute; 
-	}
-	.token-pricing-section{
-		padding-top:60px; 
-	}
-	.token-pricing-section .section-heading1 {
-	    margin: 0 0 60px;
-	}
-	.token-pricing-section::before, .token-pricing-section::after  {
-		top: 0;
-		transform: none;
-	}
-	.iphone-img{
-		padding-bottom:30px; 
-	}
-	.main-circle-one, .allocation-list-point{
-		width: 320px;
-		height: 320px;
-	}
-	.main-circle-one::before {
-    	width: 200px;
-    	height: 200px;
-    }
-	.main-circle-one::after {
-	    width: 260px;
-	    height: 260px;
-	}
-	.allocation-list-point li:nth-child(3) .point {
-	    height: 60px;
-	    width: 60px;
-	    top: -30px;
-	    left: -30px;
-	}
-	.allocation-list-point li:nth-child(4) .point {
-	    height: 50px;
-	    width: 50px;
-	    top: -25px;
-	    left: -25px;
-	}
-	.allocation-list-point li:nth-child(5) .point {
-	    height: 36px;
-	    width: 36px;
-	    top: -18px;
-	    left: -18px;
-	}
-	.allocation-list-point li:nth-child(2) .point {
-	    height:68px;
-	    width: 68px;
-	    top:-34px;
-	    left:-34px;
-	}
-	.mercury-animation{
-		padding-bottom:30px; 
-	}
-	#earth-box-cover::before{
-		width: 320px;
-		height: 320px;
-	}
-	#earth-box, #earth-box span{
-		width: 240px;
-		height: 240px;
-	}
-	#earth-box-cover{
-		margin: auto;
-		display: table;
-		width: 320px;
-		height: 320px;
-	}
-	#earth-box-cover .earth-icons .icon-1{
-		width: 20px;
-		height: 36px;
-		top: 107px;
-		left: 58px;
-	}
-	#earth-box-cover .earth-icons .icon-2{
-		width: 12px;
-		height: 30px;
-		top: 168px;
-		right: 46px;
-	}
-	#earth-box-cover .earth-icons .icon-3{
-		top: 92px;
-		right: 101px;
-		width: 19px;
-		height: 20px;
-	}
-	#earth-box-cover .earth-icons .icon-4{
-		top: 63px;
-		left: 105px;
-		width: 14px;
-		height: 17px;
-	}
-	#earth-box-cover .earth-icons .icon-5{
-		top: 25px;
-		right: 124px;
-		width: 17px;
-		height: 22px;
-	}
-	#earth-box-cover .earth-icons .icon-6{
-		width: 10px;
-		height: 14px;
-		top: 77px;
-		right: 78px;
-	}
-	#earth-box-cover .earth-icons .icon-7{
-		width: 34px;
-		height: 34px;
-		top: 196px;
-		left: 117px;
-	}
-	.visible.about-mercury-animation .mercury-base{
-		min-width:400px;
-	}
-	.about-mercury-animation{
-		min-height:320px;
-	}
-	.token-pricing-section .section-heading1 span{
-		padding-left: 0;
-		margin-bottom: 15px;
-	}
-	#HeartLine{
-		left: -160px;
-		top: 20px;
-	}
-	.footer-3 .copyrights.style-1{
-		margin-top: 0;
-	}
-	@-webkit-keyframes coinanimation {
-		0% {
-		-webkit-transform: translateY(300%) rotate(0deg);
-		}
-		50% {
-		-webkit-transform: translateY(0%) rotate(360deg);
-		}
-		100% {
-		-webkit-transform: translateY(-180%) rotate(720deg);
-		}
-	}
-	@-webkit-keyframes coinanimationtwo {
-		0% {
-		-webkit-transform: translateY(300%) rotate(0deg);
-		}
-		50% {
-		-webkit-transform: translateY(0%) rotate(-360deg);
-		}
-		100% {
-		-webkit-transform: translateY(-180%) rotate(-720deg);
-		}
-	}
+  /* About Section */
 
- @media only screen and (max-width: 479px) {
- 	.blog-list-img {
- 		margin-right: 10px;
- 		min-width: 120px;
- 	}
- 	.blog-list h4 {
- 		font-size: 14px;
- 		margin-top: 5px;
- 		line-height: normal;
- 	}
- 	.team-member .team {
- 		width: 100%;
- 	}
- 	.hero-left .hero-btns a + a{
- 		margin:15px 0px 0px;
- 	}
- 	img.play-btn-img{
- 		margin:0 auto;
- 		display:table;
- 		float: none;  
- 	}
- 	/*img.play-btn-img{
-		display: none;
-	}*/
- 	.benefits-boxes .item .bf-image, .benefits-boxes .item .bf-details{
- 		display: block;
- 		text-align: center;
- 	}
- 	.benefits-boxes .item .bf-image{
- 		margin-bottom:15px; 
- 		padding:0px;
- 		text-align: center; 
- 	}
- 	.footer-2 .sec-title h4{
-		font-size: 24px;
-	}
-	.newsletter .input input{
-		padding: 10px 15px 10px 15px;
-	}
-	.newsletter .input i{
-		display:none;
-	}
-	.team-section .row .col{
-		-ms-flex: 0 0 100%;
-		flex: 0 0 100%;
-		max-width: 100%;
-	}
-	.team .team-inner img{
-		height: auto;
-		max-height: inherit;
-	}
-	.newsletter .input{
-		width: calc(100% - 100px);
-	}
-	.team-section .row .col{
-		max-width: 300px;
-		width: 100%;
-		margin: 15px auto;
-		display: table;
-	}
-	.carbon-layout .hero-btns a, .carbon-layout .hero-btns a + a.btn{
-		margin-top:10px;
-	}
-	.tab-section .nav-tabs{
-		border-bottom:0px; 
-	}
-	.tab-section .nav-tabs .nav-item{
-		width: 100%;
-		margin:0;
-		border-bottom: 1px solid #dee2e6;
-	}
-	.cryptonatorwidget td:first-child, .cryptonatorwidget td:last-child{
-		width: 100% !important;
-	}
-	.diamond-layout .token-allocation-box h3{
-		font-size: 24px;
-	}
-	.token-sale .button-wrapper{
-		display: table;
-		margin:0px auto 30px; 
-	}
-	.button-wrapper a + a{
-		display:table;
-		margin-left:0;
-		margin-top:10px;  
-	}
-	.hero-btns a + a{
-		margin-top:10px; 
-	}
-	.form-block.style-2{
-		padding:30px 15px;
-	}
-	.platinum-footer .newsletter input[type="email"]{
-		width: 100%;
-		margin-bottom:15px; 
-	}
-	.faq-section .tab-section .nav-tabs .nav-item{
-		flex-basis: auto;
-		flex-grow: 0;
-	}
-	.token-allocation-box.style-4{
-		padding:30px 15px;
-	}
-	.currency-form .postpend.form-control{
-		max-width: 120px;
-	}
-	.platinum-layout.hero-main .hero-btns .btn + .btn{
-		margin-left:0; 
-	}
-	.video-section .play-button a{
-		background-size: 100px 100px;
-		height: 120px;
-		width: 120px;
-	}
-	.mercury-layout .cryptonatorwidget td:first-child {
-	    width:100% !important;
-	}
-	.mercury-layout .cryptonatorwidget td:last-child{
-		width:100% !important;
-	}
- }
-@media only screen and (max-height:766px) {
-	.hero-main{
-		min-height:100vh;
-		height:auto; 
-	}
-	.pre-sale-timer{
-		margin-bottom: -60px;
-		padding: 30px;
-		
-	}
-	.pre-sale-timer > div{
-		vertical-align:top; 
-	}
-	.pre-sale-timer.style-2{
-		margin-bottom:0px;
-	}
-	
- }
- 
+  .about-thumb img {
+    width: 100%;
+  }
+
+  .about-content p {
+    font-size: 15px;
+    line-height: 23px;
+  }
+
+  .swiper.about {
+    height: 270px;
+    padding: 0;
+  }
+
+  .swiper-slide.swiper-slide-active {
+    margin-bottom: 15px !important;
+  }
+
+  /* Service Section */
+
+  .service-single-box {
+    padding: 50px 25px 55px;
+  }
+
+  .serivce-icon {
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+  }
+
+  .service-content p {
+    font-size: 16px;
+  }
+
+  .service-category a {
+    font-size: 13px;
+  }
+
+  /* Portfolio */
+
+  .portfolio-thumb img {
+    width: auto;
+  }
+
+  .portfolio-content {
+    padding: 38px 20px 35px;
+    width: 229px;
+    height: 200px;
+  }
+
+  h4.port-title a {
+    font-size: 18px;
+  }
+
+  /* Servces Box */
+
+  .content {
+    width: calc((42% / 3) - var(--gap));
+  }
+
+  .row.service-bg {
+    padding: 0 30px 0;
+  }
+
+  .medical-icon {
+    left: 12px;
+  }
+
+  .content:hover {
+    padding: 0 30px 55px;
+  }
+
+  /* Testimonial */
+
+  .team-section {
+    margin: 0;
+  }
+
+  .testimonial-thumb img {
+    width: 50%;
+  }
+
+  .team-content h4 {
+    font-size: 20px;
+  }
+  /* Blog Section */
+
+  .blogs-category ul li {
+    margin: 0 15px 0 15px;
+  }
+
+  .blog-title h2 a {
+    font-size: 22px;
+  }
+
+  .style-2.upp .blog-title h2 a {
+    font-size: 17px;
+  }
+
+  .style-2.upp .blogs-category ul li {
+    font-size: 14px;
+    margin: 0 0px 0 15px;
+  }
+
+  .style-2.upp .blog-single-box .mediic-button a {
+    padding: 8px 20px;
+    font-size: 14px;
+  }
+
+  /* Subscribe Section */
+
+  .subscribe-title h1 {
+    font-size: 28px;
+  }
+
+  .footer-thumb {
+    display: none;
+  }
+
+  .footer-thumb1 {
+    display: none;
+  }
+
+  ul.mediic-service-times li {
+    font-size: 15px;
+  }
+
+  label.widget-check {
+    font-size: 15px;
+  }
+
+  ul.footer-menu li a {
+    font-size: 16px;
+  }
+
+  /* ************************** *
+    <--Inner Page Section-->
+* **************************** */
+
+  .breatcome-section {
+    background-size: cover;
+  }
+
+  /* <--About Section--> */
+
+  .style-3 .counter-right-side {
+    width: auto;
+  }
+
+  .style-3 .odometer-wrapper.counter-box-title h1 {
+    font-size: 38px;
+  }
+
+  ul.about-mediic-services li {
+    font-size: 16px;
+  }
+
+  /* mission  */
+
+  .mission-vission-single-box {
+    padding: 38px 30px 20px;
+  }
+
+  .m_v-ssion-desc p {
+    font-size: 16px;
+  }
+  /* Testimonial */
+
+  .style-2 .testi-single-box {
+    padding: 40px 35px 20px;
+  }
+
+  .style-2 .testi-quote2 {
+    right: 30px;
+  }
+
+  /* Service Inner Page */
+
+  .single-services-box {
+    padding: 38px 25px 32px;
+  }
+
+  .services-title h3 {
+    font-size: 20px;
+  }
+
+  .services-desc p {
+    font-size: 16px;
+  }
+  /* Details Page  */
+  .mediic-icons {
+    float: inherit;
+    margin-bottom: 30px;
+  }
+
+  .blog-desc p {
+    font-size: 20px;
+  }
+
+  .accordion li a {
+    font-size: 18px;
+  }
+
+  /* Appointment */
+
+  .mediic-appoinment {
+    padding: 0;
+    background-size: cover;
+    background-position: right;
+  }
+
+  .mediic-shape-2 {
+    left: 0;
+  }
+
+  /* Error Page */
+
+  .error-section {
+    padding: 90px 70px 90px;
+  }
+
+  /* Blog Inner page section */
+
+  .blog-title h2 a {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .mediic-category-box.responsive {
+    padding: 20px 13px 24px 25px;
+    margin-bottom: 20px;
+  }
+
+  .category-content {
+    padding-left: 10px;
+  }
+
+  .post-thumb a img {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .category-content h4 a {
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  .category-content h6 {
+    font-size: 13px;
+  }
+
+  .blogs-category ul li {
+    font-size: 14px;
+  }
+
+  .mediic-thumb img {
+    width: 100%;
+  }
+
+  .style-2 .blogs-category ul li {
+    font-size: 15px;
+    margin: 0 0px 0 15px;
+  }
+
+  .style-2 .blog-content {
+    padding: 23px 0px 0 0;
+  }
+
+  /* Project Section inner Page */
+
+  .project-content {
+    padding: 25px 22px 10px;
+    width: 89%;
+  }
+
+  .project-content h2 {
+    font-size: 19px;
+  }
+
+  .project-content h5 {
+    font-size: 14px;
+  }
+
+  .project-icon a {
+    top: 20px;
+  }
+
+  .doctors-service {
+    padding: 22px 20px 20px;
+  }
+
+  .doctor-content h3 {
+    font-size: 17px;
+  }
+
+  /* Testimonial */
+
+  .upp.style-2 .testi-bg .testi-single-box {
+    padding: 5px 35px 40px;
+  }
+
+  .upp.style-2 .user-name h4 {
+    font-size: 20px;
+  }
+
+  .upp.style-2 .testi-desc p {
+    font-size: 18px;
+  }
+
+  .upp.style-2 .user-info {
+    padding: 35px 25px 35px 25px;
+    margin: 15px 25px 0 0;
+  }
+
+  /*  */
+}
+
+/* Tablet desktop :768px. */
+@media (min-width: 768px) and (max-width: 991px) {
+
+  .mediic-button01{
+    font-size: 15px;
+    padding: 15px;
+    color: #fff !important;
+    background: #002570;
+    text-transform: uppercase;
+    display: inline-block; 
+    transition: 0.5s;
+    margin-bottom: 5px;
+    width: 100%;
+}
+.wallet-header01{
+  color: #fff;
+  font-weight: 600;
+}
+  .sticky {
+    position: absolute !important;
+  }
+
+  /* .mediic_nav_manu {
+    display: none;
+  } */
+
+  /* Hero Section */
+
+  .hero-section {
+    background-position: center;
+  }
+
+  .hero-content h1 {
+    font-size: 37px;
+    line-height: 50px;
+  }
+
+  .mediic-service-inner-bx {
+    display: inline-block;
+  }
+
+  .mediic-hero-content {
+    padding: 5px 0 0;
+  }
+
+  .hero-mediic-service {
+    display: inline-block;
+  }
+
+  .video__content {
+    padding: 20px 0 0 0;
+  }
+
+  .mediic-btn a {
+    padding: 15px 25px;
+    font-size: 16px;
+  }
+
+  .hero-thumb {
+    left: -67px;
+    z-index: 1;
+  }
+
+  /* Brand Section */
+
+  .brand-section {
+    padding: 0;
+  }
+
+  .brand-bg {
+    padding: 70px 20px 50px;
+  }
+
+  /* Feature Sections */
+
+  .bx-2.feature-single-box {
+    padding: 40px 30px 26px;
+  }
+
+  .head-title h2 {
+    font-size: 22px;
+  }
+
+  /* Style 2 */
+
+  .feature-single-box-2 {
+    display: inherit;
+  }
+
+  .feature-single-box-2 .feature-content {
+    padding-left: 0;
+    padding-top: 25px;
+  }
+
+  /* Section Title */
+
+  .mediic-section-title h1 {
+    font-size: 32px;
+    line-height: 30px;
+  }
+
+  /* About Section */
+
+  .about-section {
+    margin: 0;
+    margin-bottom: -55px;
+  }
+
+  .about-thumb img {
+    margin-bottom: 30px;
+  }
+
+  /* Service Section */
+
+  .services-section {
+    padding: 140px 0 90px;
+  }
+
+  /* Portfolio */
+
+  .portfolio-thumb img {
+    width: auto;
+  }
+
+  .portfolio-content {
+    width: 250px;
+    height: 195px;
+  }
+
+  h4.port-title a {
+    font-size: 17px;
+  }
+
+  /* Servces Box */
+
+  .content {
+    width: calc((42% / 3) - var(--gap));
+  }
+
+  .row.service-bg {
+    padding: 0 0px 0;
+  }
+
+  .medical-icon {
+    left: 12px;
+    top: 35px;
+  }
+
+  .content {
+    padding: 0 25px 27px;
+  }
+
+  .content:hover {
+    padding: 0 20px 50px;
+  }
+
+  .medical-icon img {
+    width: 100%;
+  }
+
+  .content:hover .medical-icon img {
+    width: 80%;
+  }
+
+  h3.service-title {
+    font-size: 20px;
+  }
+
+  .profile_quote p {
+    font-size: 16px;
+    padding: 0 0 20px;
+  }
+
+  .portfolio-section {
+    margin: 0;
+  }
+
+  .project-thumb img {
+    width: 100%;
+  }
+
+  /* Testimonial Section */
+
+  .service-section {
+    padding: 120px 0 96px;
+  }
+
+  .testimonial-thumb img {
+    margin-bottom: 30px;
+  }
+
+  .team-section {
+    margin: 0;
+  }
+
+  /* Subscribe */
+
+  .mediic-subscribe {
+    margin: 0;
+    margin-bottom: -45px;
+  }
+
+  .subscribe-right {
+    padding: 30px 0 0;
+    float: left;
+  }
+
+  .mediic-button.text-right {
+    text-align: center !important;
+    padding: 25px 0 0;
+  }
+
+  /* Blog Section */
+
+  .blog-section {
+    margin: 0;
+  }
+
+  .blog-title h2 a {
+    font-size: 22px;
+  }
+
+  .blog-content {
+    padding: 15px 5px 0 25px;
+  }
+
+  .style-2 .blog-title h2 a {
+    font-size: 16px;
+  }
+
+  .style-2 .blogs-category ul li {
+    margin: 0 0px 0 15px;
+    font-size: 15px;
+  }
+
+  .style-2.upp.blog-section .blog-title h2 a {
+    font-size: 20px;
+  }
+
+  /* Footer Section */
+
+  .footer-thumb {
+    display: none;
+  }
+
+  .footer-thumb1 {
+    display: none;
+  }
+
+  /******************************
+  <--Inner Page Section-->  
+  ********************************/
+  .breatcome-section {
+    background-size: cover;
+    margin-top: 0;
+  }
+
+  /* About Section */
+  .style-3.about-section .about-thumb img {
+    padding: 0;
+  }
+
+  .style-3.about-section .about-thumb {
+    padding-bottom: 30px;
+  }
+  /* Service Inner Page */
+
+  .single-services-box {
+    padding: 38px 25px 32px;
+  }
+
+  .services-title h3 {
+    font-size: 22px;
+  }
+
+  .services-desc p {
+    font-size: 16px;
+  }
+  /* Details Page  */
+  .mediic-icons {
+    float: inherit;
+    margin-bottom: 30px;
+  }
+
+  /* Appointment */
+
+  .mediic-appoinment {
+    padding: 0;
+    background-size: cover;
+    background-position: right;
+  }
+
+  /* Error Page */
+  .error-section {
+    padding: 90px 0px 90px;
+  }
+
+  /* Appoinment Section */
+
+  .style-1 .testi-single-box {
+    margin-bottom: 35px;
+  }
+
+  /* Blog Inner Page Section */
+
+  .style-2 .blog-single-box {
+    padding: 25px 15px 35px 25px;
+  }
+
+  .mediic-section.style-2 .blog-title h2 a {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .mediic-thumb img {
+    width: 100%;
+  }
+
+  .style-2.accordion li a span:before {
+    right: -642px;
+  }
+
+  .accordion2 li a span:before {
+    right: -644px;
+  }
+
+  /* Project Section inner Page */
+
+  .project-content {
+    padding: 25px 22px 10px;
+  }
+
+  .project-content h2 {
+    font-size: 20px;
+  }
+
+  .project-icon a {
+    top: 20px;
+  }
+
+  /* Testimonial inner Page */
+
+  .upp.style-2 .testi-bg .testi-single-box {
+    padding: 5px 25px 40px;
+  }
+
+  .upp.style-2 .testi-bg .user-info {
+    padding: 0;
+    margin: 30px 12px 0 0;
+  }
+
+  .upp.style-2 .user-name h4 {
+    font-size: 18px;
+  }
+
+  .upp.style-2 .testi-desc p {
+    font-size: 16px;
+  }
+
+  .upp.style-2 .user-info {
+    padding: 25px 15px 25px 1px;
+    margin: 0px 10px 0 0;
+  }
+
+  .people-pic img {
+    margin-right: 0;
+    width: 62%;
+  }
+
+  .style-2 .testi-quote2 {
+    right: 20px;
+    bottom: 39px;
+  }
+
+  .testi-quote2 img {
+    width: 74%;
+  }
+
+  .upp.style-2 .user-name h6 {
+    font-size: 15px;
+  }
+  .sticky {
+    z-index: 2;
+  }
+  /*  */
+}
+
+/* small mobile :600px. */
+@media only screen and (min-width: 600px) and (max-width: 767px) {
+
+  .mediic-button01{
+    font-size: 15px;
+    padding: 15px;
+    color: #fff !important;
+    background: #002570;
+    text-transform: uppercase;
+    display: inline-block; 
+    transition: 0.5s;
+    margin-bottom: 5px;
+    width: 100%;
+}
+.wallet-header01{
+  color: #fff;
+  font-weight: 600;
+}
+  .sticky {
+    position: absolute !important;
+  }
+
+  /* .mediic_nav_manu {
+    display: none;
+  } */
+
+  /* Hero Section */
+
+  .hero-section {
+    background-position: center;
+    background-size: cover;
+    height: 1450px;
+  }
+
+  .hero-content h1 {
+    font-size: 55px;
+    line-height: 70px;
+  }
+
+  .mediic-btn {
+    text-align: left;
+    padding: 10px 0 0;
+  }
+
+  .mediic-btn a {
+    padding: 16px 40px;
+  }
+
+  .hero-thumb {
+    top: 153px;
+    left: 0;
+  }
+
+  /* Brand Section */
+
+  .brand-section {
+    padding: 0;
+  }
+
+  .brand-bg {
+    padding: 70px 0px 50px;
+  }
+
+  /* Feature Sections */
+
+  .feature-single-box-2 .feature-thumb img {
+    width: 100%;
+  }
+
+  /* Section Title */
+
+  .mediic-section-title h1 {
+    font-size: 36px;
+    line-height: 35px;
+  }
+
+  /* About Section */
+
+  .about-section {
+    margin: 0;
+    margin-bottom: -120px;
+  }
+
+  .about-thumb img {
+    padding: 0 0 25px;
+    width: 100%;
+    border-radius: 42px;
+  }
+
+  .swiper.about {
+    height: 295px;
+  }
+
+  /* Servces Box */
+
+  .service-section {
+    margin: 0;
+  }
+
+  .content {
+    width: calc((42% / 3) - var(--gap));
+  }
+
+  .row.service-bg {
+    padding: 0 0px 0;
+  }
+
+  .medical-icon {
+    left: 12px;
+    top: 35px;
+  }
+
+  .content {
+    padding: 0 16px 27px;
+  }
+
+  .content:hover {
+    padding: 0 20px 50px;
+  }
+
+  .medical-icon img {
+    width: 100%;
+  }
+
+  .content:hover .medical-icon img {
+    width: 80%;
+  }
+
+  h3.service-title {
+    font-size: 16px;
+  }
+
+  .profile_quote p {
+    font-size: 15px;
+    padding: 0 0 14px;
+  }
+
+  .content .mediic-button a {
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+
+  /* Service Section */
+
+  /* Team Section */
+
+  .team-content h2 {
+    font-size: 25px;
+  }
+
+  /* Appointment */
+
+  .mediic-appoinment {
+    background-size: cover;
+    background-position: right;
+  }
+
+  .mediic-shape-2 {
+    top: -70px;
+  }
+
+  /* Testimonial Section */
+
+  .testimonial-thumb img {
+    margin-bottom: 30px;
+  }
+
+  .testimonial-single-slide {
+    padding: 100px 40px 100px;
+  }
+
+  /* Subscribe */
+
+  .subscribe-title h1 {
+    font-size: 27px;
+  }
+
+  .mediic-subscribe {
+    margin: 0;
+    margin-bottom: -45px;
+  }
+
+  .subscribe-right {
+    float: left;
+    padding: 20px 0 0;
+  }
+
+  .style-2 .subscribe-title h1 {
+    font-size: 28px;
+  }
+
+  /* Blog Section */
+
+  .blog-section {
+    margin: 0;
+  }
+
+  .blog-single-box {
+    display: inline-block;
+  }
+
+  .blog-content {
+    padding: 25px 0 0;
+  }
+
+  .owl-nav {
+    right: 0;
+    top: -144px;
+  }
+
+  .owl-prev i,
+  .owl-next i {
+    font-size: 16px;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+  }
+
+  /* Footer Section */
+
+  .row.footer-btm {
+    text-align: center;
+  }
+
+  .mediic-company-desc p {
+    font-size: 17px;
+    padding: 10px 0 0;
+  }
+
+  .footer-thumb {
+    display: none;
+  }
+
+  .footer-thumb1 {
+    display: none;
+  }
+  /******************************
+  <--Inner Page Section-->  
+  ********************************/
+  .breatcome-section {
+    background-size: cover;
+    margin-top: 0;
+  }
+
+  .breatcome-content h1 {
+    font-size: 50px;
+  }
+
+  /* About Section */
+  .style-3.about-section .about-thumb img {
+    padding: 0;
+  }
+
+  .style-3.about-section .about-thumb {
+    padding-bottom: 30px;
+  }
+
+  .style-3 .counter-right-side {
+    width: auto;
+  }
+
+  /* Details Page  */
+
+  .blog-desc p {
+    font-size: 18px;
+    padding: 0;
+  }
+
+  .accordion li a {
+    font-size: 17px;
+    padding: 16px 16px 16px 20px;
+  }
+
+  .accordion li a span {
+    font-size: 18px;
+    padding: 0 7px 0 0px;
+  }
+
+  /* Error Page */
+  .error-section {
+    padding: 90px 0px 90px;
+  }
+
+  .error-content h1 {
+    font-size: 160px;
+    width: 460px;
+    height: 259px;
+  }
+
+  /* Appoinment Section */
+
+  .style-1 .testi-single-box {
+    margin-bottom: 35px;
+  }
+
+  .mediic-thumb img {
+    width: 100%;
+  }
+
+  iframe {
+    width: 600px;
+  }
+
+  /* Testimonial inner Page */
+
+  .upp.style-2 .testi-single-box {
+    padding: 58px 35px 38px;
+  }
+
+  .upp.style-2 .testi-bg .user-info {
+    padding: 0;
+    margin: 30px 12px 0 0;
+  }
+
+  .upp.style-2 .user-info {
+    padding: 25px 15px 25px 1px;
+    margin: 0px 10px 0 0;
+  }
+
+  .upp.style-2 .user-name h4 {
+    font-size: 20px;
+  }
+
+  .people-pic img {
+    margin-right: 0;
+    width: 62%;
+  }
+
+  .upp.style-2 .testi-desc p {
+    font-size: 18px;
+  }
+  .sticky {
+    z-index: 2;
+  }
+
+  .mediic-button.text-right {
+    text-align: center !important;
+    padding: 15px 0 0;
+  }
+
+  /*  */
+}
+
+/* small mobile :480px. */
+@media only screen and (min-width: 480px) and (max-width: 599px) {
+  .mediic-button01{
+    font-size: 15px;
+    padding: 15px;
+    color: #fff !important;
+    background: #002570;
+    text-transform: uppercase;
+    display: inline-block; 
+    transition: 0.5s;
+    margin-bottom: 5px;
+    width: 100%;
+}
+.wallet-header01{
+  color: #fff;
+  font-weight: 600;
+}
+  .sticky {
+    position: absolute !important;
+  }
+
+  /* .mediic_nav_manu {
+    display: none;
+  } */
+
+  /* Hero Section */
+
+  .hero-section {
+    background-position: center;
+    background-size: cover;
+    height: 1450px;
+  }
+
+  .hero-content h1 {
+    font-size: 45px;
+    line-height: 55px;
+  }
+
+  .mediic-btn {
+    text-align: left;
+    padding: 10px 0 0;
+  }
+
+  .mediic-btn a {
+    padding: 16px 40px;
+  }
+
+  .hero-thumb {
+    top: 155px;
+    left: 0;
+  }
+
+  /* Brand Section */
+
+  .brand-section {
+    padding: 0;
+  }
+
+  .brand-bg {
+    padding: 70px 0px 50px;
+  }
+
+  /* Feature Sections */
+
+  .feature-single-box-2 {
+    display: inherit;
+  }
+
+  .mediic-service-box {
+    margin-bottom: 30px;
+  }
+
+  .feature-single-box-2 .feature-content {
+    padding-left: 0;
+    margin-top: 30px;
+  }
+
+  /* Section Title */
+
+  .mediic-section-title h1 {
+    font-size: 34px;
+    line-height: 35px;
+    text-align: left;
+  }
+
+  .top-mediic-section2 {
+    display: block;
+  }
+
+  /* About Section */
+
+  .about-section {
+    margin: 0;
+  }
+
+  .about-thumb img {
+    padding: 0 0 25px;
+    width: 100%;
+    border-radius: 42px;
+  }
+
+  .swiper.about {
+    height: 295px;
+  }
+
+  /* Service Section */
+
+  .services-section {
+    padding: 130px 0 90px;
+  }
+
+  /* Servces Box */
+
+  .service-section {
+    margin: 0;
+  }
+
+  .content {
+    padding: 0 16px 27px;
+    width: calc((28% / 2) - var(--gap));
+  }
+
+  .content:hover {
+    padding: 0 20px 50px;
+    width: calc(70% - var(--gap));
+  }
+
+  .content.update {
+    display: none;
+  }
+
+  .row.service-bg {
+    padding: 0 0px 0;
+  }
+
+  .medical-icon {
+    left: 12px;
+    top: 35px;
+  }
+
+  .medical-icon img {
+    width: 100%;
+  }
+
+  .content:hover .medical-icon img {
+    width: 80%;
+  }
+
+  h3.service-title {
+    font-size: 16px;
+  }
+
+  .profile_quote p {
+    font-size: 15px;
+    padding: 0 0 14px;
+  }
+
+  .content .mediic-button a {
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+
+  /* Portfolio */
+
+  .row.portfolio-bg {
+    padding: 0 15px 0;
+  }
+
+  .portfolio-section {
+    margin: 0;
+  }
+
+  .testimonial-single-slide {
+    padding: 100px 40px 100px;
+  }
+
+  .testimonial-thumb img {
+    margin-bottom: 30px;
+  }
+
+  /* Testimonial Section */
+
+  .testimonial-section {
+    padding: 60px 0px 120px;
+  }
+
+  .testi-single-box {
+    padding: 60px 35px 60px;
+  }
+
+  .testi-thumb img {
+    width: auto;
+    margin-bottom: 30px;
+  }
+
+  .testi-desc p {
+    font-size: 19px;
+  }
+
+  .mediic-button.text-right {
+    text-align: center !important;
+    padding: 15px 0 0;
+  }
+
+  .style-2 .subscribe-title h1 {
+    font-size: 25px;
+  }
+
+  .user-info {
+    padding: 31px 0 0;
+  }
+
+  /* Team Section */
+
+  .team-section {
+    margin: 0;
+  }
+
+  /* Subscribe Section */
+
+  .subscribe-title h1 {
+    font-size: 25px;
+  }
+
+  .mediic-subscribe {
+    margin: 0;
+  }
+
+  .subscribe-right {
+    float: left;
+    padding: 20px 0 0;
+  }
+
+  /* Blog Section */
+
+  .blog-section {
+    margin: 0;
+  }
+
+  .blog-single-box {
+    display: inline-block;
+  }
+
+  .blog-content {
+    padding: 25px 0 0;
+  }
+
+  .owl-nav {
+    right: 12px;
+    top: -85px;
+  }
+
+  .owl-prev i,
+  .owl-next i {
+    font-size: 16px;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    margin-left: 5px;
+  }
+
+  /* Footer Section */
+
+  .footer-section {
+    padding: 120px 0 55px;
+  }
+
+  .row.footer-btm {
+    text-align: center;
+  }
+
+  .mediic-company-desc p {
+    padding: 10px 0 0;
+    text-align: center;
+  }
+
+  .footer-thumb {
+    display: none;
+  }
+
+  .footer-thumb1 {
+    display: none;
+  }
+
+  /******************************
+  <--Inner Page Section-->  
+  ********************************/
+  .breatcome-section {
+    background-size: cover;
+    margin-top: 0;
+  }
+
+  .breatcome-content h1 {
+    font-size: 42px;
+  }
+
+  /* About Section */
+  .style-3.about-section .about-thumb img {
+    padding: 0;
+  }
+
+  .style-3.about-section .about-thumb {
+    padding-bottom: 30px;
+  }
+
+  .style-3 .counter-right-side {
+    width: auto;
+  }
+
+  /* Testimonial */
+  .style-2 .testi-single-box {
+    padding: 35px 30px 20px;
+  }
+
+  .style-2 .testi-quote2 {
+    right: 12px;
+  }
+
+  .style-2 .testi-quote2 img {
+    width: 78%;
+  }
+
+  .testi-thumb img {
+    width: 100%;
+  }
+
+  /* Details Page  */
+
+  .mediic-title h2 {
+    font-size: 25px;
+  }
+
+  .mediic-blog {
+    padding: 30px 30px 14px;
+  }
+
+  .blog-desc p {
+    font-size: 17px;
+    padding: 0;
+  }
+
+  .accordion li a {
+    font-size: 17px;
+    padding: 16px 16px 16px 20px;
+  }
+
+  .accordion li a span {
+    font-size: 18px;
+    padding: 0 7px 0 0px;
+  }
+
+  /* Error Page */
+  .error-section {
+    padding: 90px 0px 90px;
+  }
+
+  .error-content h1 {
+    font-size: 112px;
+    width: 370px;
+    height: 223px;
+    line-height: 220px;
+  }
+
+  /* Appoinment Section */
+
+  .mediic-appoinment {
+    padding: 0;
+    background-size: cover;
+    background-position: right;
+  }
+
+  .style-1 .testi-single-box {
+    margin-bottom: 35px;
+  }
+
+  .mediic-thumb img {
+    width: 100%;
+  }
+
+  iframe {
+    width: 480px;
+  }
+
+  .accordion2 li a {
+    font-size: 18px;
+  }
+
+  /* Testimonial inner Page */
+
+  .upp.style-2 .testi-single-box {
+    padding: 58px 35px 38px;
+  }
+
+  .upp.style-2 .testi-bg .user-info {
+    padding: 0;
+    margin: 30px 12px 0 0;
+  }
+
+  .upp.style-2 .user-info {
+    padding: 25px 15px 25px 1px;
+    margin: 0px 10px 0 0;
+  }
+
+  .testimonial-section.style-2.upp .user-name h4 {
+    font-size: 17px;
+  }
+
+  .testimonial-section.style-2.upp .people-pic img {
+    margin-right: 0;
+    width: 62%;
+  }
+
+  .upp.style-2 .user-name h6 {
+    font-size: 15px;
+  }
+
+  .upp.style-2 .testi-desc p {
+    font-size: 18px;
+  }
+  .sticky {
+    z-index: 2;
+  }
+
+  /*  */
+}
+
+/* small mobile :320px. */
+@media only screen and (min-width: 320px) and (max-width: 479px) {
+  .sticky {
+    position: absolute !important;
+  }
+
+  /* .mediic_nav_manu {
+    display: none;
+  } */
+
+  /* Hero Section */
+
+  .hero-section {
+    background-position: center;
+    background-size: cover;
+    height: 1076px;
+  }
+
+  .hero-content h5 {
+    font-size: 13px;
+    height: 33px;
+  }
+
+  .hero-content h1 {
+    font-size: 29px;
+    line-height: 37px;
+  }
+
+  .hero-mediic-service {
+    display: inline-block;
+  }
+
+  .mediic-service-inner-bx {
+    display: inline-block;
+  }
+
+  .mediic-hero-content {
+    padding: 5px 0 0;
+  }
+
+  .video__content {
+    padding: 20px 0 0 0;
+  }
+
+  .mediic-btn a {
+    padding: 10px 34px;
+    font-size: 14px;
+  }
+
+  .hero-thumb {
+    top: 110px;
+    left: 0;
+  }
+
+  .hero-thumb img {
+    width: 100%;
+  }
+
+  .hero-shape2 {
+    bottom: 245px;
+    left: 124px;
+  }
+
+  /* Brand Section */
+
+  .brand-section {
+    padding: 0;
+  }
+
+  .brand-bg {
+    padding: 70px 0px 50px;
+  }
+
+  /* Feature Sections */
+
+  .feature-single-box {
+    padding: 40px 29px 27px;
+  }
+
+  .bx-2.feature-single-box {
+    padding: 40px 30px 26px;
+  }
+
+  .bx-2 .feature-head {
+    display: inherit;
+  }
+
+  .feature-btn {
+    padding: 0 0 25px;
+  }
+
+  .head-title h2 {
+    font-size: 22px;
+  }
+
+  .bx-3 .feature-content p {
+    font-size: 16px;
+  }
+
+  .feature-thumb img {
+    width: 100%;
+  }
+
+  /* Style 2 */
+
+  .feature-single-box-2 {
+    display: inherit;
+  }
+
+  .feature-single-box-2 .feature-content {
+    padding-left: 0;
+    margin-top: 25px;
+  }
+
+  /* Section Title */
+
+  .mediic-section-title h1 {
+    font-size: 21px;
+    line-height: 21px;
+    text-align: left;
+  }
+
+  .mediic-section-title h4 {
+    font-size: 13px;
+  }
+
+  .mediic-desc p {
+    font-size: 16px;
+  }
+
+  .mediic-appoinment {
+    padding: 0px 0 0px;
+  }
+
+  .mediic-section-title2 h3 {
+    font-size: 21px;
+  }
+
+  .main-div {
+    padding: 0 0 0px;
+  }
+
+  .top-mediic-section2 {
+    display: block;
+  }
+
+  /* About Section */
+
+  .about-section {
+    margin: 0;
+    margin-bottom: -120px;
+  }
+
+  .row.about-bg {
+    border: 0;
+  }
+
+  .about-thumb img {
+    padding: 15px 0 25px 14px;
+    width: 100%;
+    border-radius: 42px;
+    text-align: center;
+}
+
+  .swiper.about {
+    height: 295px;
+  }
+
+  .about-content h3 {
+    font-size: 15px;
+    padding: 0 0 9px;
+  }
+
+  .about-icon {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    margin-right: 15px;
+  }
+
+  .about-icon img {
+    width: 60%;
+  }
+
+  .about-content p {
+    font-size: 15px;
+  }
+
+  /* Service Section */
+
+  .service-single-box {
+    padding: 50px 25px 55px;
+  }
+
+  .service-category a {
+    padding: 2px 16px;
+    font-size: 12px;
+  }
+
+  /* Portfolio */
+
+  .row.portfolio-bg {
+    padding: 0 15px 0;
+  }
+
+  .portfolio-section {
+    margin: 0;
+  }
+
+  .portfolio-content {
+    width: 232px;
+    height: 175px;
+  }
+
+  h4.port-title a {
+    font-size: 17px;
+  }
+
+  .port-icon {
+    font-size: 15px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+  }
+
+  /* Servces Box */
+
+  .service-section {
+    margin: 0;
+    margin-bottom: -80px;
+  }
+
+  .content {
+    padding: 0 5px 27px;
+    width: calc((28% / 2) - var(--gap));
+  }
+
+  .content:hover {
+    padding: 0 20px 50px;
+    width: calc(69% - var(--gap));
+  }
+
+  .content.update {
+    display: none;
+  }
+
+  .row.service-bg {
+    padding: 0 0px 0;
+  }
+
+  .medical-icon {
+    left: 12px;
+    top: 35px;
+  }
+
+  .medical-icon img {
+    width: 100%;
+  }
+
+  .content:hover .medical-icon img {
+    width: 80%;
+  }
+
+  h3.service-title {
+    font-size: 13px;
+  }
+
+  .profile_quote p {
+    font-size: 13px;
+    padding: 0 0 14px;
+  }
+
+  .content .mediic-button a {
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+
+  .content .mediic-button a img {
+    width: 19%;
+  }
+
+  /* Team Section */
+
+  .team-section {
+    margin: 0;
+  }
+
+  /* Testimonial Section  */
+
+  .testimonial-list.owl-carousel {
+    padding: 0 0px 0 18px;
+  }
+
+  .testimonial-single-slide {
+    padding: 100px 30px 100px;
+  }
+
+  .testimonial-thumb img {
+    width: 100%;
+    height: auto;
+  }
+
+  .testi-desc p {
+    font-size: 16px;
+  }
+
+  /* Subscribe Section */
+
+  .subscribe-title h1 {
+    font-size: 18px;
+    padding-left: 13px;
+  }
+
+  .mediic-subscribe {
+    margin: 0;
+  }
+
+  .subscribe-right {
+    float: left;
+    padding: 20px 0 0;
+  }
+
+  .subscribe-right .call-icon {
+    padding-right: 15px;
+  }
+
+  .mediic-btn a {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .style-2 .subscribe-content {
+    display: inline;
+  }
+
+  .style-2 .subscribe-title h1 {
+    font-size: 22px;
+    line-height: 28px;
+    padding: 20px 0 25px;
+  }
+
+  .mediic-button.text-right {
+    text-align: left !important;
+  }
+
+  /* Blog Section */
+
+  .blog-section {
+    margin: 0;
+  }
+
+  .blog-single-box {
+    display: inline-block;
+    padding: 30px 18px 30px;
+  }
+
+  .blog-title h2 a {
+    font-size: 16px;
+  }
+
+  .blog-content {
+    padding: 25px 0 0;
+  }
+
+  .blogs-category ul li {
+    font-size: 14px;
+    margin: 0 4px 0 0px;
+  }
+
+  .owl-nav {
+    right: 12px;
+    top: -85px;
+  }
+
+  .owl-prev i,
+  .owl-next i {
+    font-size: 16px;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    margin-left: 5px;
+  }
+
+  .style-2 .blogs-category ul li {
+    font-size: 14px;
+    margin: 0 0px 0 19px;
+  }
+
+  .style-2 .blog-content {
+    padding: 23px 0px 0 0;
+  }
+
+  /* Footer Section */
+
+  .footer-section {
+    padding: 120px 0 55px;
+  }
+
+  .row.footer-btm {
+    text-align: center;
+  }
+
+  .mediic-company-desc p {
+    padding: 10px 0 0;
+    text-align: center;
+  }
+
+  .footer-thumb {
+    display: none;
+  }
+
+  .footer-thumb1 {
+    display: none;
+  }
+
+  .mediic-address {
+    padding: 0 10px 0;
+  }
+
+  .style-2 .company-info-desc p {
+    font-size: 18px;
+  }
+
+  /******************************
+  <--Inner Page Section-->  
+  ********************************/
+  .breatcome-section {
+    background-size: cover;
+    margin-top: 0;
+  }
+
+  .breatcome-content h1 {
+    font-size: 30px;
+  }
+
+  /* About Section */
+  .style-3.about-section .about-thumb img {
+    padding: 0;
+  }
+
+  .style-3.about-section .about-thumb {
+    padding-bottom: 30px;
+  }
+
+  .style-3 .counter-right-side {
+    width: auto;
+    text-align: center;
+  }
+
+  .style-3 .odometer-wrapper.counter-box-title h1 {
+    font-size: 28px;
+  }
+
+  .style-3 .odometer-wrapper.counter-box-title {
+    display: inline-block;
+  }
+
+  .counter-single-box.bx-1 {
+    padding-right: 40px;
+  }
+
+  .style-3 .counter-desc p {
+    font-size: 15px;
+  }
+
+  .mission-vission-single-box {
+    padding: 35px 25px 15px;
+  }
+
+  .m_v-ssion-desc p {
+    font-size: 16px;
+  }
+
+  /* Testimonial */
+  .style-2 .testi-single-box {
+    padding: 35px 30px 20px;
+  }
+
+  .style-2 .testi-quote2 {
+    right: 12px;
+    top: 156px;
+  }
+
+  .style-2 .testi-quote2 img {
+    width: 78%;
+  }
+
+  .style-2 .testi-thumb img {
+    width: 100%;
+  }
+
+  .style-2 .user-info {
+    display: inline;
+  }
+
+  /* Service Inner Page */
+
+  .single-services-box {
+    padding: 38px 25px 32px;
+  }
+
+  .services-title h3 {
+    font-size: 18px;
+  }
+
+  .services-desc p {
+    font-size: 16px;
+  }
+
+  /* Details Page  */
+
+  .mediic-title h2 {
+    font-size: 22px;
+  }
+
+  .mediic-thumb img {
+    border-radius: 20px;
+    width: 100%;
+  }
+
+  .mediic-single-box {
+    padding: 35px 25px 20px;
+  }
+  .mediic-icons {
+    float: inherit;
+    margin-bottom: 30px;
+  }
+
+  .mediic-content h3 {
+    font-size: 20px;
+  }
+
+  .mediic-content p {
+    font-size: 16px;
+  }
+
+  .mediic-blog {
+    padding: 30px 25px 14px;
+    display: inherit;
+  }
+
+  .blog-icon {
+    display: inline-block;
+    margin-bottom: 22px;
+  }
+
+  .blog-desc p {
+    font-size: 17px;
+    padding: 0;
+  }
+
+  .accordion li a {
+    font-size: 17px;
+    padding: 16px 10px 16px 12px;
+  }
+
+  .accordion li a span {
+    font-size: 18px;
+    padding: 0 7px 0 0px;
+  }
+
+  .accordion li p {
+    font-size: 15px;
+    padding: 24px 5px 10px 5px;
+  }
+
+  .mediic-category-box {
+    padding: 20px 25px 24px;
+  }
+
+  /* Error Page */
+  .error-service-content {
+    height: 630px;
+  }
+  .error-section {
+    padding: 90px 0px 90px;
+  }
+
+  .error-content h1 {
+    font-size: 72px;
+    width: 220px;
+    height: 169px;
+    line-height: 169px;
+  }
+
+  /* Appoinment Section */
+
+  .style-1 .testi-single-box {
+    margin-bottom: 35px;
+    padding: 60px 30px 60px;
+  }
+
+  /* Blog Inner Page Section */
+
+  .style-2 .blog-single-box {
+    padding: 25px 15px 30px 17px;
+  }
+
+  .blogs-category ul li {
+    font-size: 14px;
+    margin: 0 10px 0 22px;
+  }
+
+  .blog-content {
+    padding: 23px 5px 0 0;
+  }
+
+  .mediic-section.style-2 .blog-title h2 a {
+    font-size: 17px;
+    line-height: 24px;
+  }
+
+  .mediic-category-box.responsive {
+    padding: 20px 13px 24px 25px;
+    margin-bottom: 20px;
+  }
+
+  .category-content {
+    padding-left: 10px;
+  }
+
+  .post-thumb a img {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .category-content h4 a {
+    font-size: 15px;
+    line-height: 19px;
+  }
+
+  .category-content h6 {
+    font-size: 13px;
+  }
+
+  .blogs-category ul li {
+    font-size: 14px;
+  }
+
+  .mediic-thumb img {
+    width: 100%;
+  }
+
+  .post-comment {
+    display: inherit;
+  }
+
+  .post-content {
+    margin: 25px 0 0px 30px;
+  }
+
+  p.posts-reply {
+    font-size: 15px;
+  }
+
+  .post-comment2 {
+    display: inherit;
+    margin-left: 0;
+  }
+
+  .column .breatcome-content h1 {
+    font-size: 26px;
+  }
+
+  .custom-scroll {
+    padding: 0 5px 0 0;
+  }
+
+  iframe {
+    width: 320px;
+  }
+
+  .accordion2 li a {
+    font-size: 16px;
+    padding: 16px 0px 16px 10px;
+  }
+
+  .style-2 .blog-single-box .mediic-button a {
+    font-size: 16px;
+  }
+
+  .mediic-section.blg-list.style-2 .blogs-category ul li {
+    font-size: 13px;
+    margin: 0 0px 0 10px;
+  }
+
+  .mediic-section.blg-list.style-2 .blog-title h2 a {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  /* Project Section inner Page */
+
+  .project-content {
+    width: 100%;
+  }
+
+  .project-content h2 {
+    font-size: 18px;
+  }
+
+  .project-icon a {
+    top: 20px;
+  }
+
+  .details .breatcome-content h1 {
+    font-size: 27px;
+  }
+
+  .doctor-content h3 {
+    font-size: 16px;
+  }
+
+  .team-details {
+    padding: 30px;
+  }
+
+  .team-details-content {
+    padding: 0 0 0 0px;
+  }
+
+  .prossess-ber-plugin span {
+    font-size: 16px;
+  }
+
+  .barfiller .tip {
+    font-size: 16px;
+  }
+
+  .head-title h3 {
+    font-size: 26px;
+  }
+
+  /* Testimonial inner Page */
+
+  .upp.style-2 .testi-single-box {
+    padding: 58px 25px 38px;
+  }
+
+  .upp.style-2 .testi-bg .user-info {
+    padding: 0;
+    margin: 30px 0px 0 0;
+  }
+
+  .upp.style-2 .user-info {
+    padding: 25px 15px 25px 1px;
+    margin: 0px 10px 0 0;
+    display: flex;
+  }
+
+  .testimonial-section.style-2.upp .user-name h4 {
+    font-size: 17px;
+  }
+
+  .testimonial-section.style-2.upp .people-pic img {
+    margin-right: 0;
+    width: 62%;
+  }
+
+  .upp.style-2 .user-name h6 {
+    font-size: 15px;
+  }
+
+  .upp.style-2 .testi-desc p {
+    font-size: 16px;
+  }
+
+  .upp.style-2 .testi-bg .testi-single-box {
+    padding: 5px 25px 40px;
+  }
+
+  .upp.style-2 .testi-quote2 {
+    right: 3px;
+    bottom: 42px;
+    top: inherit;
+  }
+
+  .top-mediic-section2 .mediic-btn a {
+    padding: 9px 20px;
+    font-size: 14px;
+    margin-top: 20px;
+  }
+
+  .mediic-appoinment.style-2 {
+    background-size: cover;
+  }
+
+  /*  */
+}
