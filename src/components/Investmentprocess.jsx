@@ -14,7 +14,7 @@ import blogImg3 from '../assets/images/resource/blog3.png';
 import blogImg4 from '../assets/images/resource/blog4.png';
 import shapeImg from '../assets/images/resource/shape1.png';
 
-const PATIENTS = () => {
+const Investmentprocess = () => {
   const slidesData = [
     {
       id: 1,
@@ -111,4 +111,4 @@ const PATIENTS = () => {
   );
 };
 
-export default PATIENTS;
+export default Investmentprocess;

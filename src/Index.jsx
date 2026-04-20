@@ -24,7 +24,7 @@ const Index = () => {
         <Investmentadvantages/>
         <Choosehelthcare/>
         <AiPowered/>
-        <InvestmentProcess/>
+        <Investmentprocess/>
         <Newsletter/>
 
       </div>
