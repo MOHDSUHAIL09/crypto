@@ -13,7 +13,7 @@ const ErrorPage = () => {
         <p className="error-message">
           Oops! The page you are looking for doesn't exist or has been moved.
         </p>
-        <button className="error-btn" onClick={() => navigate("/dashboard")}>
+        <button className="error-btn" onClick={() => navigate("/")}>
           Go Home
         </button>
       </div>

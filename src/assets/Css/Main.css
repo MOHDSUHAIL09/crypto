@@ -2719,8 +2719,6 @@ ul.footer-menu li a:hover:before {
 }
 
 
-/* label */
-
 label.widget-check {
   font-size: 16px;
   color: #97a9bf;
@@ -3002,21 +3000,19 @@ span.fill {
 <!-- ============================================================== -->*/
 
 .mediic-appoinment {
-  background-image: url(../images/resource/appoinment.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  padding: 50px;
   border-radius: 30px;
-  background-size: contain;
+  margin-bottom: 120px;
 }
 
-.main-div {
-  padding: 0 0 120px;
+.mediic-section-title2{
+  padding: 35px;
+  margin-bottom: -50px;
 }
 
 .row.appoinment {
   position: relative;
   z-index: 1;
+  margin-left: -50px;
 }
 
 .contact-form-box {
@@ -3042,35 +3038,89 @@ span.fill {
   font-family: "DM Sans";
 }
 
-/* .form-box textarea {
-  width: 100%;
-  padding: 15px 22px;
-  outline: 0;
-  margin-bottom: 25px;
-  outline: 0;
+/* Left column image styling */
+.signup-left-col {
+  display: flex;
+  align-items: center;
+}
+
+.signup-side-image {
+  max-width: 1200px;
+  height: 500px;
+}
+
+
+@media (max-width: 768px) {
+  /* Reorder: form on top, image below */
+  .row.appoinment .col-lg-6:first-child {
+    order: 2; /* image column becomes second */
+  }
+  .row.appoinment .col-lg-6:last-child {
+    order: 1; /* form column becomes first */
+  }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+button.submit-btn {
+  padding: 16px 40px;
+  font-size: 18px;
+  color: #fff;
   display: inline-block;
-  height: 150px;
-  border-radius: 25px;
-  background-color: rgba(255, 255, 255, 0);
-  border: 1px solid rgba(0, 37, 112, 0.5);
   font-weight: 500;
-  font-family: "DM Sans";
-} */
+  font-family: "Albert Sans";
+  border-radius: 32px;
+  position: relative;
+  z-index: 1;
+  transition: 0.5s;
+  overflow: hidden;
+  border: 1px solid #007eff;
+  background-color: var(--primary-color, #007eff);
+}
 
-/* .form-box textarea::placeholder {
-  color: #002570;
-  font-size: 17px;
-} */
-
-.mediken-shape-2 {
+button.submit-btn:after {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  color: #fff;
   position: absolute;
+  content: attr(data-text);
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  left: 0;
   top: 0;
-  left: 450px;
-  animation: wooo 3.5s infinite;
+  background-color: #007eff;
+  background: url(../images/resource/mask-btn2.png);
+  mask: url(../images/resource/mask-btn2.png);
+  -webkit-mask-size: 2300% 100%;
+  mask-size: 2300% 100%;
+  animation: mask_animation_2 0.7s steps(22) forwards;
+  z-index: -1;
+}
+
+button.submit-btn i {
+  padding-left: 5px;
+  position: relative;
+  top: 2px;
+  transform: rotate(-45deg);
+  display: inline-block;
+}
+
+button.submit-btn:hover:after {
+  animation: mask_animation 0.7s steps(22) forwards;
 }
 
 /* Submit Button */
-
 button.submit-btn {
   padding: 16px 40px;
   font-size: 18px;

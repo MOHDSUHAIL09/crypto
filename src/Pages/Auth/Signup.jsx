@@ -203,19 +203,18 @@
 
 // export default SignupPage;   
 
- 
-import React, { useState, useEffect } from "react";
+ import React, { useState, useEffect } from "react";
 import { useNavigate, Link, NavLink } from "react-router-dom";
 import toast from "react-hot-toast";
-import { CgMenuGridR } from "react-icons/cg"; // or use any icon library
+import { CgMenuGridR } from "react-icons/cg";
 import "../../assets/Css/Auth.css";
 import apiClient from "../../api/apiClient";
 
-// Import images (adjust paths as needed)
+// Images
 import logoImg from "../../assets/images/logo.png";
 import logo2Img from "../../assets/images/logo2.png";
 import arrowImg from "../../assets/images/resource/arrow.png";
-import heart2  from "../../assets/images/resource/heart2.png"
+import signupImage from "../../assets/images/resource/appoinment.png"; 
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -239,10 +238,8 @@ const Signup = () => {
     affiliate_Level: 0,
     referrer: "",
     country: 91,
-    introSide: "L"
+    introSide: "L",
   });
-
-  // ... (keep all handlers: handleChange, useEffect for sponsor, handleSignup unchanged) ...
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -263,7 +260,7 @@ const Signup = () => {
             setFormData((prev) => ({
               ...prev,
               sponsorName: res.data.data.Name,
-              introRegNo: res.data.data.regno
+              introRegNo: res.data.data.regno,
             }));
           } else {
             setFormData((prev) => ({ ...prev, sponsorName: "Invalid Sponsor", introRegNo: "" }));
@@ -301,7 +298,7 @@ const Signup = () => {
       Created_At: new Date().toISOString(),
       Private_Key: formData.private_Key,
       Affiliate_Level: formData.affiliate_Level,
-      Referrer_Id: formData.referrer_Id
+      Referrer_Id: formData.referrer_Id,
     };
     try {
       const response = await apiClient.post("/Authentication/register", payload);
@@ -326,36 +323,36 @@ const Signup = () => {
 
   useEffect(() => {
     const handleScroll = () => setIsSticky(window.scrollY > 100);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    document.body.classList.add('loaded');
-    return () => document.body.classList.remove('loaded');
+    document.body.classList.add("loaded");
+    return () => document.body.classList.remove("loaded");
   }, []);
 
   useEffect(() => {
     if (isSearchActive) {
-      document.body.classList.add('search-active');
+      document.body.classList.add("search-active");
     } else {
-      document.body.classList.remove('search-active');
+      document.body.classList.remove("search-active");
     }
   }, [isSearchActive]);
 
   useEffect(() => {
     const handleEsc = (e) => {
-      if (e.key === 'Escape') setIsSearchActive(false);
+      if (e.key === "Escape") setIsSearchActive(false);
     };
-    document.addEventListener('keydown', handleEsc);
-    return () => document.removeEventListener('keydown', handleEsc);
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
   }, []);
 
   return (
     <>
       <div className="bd-bg">
-        {/* Main Header */}
-        <div id="sticky-header" className={`mediic_nav_manu ${isSticky ? 'sticky' : ''}`}>
+        {/* Sticky Header */}
+        <div id="sticky-header" className={`mediic_nav_manu ${isSticky ? "sticky" : ""}`}>
           <div className="container-fluid">
             <div className="row align-items-center">
               <div className="col-lg-2 col-6">
@@ -408,7 +405,7 @@ const Signup = () => {
                 </nav>
               </div>
 
-              {/* Mobile Menu Toggle Button */}
+              {/* Mobile Menu Toggle */}
               <div className="col-6 d-lg-none text-end">
                 <button className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                   <i className="fa-solid fa-bars"></i>
@@ -419,7 +416,7 @@ const Signup = () => {
         </div>
 
         {/* Search Popup */}
-        <div className={`search-popup ${isSearchActive ? 'search-active' : ''}`}>
+        <div className={`search-popup ${isSearchActive ? "search-active" : ""}`}>
           <button className="close-search style-two" onClick={() => setIsSearchActive(false)}>
             <span className="flaticon-multiply"><i className="fa-solid fa-xmark"></i></span>
           </button>
@@ -432,7 +429,7 @@ const Signup = () => {
         </div>
 
         {/* Info Group Sidebar */}
-        <div className={`xs-sidebar-group info-group ${isInfoGroupActive ? 'isActive' : ''}`}>
+        <div className={`xs-sidebar-group info-group ${isInfoGroupActive ? "isActive" : ""}`}>
           <div className="xs-overlay xs-bg-black" onClick={() => setIsInfoGroupActive(false)}></div>
           <div className="xs-sidebar-widget">
             <div className="sidebar-widget-container">
@@ -443,9 +440,6 @@ const Signup = () => {
               </div>
               <div className="sidebar-textwidget">
                 <div className="sidebar-info-contents">
-                  {/* <div className="content-thumb-box">
-                     <img src={sidebar-img} alt="" />
-                  </div> */}
                   <div className="contact-info">
                     <h2>About Company</h2>
                     <p>Rapidiously expedite strategic expertise with customer directed synergy.</p>
@@ -501,7 +495,11 @@ const Signup = () => {
         <div className="mediic-appoinment">
           <div className="container">
             <div className="row appoinment">
-              <div className="col-lg-6"></div>
+              {/* LEFT COLUMN - IMAGE (on desktop left, on mobile below form) */}
+              <div className="col-lg-6 signup-left-col">
+                <img src={signupImage} alt="Signup Illustration" className="signup-side-image" />
+              </div>
+              {/* RIGHT COLUMN - FORM (on desktop right, on mobile on top) */}
               <div className="col-lg-6">
                 <div className="mediic-section-title2">
                   <h4>SIGNUP ACCOUNT</h4>
@@ -532,7 +530,7 @@ const Signup = () => {
                       </div>
                       <div className="col-lg-12 col-md-12">
                         <div className="form-box d-flex" style={{ gap: "10px" }}>
-                          <span style={{ padding: "1px 15px", background: "#f0f0f0", borderRadius: "5px" }}>+91</span>
+                          <span style={{ padding: "1px 15px", background: "#f0f0f0", borderRadius: "8px", marginBottom: "11px" }}>+91</span>
                           <input type="text" name="mobile" placeholder="Mobile Number*" maxLength="10" value={formData.mobile} onChange={handleChange} required style={{ flex: 1 }} />
                         </div>
                       </div>
@@ -557,15 +555,10 @@ const Signup = () => {
                   </form>
                 </div>
               </div>
-              <div className="appointment-shape">
-                <div className="mediic-shape-2" data-aos="fade-down">
-                  <img src={heart2} alt="shape" />
-                </div>
-              </div>
             </div>
           </div>
         </div>
-    </div>
+      </div>
     </>
   );
 };

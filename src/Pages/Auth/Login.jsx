@@ -198,7 +198,7 @@ import { useUser } from "../../context/UserContext";
 import logoImg from "../../assets/images/logo.png";
 import logo2Img from "../../assets/images/logo2.png";
 import arrowImg from "../../assets/images/resource/arrow.png";
-import heart2 from "../../assets/images/resource/heart2.png";
+import signupImage from "../../assets/images/resource/appoinment.png"; 
 
 const Login = () => {
   const navigate = useNavigate();
@@ -425,7 +425,9 @@ const Login = () => {
         <div className="mediic-appoinment">
           <div className="container">
             <div className="row appoinment align-items-center">
-              <div className="col-lg-6"></div>
+               <div className="col-lg-6 signup-left-col">
+               <img src={signupImage} alt="Signup Illustration" className="signup-side-image" />
+           </div>
               <div className="col-lg-6" data-aos="zoom-in-left">
                 <div className="mediic-section-title2">
                   <h4>LOGIN ACCOUNT</h4>
@@ -483,11 +485,6 @@ const Login = () => {
                       </div>
                     </div>
                   </form>
-                </div>
-              </div>
-              <div className="appointment-shape">
-                <div className="mediic-shape-2" data-aos="fade-down">
-                  <img src={heart2} alt="shape" />
                 </div>
               </div>
             </div>
