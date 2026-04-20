@@ -953,12 +953,6 @@
     margin-bottom: 30px;
   }
 
-  /* Appointment */
-
-  .mediic-appoinment   {
-
-  }
-
   /* Error Page */
   .error-section {
     padding: 90px 0px 90px;
@@ -1156,6 +1150,7 @@
 
   .content {
     width: calc((42% / 3) - var(--gap));
+    width: 100px;
   }
 
   .row.service-bg {
@@ -1518,6 +1513,7 @@
   .content {
     padding: 0 16px 27px;
     width: calc((28% / 2) - var(--gap));
+    width: 150px;
   }
 
   .content:hover {
@@ -1529,9 +1525,9 @@
     display: none;
   }
 
-  .row.service-bg {
+  /* .row.service-bg {
     padding: 0 0px 0;
-  }
+  } */
 
   .medical-icon {
     left: 12px;
@@ -1540,6 +1536,7 @@
 
   .medical-icon img {
     width: 100%;
+    margin-left: 20px;
   }
 
   .content:hover .medical-icon img {
@@ -2059,6 +2056,7 @@
   .content {
     padding: 0 5px 27px;
     width: calc((28% / 2) - var(--gap));
+    width: 80px;
   }
 
   .content:hover {

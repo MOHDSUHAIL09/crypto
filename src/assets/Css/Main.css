@@ -1256,11 +1256,11 @@ h4.port-title a {
   border-radius: 30px;
 }
 
-.row.service-bg {
+/* .row.service-bg {
   padding: 0 250px 0;
   border-radius: 30px;
   position: relative;
-}
+} */
 
 .mediic-service-box {
   overflow: clip;
@@ -7643,6 +7643,7 @@ h6 {
 .white h5,
 .white h6 {
   color: #fff;
+  line-height: 1.2;
 }
 
 .white p {
