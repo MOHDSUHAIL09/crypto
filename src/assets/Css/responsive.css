@@ -2056,7 +2056,7 @@
   .content {
     padding: 0 5px 27px;
     width: calc((28% / 2) - var(--gap));
-    width: 80px;
+    width: 50px;
   }
 
   .content:hover {
@@ -2078,7 +2078,10 @@
   }
 
   .medical-icon img {
-    width: 100%;
+    width: 40px !important;
+    height: 40px;
+    margin-left: -8px;
+
   }
 
   .content:hover .medical-icon img {
