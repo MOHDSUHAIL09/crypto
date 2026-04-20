@@ -6,10 +6,10 @@ import About from './components/AboutInvest'
 import Investmentopportunities from './components/Investmentopportunities'
 import Investmentadvantages from './components/Investmentadvantages'
 import Choosehelthcare from './components/Choosehelthcare'
-import InvestmentProcess from './components/Investmentprocess'
 import Newsletter from './components/Newsletter'
 import Fotter from './components/ui/fotter/Fotter'
 import AiPowered from './components/AiPowered'
+import Investmentprocess from './components/Investmentprocess'
 
 
 const Index = () => {
