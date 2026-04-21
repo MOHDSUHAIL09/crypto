@@ -41,10 +41,6 @@ const InvestmentProcess = () => {
                       </p>
                     </div>
                     <div className="authors-info">
-                      {/* <div className="author-name">
-                        <h4>James D. Brown</h4>
-                        <span className="author-appellation">Dental Patient</span>
-                      </div> */}
                     </div>
                   </div>
                 </div>

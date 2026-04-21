@@ -1,6 +1,6 @@
 import React from "react";
-// If you have a relevant image for investment, replace the path; otherwise keep or remove
 import investmentImg from "../assets/images/resource/bot.jpg";
+import shap1 from '../assets/images/resource/shape1.png'
 
 const AiPoweredInvestment = () => {
   return (
@@ -17,10 +17,9 @@ const AiPoweredInvestment = () => {
               </div>
             </div>
             <div className="mediic-shape">
-              <img src="assets/images/resource/shape1.png" alt="shape" />
+              <img src={shap1} alt="shape" />
             </div>
           </div>
-
           <div className="row">
             {/* Main feature box - using same team-single-box style */}
             <div className="col-lg-6 col-md-6">

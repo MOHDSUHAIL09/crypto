@@ -173,7 +173,7 @@ const Header = () => {
                   <li>
                     <NavLink className="mdy-hover cursor-scale small" to="/">Home</NavLink>
                   </li>
-                  <li><NavLink className="mdy-hover cursor-scale small" to="/about">Why Healthcare?</NavLink></li>
+                  <li><NavLink className="mdy-hover cursor-scale small" to="#">Why Healthcare?</NavLink></li>
                   <li>
                     <NavLink className="mdy-hover cursor-scale small" to="#">Our Approach</NavLink>
                     {/* <ul className="sub-menu">
@@ -193,8 +193,8 @@ const Header = () => {
                   <li>
                     <NavLink className="mdy-hover cursor-scale small" to="#">Services</NavLink>
                     <ul className="sub-menu">
-                      <li><Link to="/service">Our Service</Link></li>
-                      <li><Link to="/service-details">Certifications</Link></li>
+                      <li><Link to="#">Our Service</Link></li>
+                      <li><Link to="#">Certifications</Link></li>
                     </ul>
                   </li>
                   <li>
@@ -208,11 +208,6 @@ const Header = () => {
                   <div className="search-box-btn search-box-outer" onClick={() => setIsSearchActive(true)}>
                     <i className="fa-solid fa-magnifying-glass"></i>
                   </div>
-
-
-
-
-
 
 
 
