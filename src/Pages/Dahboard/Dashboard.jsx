@@ -4,8 +4,10 @@ import LevelIncome from "./LevelIncome";
 const Dashboard = () => {
   return (
         <>
+        <div className="dashboard-container">
          <Cards />
         <LevelIncome/>
+      </div>
         </>
   );
 };

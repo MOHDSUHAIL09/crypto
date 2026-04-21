@@ -18,14 +18,13 @@
   --secondary-clr: #2f93f8;
 }
 
-/* body {
-  width: 100%;
+.dashboard-container{
+    width: 100%;
   font-family: "Noto Sans", sans-serif;
   background: linear-gradient(#dae3fa, #e6ecfa, #fce1f6);
   background-repeat: no-repeat;
   overflow-x: hidden;
-
-} */
+}
 
 
 /* ================= RESET ================= */
