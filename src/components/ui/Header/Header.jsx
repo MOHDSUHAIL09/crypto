@@ -301,7 +301,10 @@ const Header = () => {
       {isMobileMenuOpen && (
         <div className="mobile-menu-drawer-overlay" onClick={() => setIsMobileMenuOpen(false)}>
           <div className="mobile-menu-drawer" onClick={e => e.stopPropagation()}>
+
             <button className="close-mobile-menu" onClick={() => setIsMobileMenuOpen(false)}>✕</button>
+            <img className='logomenu' src={logoImg} alt='logo'></img>
+
             <nav className="mediic_menu">
               <ul className="nav_scroll">
                 <li>

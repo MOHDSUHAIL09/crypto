@@ -13,7 +13,6 @@ import { IoSend } from 'react-icons/io5';
 const Cards = () => {
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
 
-
   // Withdraw modal states
   const [withdrawAmount, setWithdrawAmount] = useState('');
   const [withdrawOtp, setWithdrawOtp] = useState('');
@@ -24,10 +23,11 @@ const Cards = () => {
   const [otpTimer, setOtpTimer] = useState(0);
   const [otpIntervalId, setOtpIntervalId] = useState(null);
   const [usdToInrRate, setUsdToInrRate] = useState(null);
-  const [setFetchingRate] = useState(false);
-  const [setRateError] = useState(null);
-  const [timeLeft, setTimeLeft] = useState("");
-
+  // ✅ FIXED: correct state names
+  const [fetchingRate, setFetchingRate] = useState(false);
+  const [rateError, setRateError] = useState(null);
+  const [, setTimeLeft] = useState("");
+  const [copied, setCopied] = useState(false);
 
   // Payout input amount state
   const [payoutAmount, setPayoutAmount] = useState('');
@@ -35,10 +35,18 @@ const Cards = () => {
   // Context data
   const { userData, stakeData, loading, refreshData } = useUser();
 
-    const baseUrl = "https://india.mangowealthplanner.com/";
+  const baseUrl = "https://india.mangowealthplanner.com/";
   const referralLink = userData?.me
     ? `${baseUrl}/register?ref=${userData.me}`
     : baseUrl;
+
+  // Copy referral link to clipboard
+  const handleCopy = () => {
+    navigator.clipboard.writeText(referralLink);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+    toast.success("Referral link copied!");
+  };
 
   // Helper to get loginid
   const getLoginId = () => {
@@ -64,8 +72,9 @@ const Cards = () => {
 
   const copyReferral = (text) => {
     navigator.clipboard.writeText(text);
-    toast.success("Sponser ID Copied!");
+    toast.success("Sponsor ID Copied!");
   };
+
   // Fetch live USD/INR rate
   const fetchUsdToInrRate = async () => {
     setFetchingRate(true);
@@ -88,22 +97,16 @@ const Cards = () => {
     }
   };
 
-
-
   useEffect(() => {
     const DateString = userData?.topupdate;
-    
-
-
     const targetDate = new Date(DateString);
     targetDate.setDate(targetDate.getDate() + 365);
-    targetDate.setHours(0, 0, 0, 0); 
+    targetDate.setHours(0, 0, 0, 0);
 
     const updateCountdown = () => {
       const now = new Date().getTime();
       const targetTime = targetDate.getTime();
       const timeDiff = targetTime - now;
-
 
       const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
@@ -117,11 +120,6 @@ const Cards = () => {
     const timer = setInterval(updateCountdown, 1000);
     return () => clearInterval(timer);
   }, [userData?.topupdate]);
-
-
-
-
-
 
   // Fetch rate when modal opens
   useEffect(() => {
@@ -308,37 +306,31 @@ const Cards = () => {
                     )}
                   </div>
                 </div>
-                <div className= ' timer d-flex   justify-content-between'>
-                  <div className=''>
-                    <p className="mb-1"><strong>Me:</strong>&nbsp; {userData?.me || "N/A"}</p>
+
+                <div className="timer d-flex justify-content-between">
+                  <div className="">
+                    <p className="mb-1"><strong>Me :</strong>&nbsp; {userData?.me || "N/A"}</p>
                     <p className="mb-1">
-                      <strong>Sponsor: &nbsp; {userData?.referral || "No Sponsor"}
+                      <strong>
+                        Sponsor : &nbsp; {userData?.referral || "No Sponsor"}
                         <FaRegCopy style={{ cursor: 'pointer', marginLeft: '5px' }} onClick={() => copyReferral(userData?.referral)} />
                       </strong>
                     </p>
-                     {/* <p className="mb-1">
-                      <strong>Referral Id: &nbsp; {userData?.referral || "No Sponsor"}
-                        <FaRegCopy style={{ cursor: 'pointer', marginLeft: '5px' }} onClick={() => copyReferral(userData?.referral)} />
+
+                    {/* ✅ Only visible on mobile: full referral link */}
+                    <p className="mb-1 referral-mobile-only">
+                      <strong>
+                        Referral Link : &nbsp;
+                        <span style={{ fontSize: '12px', color: "#196133" }}>
+                          {referralLink.length > 30 ? `${referralLink.substring(0, 20)}...` : referralLink}
+                        </span>
+                        <FaRegCopy
+                          style={{ cursor: 'pointer', marginLeft: '5px' }}
+                          onClick={handleCopy}
+                        />
                       </strong>
-                    </p> */}
+                    </p>
                   </div>
-
-                  
-
-                  {timeLeft && (
-                    <div className="countdown-timer mb-2" style={{
-                      fontSize: "13px",
-                      background: "linear-gradient(to right, var(--primary-clr), var(--secondary-clr))",
-                      padding: "8px 12px",
-                      borderRadius: "12px",
-                      textAlign: "center",
-                      fontWeight: "500",
-                      color: "#ffffff"
-                    }}>
-                       {timeLeft}
-                    </div>
-                  )}
-
                 </div>
               </div>
             </div>
@@ -353,7 +345,6 @@ const Cards = () => {
                 <h5 className='mb-0 fw-bold'>Subscription / Invest</h5>
                 <div className='mint-box'><FaMintbit /></div>
               </div>
-
 
               <div className="c-box py_1">
                 <Stake
@@ -372,14 +363,15 @@ const Cards = () => {
                         </p>
                       </Link>
                       <div className='fundbtn'>
-                   <button type="button" title='fund-deposit' className="wallet-buttton b"><MdAddCard size={20} /></button>
-                    </div></div>
+                        <button type="button" title='fund-deposit' className="wallet-buttton b"><MdAddCard size={20} /></button>
+                      </div>
+                    </div>
 
                     <div className='investment-wrapper d-flex gap-0 gap-md-4 flex-wrap '>
                       <Link to="/dashboard/investmenthistory">
                         <p className="mb-0">
                           <strong title='Subscription History'>Subscription : </strong>
-                          <span  className='Investment-text'>
+                          <span className='Investment-text'>
                             ${(userData?.BotAmount || 0).toLocaleString("en-IN")}
                           </span>
                         </p>
@@ -405,8 +397,8 @@ const Cards = () => {
           <div className="card1 no-animate custom-card1 p-0 rounded_5">
             <div className="card1-body px-3 py-3">
               <div className="d-flex justify-content-between align-items-center mb-2">
-                <h5 className='mb-0 fw-bold'>Payout</h5>              
-                <div className='mint-box' ><GiProfit /></div>
+                <h5 className='mb-0 fw-bold'>Payout</h5>
+                <div className='mint-box'><GiProfit /></div>
               </div>
               <div className="c-box gap-3 py_3">
                 <div className="payout-input-box">
@@ -416,13 +408,13 @@ const Cards = () => {
                     placeholder='Enter Amount'
                     value={payoutAmount}
                     onChange={(e) => setPayoutAmount(e.target.value)}
-                    style={{padding: "10px"}}
+                    style={{ padding: "10px" }}
                   />
                   <div className="d-flex align-items-center justify-content-between">
-                    <Link to= "/dashboard/WithdrawalHistory">
-                    <h6 className='hover-text small-text mb-1' title='WithdrawalHistory'>
-                      Payout Amt : <span className="pay-badge pay-bg"><strong>${parseFloat(userData?.Remaining || 0).toFixed(2)}</strong></span>
-                    </h6>
+                    <Link to="/dashboard/WithdrawalHistory">
+                      <h6 className='hover-text small-text mb-1' title='WithdrawalHistory'>
+                        Payout Amt : <span className="pay-badge pay-bg"><strong>${parseFloat(userData?.Remaining || 0).toFixed(2)}</strong></span>
+                      </h6>
                     </Link>
                     <button
                       type="button"
@@ -437,7 +429,6 @@ const Cards = () => {
                     <span style={{ color: "green", fontWeight: "bold" }}>Note :</span>
                     <p style={{ margin: 0, color: "#666", fontSize: "13px" }}> Min Withdrawal $ 20.00</p>
                   </div>
-
                 </div>
               </div>
             </div>

@@ -9,6 +9,7 @@
 }
 
 
+
 :root {
   --bg-primary: #e7e9fb;
   --card1-bg: #f2f4ff;
@@ -3578,6 +3579,20 @@ input {
     background: #d1ecf1;
     color: #0c5460;
 }
+
+/* Default: line dikhegi (mobile view) */
+.referral-mobile-only {
+  display: block;
+}
+
+/* Desktop view (≥768px) mein chhupao */
+@media (min-width: 768px) {
+  .referral-mobile-only {
+    display: none;
+  }
+}
 .card-Balance{
   font-size: 30px;
 }
+
+
