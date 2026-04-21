@@ -282,7 +282,8 @@ const Header = () => {
                 </div>
                 <div className="contact-info">
                   <h2>About Company</h2>
-                  <p>Rapidiously expedite strategic expertise with customer directed synergy. Appropriately restore performance based manufactured products.</p>
+                  <p>Mango Wealth Planner specializes in healthcare and pharmaceutical investments, combining financial expertise with deep sector knowledge to build resilient, growth-oriented portfolios in the essential healthcare sector.
+                  </p>
                   <ul className="list-style-one">
                     <li><span className="icon fa-phone"></span>+1 800 123 456 789</li>
                     <li><span className="icon fa-envelope"></span>info@example.com</li>
