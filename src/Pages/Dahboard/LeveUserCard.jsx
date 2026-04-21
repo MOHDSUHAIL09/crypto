@@ -45,7 +45,7 @@ const ProUserCard = () => {
         <FaWallet className="mt-2" />
         <div>
           <span>Total Wallet Balance</span>
-          <h2>$ {userData?.Depositfund || 0}</h2>
+          <div className="card-Balance">$ {userData?.Depositfund || 0}</div>
         </div>
       </div>
 

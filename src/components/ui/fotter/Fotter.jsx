@@ -12,11 +12,11 @@ const Footer = () => {
       <div className="footer-section">
         <div className="container">
           <div className="row">
-            <div className="col-lg-4 col-md-6">
+            <div className="col-lg-4 col-md-5">
               <div className="widget widgets-company-info">
                 <div className="company-logo cursor-scale small">
                   <Link to="/">
-                    <img src={logo2Img} alt="logo" />
+                    <img className='logo1' src={logo2Img} alt="logo" />
                   </Link>
                 </div>
                 <div className="company-info-desc">

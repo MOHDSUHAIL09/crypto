@@ -9,7 +9,7 @@ import { RiP2pFill } from "react-icons/ri";
 import { PiTreeView, PiHandWithdrawBold } from "react-icons/pi";
 import { useNavigate, useLocation } from "react-router-dom";
 import { MdSupportAgent } from "react-icons/md";
-// import logo from "../../../assets/images/mango_logo.png";
+import logo from "../../../assets/images/logo.png"
 import "../../../assets/dashboardcss/css/Dashboard.css";
 
 const menuItems = [
@@ -61,8 +61,7 @@ const Sidebar = () => {
       {!isMobile && (
         <aside className="pro-sidebar">
           <div className="pro-sidebar-header">
-            {/* <img src={logo} className="pro-logo" alt="logo" /> */}
-            LOGO
+            <img src={logo} className="dashboard-logo" alt="logo" /> 
           </div>
           <ul className="pro-menu">
             {menuItems.map((item, index) => (

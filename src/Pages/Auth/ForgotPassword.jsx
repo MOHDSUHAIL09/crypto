@@ -96,10 +96,10 @@
                 <div className="col-lg-2 col-6">
                   <div className="logo cursor-scale small">
                     <Link className="logo_img" to="/" title="mediic">
-                      <img src={logoImg} alt="logo" />
+                      <img className="logo1" src={logoImg} alt="logo" />
                     </Link>
                     <Link className="main_sticky" to="/" title="mediic">
-                      <img src={logo2Img} alt="logo" />
+                      <img className="logo1" src={logo2Img} alt="logo" />
                     </Link>
                   </div>
                 </div>

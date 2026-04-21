@@ -322,6 +322,11 @@ ul.sub-menu li:hover a span {
   top: 0%;
 }
 
+.logo1{
+ width: 170px;
+ margin-top: -15px;
+}
+ 
 .mediic_nav_manu.sticky .logo_img {
   display: none;
 }
