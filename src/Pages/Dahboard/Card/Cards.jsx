@@ -404,6 +404,7 @@ const Cards = () => {
                     placeholder='Enter Amount'
                     value={payoutAmount}
                     onChange={(e) => setPayoutAmount(e.target.value)}
+                    style={{padding: "10px"}}
                   />
                   <div className="d-flex align-items-center justify-content-between">
                     <Link to= "/dashboard/WithdrawalHistory">

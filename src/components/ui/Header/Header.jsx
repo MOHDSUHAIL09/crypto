@@ -286,7 +286,7 @@ const Header = () => {
                   </p>
                   <ul className="list-style-one">
                     <li><span className="icon fa-phone"></span>+1 800 123 456 789</li>
-                    <li><span className="icon fa-envelope"></span>info@example.com</li>
+                    <li><span className="icon fa-envelope"></span>healthcare@mangowealthplanner.com</li>
                   </ul>
                   <ul className="social-box">
                     <li><a href="#"><i className="fa-brands fa-facebook-f"></i></a></li>

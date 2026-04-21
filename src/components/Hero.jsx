@@ -34,7 +34,7 @@ const Hero = () => {
                       <img src={tickIcon} alt="icon" />
                     </div>
                     <div className="mediic-hero-content">
-                      <h4 className="cursor-scale small">Best Medical</h4>
+                      <h4 className="cursor-scale small">Best Investments</h4>
                       <p>Rapidiously reinvent long-term</p>
                     </div>
                   </div>
@@ -42,11 +42,11 @@ const Hero = () => {
                 <div className="video__content">
                   <a
                     className="video-vemo-icon venobox vbox-item"
-                    href="https://youtu.be/BS4TUd7FJSg"
+                    href="#"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <span className="play-now">WATCH A VIDEO</span>
+                    <span className="play-now">WATCH A NOW</span>
                   </a>
                 </div>
               </div>

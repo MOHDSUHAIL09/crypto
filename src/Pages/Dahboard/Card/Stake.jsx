@@ -324,7 +324,7 @@ const Stake = () => {
             placeholder="Enter Login ID"
             value={loginId}
             onChange={(e) => setLoginId(e.target.value)}
-            style={{ background: "#d9dbf3" }}
+            style={{ background: "#d9dbf3", padding: "11px"}}
           />
           {loading && (
             <small style={{ position: "absolute", bottom: "-22px", left: "5px", color: "#e67e22", fontSize: "11px" }}>

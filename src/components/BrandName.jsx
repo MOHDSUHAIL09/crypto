@@ -7,7 +7,7 @@ import 'swiper/css/free-mode';
 // Image imports
 import bran1 from '../assets/images/resource/bran.png';
 import bran2 from '../assets/images/resource/bran2.png';
-import bran3 from '../assets/images/resource/bran3.png';
+// import bran3 from '../assets/images/resource/bran3.png';
 import bran4 from '../assets/images/resource/bran4.png';
 import bran5 from '../assets/images/resource/bran5.png';
 
@@ -37,7 +37,7 @@ const Brand = () => {
   }, []);
 
   // Array of brand images for easier mapping
-  const brandImages = [bran1, bran2, bran3, bran4, bran5];
+  const brandImages = [bran1, bran2,  bran4, bran5];
 
   return (
     <div className="brand-section">
