@@ -124,6 +124,9 @@
   padding: 0;
   margin: 0;
   list-style: none;
+  height: 100vh;
+  background: #dbdbdb;
+  border-radius: 0px;
 }
 
 .mobile-menu-drawer .mediic_menu ul li {
