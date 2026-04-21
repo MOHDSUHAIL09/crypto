@@ -134,8 +134,7 @@ const DepositHistory = () => {
   return (
     <div className="container-fluid p-3 mb-5">
       <div className="report-card p-3">
-        <h4 className="fw-bold ms-3">{getTitle()}</h4>
-        <hr style={{ border: "1px solid #999494" }} />
+        <h3 className="fw-bold  mb-4">{getTitle()}</h3>
         
         <div className="entries-search-bar entries-control">
           <div className="entries-control">

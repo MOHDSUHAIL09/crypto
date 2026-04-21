@@ -126,8 +126,7 @@ const CapitalPayoutHistory = () => {
 
   return (
     <div className="downline-main-wrapper capital-payout-history-wrapper p-4">
-      <h4 className="mb-3">Capital Payout History</h4>
-      <hr style={{ border: "1px solid #999494" }} />
+      <h4 className="mb-4">Capital Payout History</h4>
 
       {/* Filter Bar - moved above table for better UX */}
       <div className="entries-search-bar entries-control">

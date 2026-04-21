@@ -20,7 +20,6 @@ const menuItems = [
   { icon: <FaChartBar />, title: "Royalty", path: "/dashboard/Royalty" },
   { icon: <FaUndo />, title: "Rewards", path: "/dashboard/rewards" },
   { icon: <PiHandWithdrawBold />, title: "Capital Payout", path: "/dashboard/capitalpayout" },
-  // { icon: <MdSupportAgent />, title: "Support", path: "/dashboard/Support" },
 ];
 
 const Sidebar = () => {
@@ -61,7 +60,7 @@ const Sidebar = () => {
       {!isMobile && (
         <aside className="pro-sidebar">
           <div className="pro-sidebar-header">
-            <img src={logo} className="dashboard-logo" alt="logo" /> 
+            <img src={logo} className="dashboard-logo" alt="logo" />
           </div>
           <ul className="pro-menu">
             {menuItems.map((item, index) => (
@@ -115,13 +114,17 @@ const Sidebar = () => {
               <FaChartBar />
               <span className="float-text">Royalty</span>
             </div>
+
+            {/* Rewards */}
             <div
-              className={`float-icon ${location.pathname === "/dashboard/capitalpayout" ? "active" : ""}`}
-              onClick={() => handleNavigate("/dashboard/capitalpayout")}
+              className={`float-icon ${location.pathname === "/dashboard/rewards" ? "active" : ""}`}
+              onClick={() => handleNavigate("/dashboard/rewards")}
             >
-              <PiHandWithdrawBold />
-              <span className="float-text">Withdraw</span>
+              <FaUndo />
+              <span className="float-text">Rewards</span>
             </div>
+
+
             <div
               className={`float-icon ${location.pathname === "/dashboard/Support" ? "active" : ""}`}
               onClick={() => handleNavigate("/dashboard/Support")}
@@ -136,14 +139,16 @@ const Sidebar = () => {
             <button className="modal-close01">✕</button>
           </div>
 
-          {/* Rewards */}
           <div
-            className={`pro-item ${location.pathname === "/dashboard/rewards" ? "active" : ""}`}
-            onClick={() => handleNavigate("/dashboard/rewards")}
+            className={`pro-item ${location.pathname === "/dashboard/capitalpayout" ? "active" : ""}`}
+            onClick={() => handleNavigate("/dashboard/capitalpayout")}
           >
-            <FaUndo />
-            <span className="nav-text">Rewards</span>
+            <PiHandWithdrawBold />
+         <span className="nav-text" style={{ whiteSpace: 'nowrap' }}>
+  Capital Withdraw
+</span>
           </div>
+
 
           {/* TreeView */}
           <div

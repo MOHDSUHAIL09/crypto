@@ -122,8 +122,7 @@ const BonusReport = () => {
 
   return (
     <div className="downline-main-wrapper mb-5">
-      <h4 className="mb-3">Royal Status</h4>
-      <hr style={{ border: "1px solid #706e6e" }} />
+      <h3 className="mb-3">Royal Status</h3>
 
 
 <div className="entries-search-bar entries-control">

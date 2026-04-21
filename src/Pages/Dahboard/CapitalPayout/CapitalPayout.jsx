@@ -154,13 +154,11 @@ const CapitalPayout = () => {
 
   return (
     <div className="downline-main-wrapper report-container p-2 p-md-4 mb-5">
-      <div className="mb-3 d-flex justify-content-between"><h2>Capital Status For Payout</h2>
+      <div className="mb-4 d-flex justify-content-between"><h2>Capital Status For Payout</h2>
         <Link to="/dashboard/CapitalPayoutHistory">
-          <div className="text-small">Capital Payout history </div>
+          <div className="text-small mt-4">Capital Payout history </div>
         </Link>
       </div>
-      <hr style={{ border: "1px solid #999494" }} />
-
       {/* Controls */}
       <div className="entries-search-bar entries-control">
         <div className="entries-control">

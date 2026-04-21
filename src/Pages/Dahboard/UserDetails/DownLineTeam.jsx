@@ -125,7 +125,7 @@ const fetchUsers = async (selectedLevel, page) => {
 
   return (
     <div className="downline-main-wrapper mb-5">
-      <h4 className="mt-4 pb-2">All Downline Team</h4>
+      <h3 className="mt-4 mb-4">All Downline Team</h3>
 
       {/* TOP BOX */}
       <div

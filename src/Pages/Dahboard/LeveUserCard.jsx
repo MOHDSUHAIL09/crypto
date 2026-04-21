@@ -26,6 +26,7 @@ const ProUserCard = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+
   return (
     <div className="pro-card">
       {/* ========== TOP BAR ========== */}

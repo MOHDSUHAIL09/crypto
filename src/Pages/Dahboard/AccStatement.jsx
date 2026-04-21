@@ -136,8 +136,7 @@ const AccStatement = () => {
   return (
     <div className="container-fluid p-2 mb-5">
       <div className="report-card p-3">
-        <h4 className="fw-bold ms-3">{getTypeDisplayName(selectedType)} Statement</h4>
-        <hr style={{ border: "1px solid #999494" }} />  
+        <h3 className="fw-bold mb-4">{getTypeDisplayName(selectedType)} Statement</h3>
 
         <div className="entries-search-bar entries-control">
           <div className="">

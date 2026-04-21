@@ -6,7 +6,6 @@ import "../../../assets/dashboardcss/css/Dashboard.css";
 import { MdSupportAgent } from "react-icons/md";
 
 const Header = () => {
-
   const navigate = useNavigate();
   const { logoutUser } = useUser();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

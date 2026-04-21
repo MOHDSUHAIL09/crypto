@@ -117,7 +117,7 @@ const DownlineUserHistory = () => {
 
   return (
     <div className="downline-main-wrapper downline-history-container p-3 mb-5">
-      <div className="d-flex justify-content-between align-items-center flex-wrap mb-3">
+      <div className="d-flex justify-content-between align-items-center flex-wrap mb-4">
         <h2>
           Downline User{" "}
         {targetRegno ? `( ${targetLoginid || "N/A"} )` : ""}   
@@ -128,7 +128,7 @@ const DownlineUserHistory = () => {
           </Link>
         )} */}
       </div>
-      <hr />
+  
 
       <div className="entries-control   d-flex justify-content-between flex-wrap mb-3 gap-2">
         <div className="d-flex gap-2 entries-control ">

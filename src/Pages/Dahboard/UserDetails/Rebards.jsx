@@ -112,13 +112,15 @@ const BonusReport = () => {
   return (
     <div className="downline-main-wrapper mb-5">
       {/* Heading */}
-      <div className="mb-3">
-        <h2>Rewards Report</h2>
+      <div className="mb-4">
+        <h3>Rewards Report</h3>
       </div>
-      <hr style={{ border: "1px solid #282727" }} />
 
       {/* ===== FILTER BAR with same classes as CapitalPayoutHistory ===== */}
       <div className="entries-search-bar entries-control">
+
+
+
         <div className="entries-control">
           <label>Show entries:</label>
           <select 
@@ -131,6 +133,7 @@ const BonusReport = () => {
             ))}
           </select>
         </div>
+            
         <div className="search-wrapper">
           <input 
             className="form-control search-input" 

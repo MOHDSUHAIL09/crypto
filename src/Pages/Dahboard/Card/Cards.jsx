@@ -35,6 +35,11 @@ const Cards = () => {
   // Context data
   const { userData, stakeData, loading, refreshData } = useUser();
 
+    const baseUrl = "https://india.mangowealthplanner.com/";
+  const referralLink = userData?.me
+    ? `${baseUrl}/register?ref=${userData.me}`
+    : baseUrl;
+
   // Helper to get loginid
   const getLoginId = () => {
     const storedUserData = localStorage.getItem('userData');
@@ -311,7 +316,14 @@ const Cards = () => {
                         <FaRegCopy style={{ cursor: 'pointer', marginLeft: '5px' }} onClick={() => copyReferral(userData?.referral)} />
                       </strong>
                     </p>
+                     {/* <p className="mb-1">
+                      <strong>Referral Id: &nbsp; {userData?.referral || "No Sponsor"}
+                        <FaRegCopy style={{ cursor: 'pointer', marginLeft: '5px' }} onClick={() => copyReferral(userData?.referral)} />
+                      </strong>
+                    </p> */}
                   </div>
+
+                  
 
                   {timeLeft && (
                     <div className="countdown-timer mb-2" style={{
