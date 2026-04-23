@@ -16,7 +16,7 @@ const ProUserCard = () => {
 
   const baseUrl = "https://mango01.netlify.app/";
   const referralLink = userData?.me
-    ? `${baseUrl}/signup?ref=${userData.me}`
+    ? `${baseUrl}signup?ref=${userData.me}`
     : baseUrl;
 
   // Copy referral link to clipboard
