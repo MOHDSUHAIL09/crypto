@@ -14,9 +14,9 @@ const ProUserCard = () => {
   const { userData } = useUser();
   const [copied, setCopied] = useState(false);
 
-  const baseUrl = "https://india.mangowealthplanner.com/";
+  const baseUrl = "https://mango01.netlify.app/";
   const referralLink = userData?.me
-    ? `${baseUrl}/register?ref=${userData.me}`
+    ? `${baseUrl}/signup?ref=${userData.me}`
     : baseUrl;
 
   // Copy referral link to clipboard

@@ -146,7 +146,7 @@ const Header = () => {
   }, []);
 
 
-  
+
   return (
     <>
       {/* Main Header */}
@@ -229,9 +229,13 @@ const Header = () => {
                   {/* Sidebar (info-group) Button */}
                   <div className="sidebar">
                     <div className="nav-btn navSidebar-button" onClick={() => setIsInfoGroupActive(true)}>
-                      <span><i><CgMenuGridR /></i></span>
+                      <span><CgMenuGridR className="menu-icon" /></span>
+
+
                     </div>
                   </div>
+
+
                 </div>
               </nav>
             </div>
@@ -270,7 +274,6 @@ const Header = () => {
               </a>
             </div>
             <div className="sidebar-textwidget">
-              {/* Sidebar content as per original */}
               <div className="sidebar-info-contents">
                 <div className="content-thumb-box">
                   <img src="assets/images/resource/sidebar-thumb.png" alt="" />
@@ -308,34 +311,34 @@ const Header = () => {
             <nav className="mediic_menu">
               <ul className="nav_scroll">
                 <li>
-                  <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink>                
+                  <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink>
                 </li>
                 <li><NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</NavLink></li>
                 <li>
-                  <NavLink to="#">Pages</NavLink>           
+                  <NavLink to="#">Pages</NavLink>
                 </li>
                 <li>
-                  <NavLink to="#">Services</NavLink>              
+                  <NavLink to="#">Services</NavLink>
                 </li>
                 <li>
-                  <NavLink to="#">Blog</NavLink>             
+                  <NavLink to="#">Blog</NavLink>
                 </li>
                 <li><NavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</NavLink></li>
 
 
-               <div className="mediic-button01">
-                    <Link
-                      to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
-                      className="wallet-header01"
-                    >
-                     Dashboard
-                    
-                      <div className="mediic-hover-btn hover-btn"></div>
-                      <div className="mediic-hover-btn hover-btn2"></div>
-                      <div className="mediic-hover-btn hover-btn3"></div>
-                      <div className="mediic-hover-btn hover-btn4"></div>
-                    </Link>
-                  </div>
+                <div className="mediic-button01">
+                  <Link
+                    to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
+                    className="wallet-header01"
+                  >
+                    Dashboard
+
+                    <div className="mediic-hover-btn hover-btn"></div>
+                    <div className="mediic-hover-btn hover-btn2"></div>
+                    <div className="mediic-hover-btn hover-btn3"></div>
+                    <div className="mediic-hover-btn hover-btn4"></div>
+                  </Link>
+                </div>
 
               </ul>
             </nav>
@@ -343,7 +346,7 @@ const Header = () => {
         </div>
       )}
 
-      
+
 
       {/* Original mobile-menu-area (for meanmenu) - hide because we use custom drawer */}
       <div className="mobile-menu-area d-none"></div>
