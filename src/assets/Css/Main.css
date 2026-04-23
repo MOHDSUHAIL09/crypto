@@ -4774,7 +4774,18 @@ mediic Start Contact Inner Page
 <!-- ============================================================== -->*/
 
 .nav-btn.navSidebar-button {
-  display: inline-block;
+    display: inline-block;
+    background: #0d6efd;
+    padding: 10px;
+    color: #fff;
+    border-radius: 50%;
+    width: 48px;
+    font-size: 23px;
+    align-items: center;
+    text-align: center;
+}
+.nav-btn.navSidebar-button:hover{
+  color: #000;
 }
 .xs-sidebar-group .xs-overlay {
   left: 100%;
