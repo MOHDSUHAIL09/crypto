@@ -20,12 +20,10 @@ const SupportHelp = () => {
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // 🔥 Fix keyboard issue: update container height on resize
   useEffect(() => {
     const setViewportHeight = () => {
       const vh = window.innerHeight * 0.01;
@@ -36,15 +34,16 @@ const SupportHelp = () => {
     return () => window.removeEventListener('resize', setViewportHeight);
   }, []);
 
+  // ✅ API call – sirf toast dikhayega, bot message return nahi karega
   const sendToSupportApi = async (messageText, imageFile = null, messageType = "general") => {
     const regno = getRegNo();
     if (!regno) {
       toast.error("User registration not found. Please login again.");
-      return null;
+      return;
     }
     if (!ticket?.id) {
       toast.error("Ticket ID not found. Please go back and select a ticket.");
-      return null;
+      return;
     }
 
     const formData = new FormData();
@@ -61,18 +60,14 @@ const SupportHelp = () => {
       });
 
       if (response.data?.success) {
-        const botMessage = response.data.data.message;
-        toast.success("Message sent");
-        return botMessage;   // ✅ return bot reply so it appears in chat
+        toast.success("Message sent");   // ✅ sirf toast, bot message nahi
       } else {
         toast.error(response.data?.message || "Failed to send message");
-        return null;
       }
     } catch (err) {
       console.error("API Error:", err);
       const errorMsg = err.response?.data?.message || err.response?.data?.title || "Server error. Please try again.";
       toast.error(errorMsg);
-      return null;
     }
   };
 
@@ -90,18 +85,9 @@ const SupportHelp = () => {
     setInputValue("");
     setSending(true);
 
-    const botReplyText = await sendToSupportApi(userMessageText, null, "general");
+    await sendToSupportApi(userMessageText, null, "general");  // ✅ wait but no return
     setSending(false);
-
-    if (botReplyText) {
-      const botMessage = {
-        id: nextIdRef.current++,
-        text: botReplyText,
-        sender: "bot",
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botMessage]);
-    }
+    // ❌ Bot message add nahi karenge
   };
 
   const handleUploadClick = () => fileInputRef.current.click();
@@ -120,6 +106,7 @@ const SupportHelp = () => {
       return;
     }
 
+    // Image preview in chat
     const reader = new FileReader();
     reader.onload = () => {
       const imagePreview = reader.result;
@@ -135,18 +122,9 @@ const SupportHelp = () => {
     reader.readAsDataURL(file);
 
     setSending(true);
-    const botReplyText = await sendToSupportApi("Screenshot attached", file, "image");
+    await sendToSupportApi("Screenshot attached", file, "image");
     setSending(false);
-
-    if (botReplyText) {
-      const botMessage = {
-        id: nextIdRef.current++,
-        text: botReplyText,
-        sender: "bot",
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botMessage]);
-    }
+    // ❌ Bot message add nahi karenge
     event.target.value = '';
   };
 

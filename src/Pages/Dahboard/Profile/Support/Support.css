@@ -294,8 +294,7 @@ form {
   width: 100% ;
   display: flex;
   align-items: center;
-  gap: 10px;
-  /* background-color: rgb(236, 230, 230); */
+  gap: 10px; 
   border: 1px solid gray;
   border-radius: 24px;
   padding: 5px 12px;
@@ -320,13 +319,15 @@ form {
 
 .whatsapp-message-input {
   flex: 1;
-  border: none;
-  outline: none;
+  border: none !important;
+  outline: none !important;
   font-size: 15px;
   padding: 10px 0;
   background: transparent;
   font-family: inherit;
+
 }
+
 
 .whatsapp-message-input:disabled {
   background-color: transparent;
@@ -660,7 +661,7 @@ form {
   display: flex;
   gap: 16px;
   padding: 12px 20px;
-  background: #ffffff;
+  background: #efeded;
   border-top: 1px solid #ffefcf;
   flex-shrink: 0;  
 }

@@ -7687,9 +7687,10 @@ ul {
 
 input:focus,
 button:focus {
-  outline-color: var(--secondary-color);
-  border: 1px solid var(--secondary-color) !important;
+  /* outline-color: var(--secondary-color); */
+  /* border: 1px solid var(--secondary-color) !important; */
 }
+
 
 textarea:focus {
   border: 1px solid var(--secondary-color) !important;
