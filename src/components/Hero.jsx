@@ -22,7 +22,7 @@ const Hero = () => {
                 Building Wealth Through Healthcare &<span> Pharmaceutical Investments</span>
               </h1>
               <div className="mediic-btn cursor-scale small">
-                <Link to="/about">
+                <Link to="/signup">
                   Start Healthcare Investing
                   <img src={arrowIcon} alt="icon" />
                 </Link>

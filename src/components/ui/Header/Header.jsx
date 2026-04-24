@@ -191,16 +191,16 @@ const Header = () => {
                     </ul> */}
                   </li>
                   <li>
-                    <NavLink className="mdy-hover cursor-scale small" to="#">Services</NavLink>
-                    <ul className="sub-menu">
+                    <NavLink className="mdy-hover cursor-scale small" to="#">Certifications</NavLink>
+                    {/* <ul className="sub-menu">
                       <li><Link to="#">Our Service</Link></li>
                       <li><Link to="#">Certifications</Link></li>
-                    </ul>
+                    </ul> */}
                   </li>
                   <li>
 
                   </li>
-                  <li><NavLink className="mdy-hover cursor-scale small" to="/contact">Contact Us</NavLink></li>
+                  <li><NavLink className="mdy-hover cursor-scale small" to="/signup">Contact Us</NavLink></li>
                 </ul>
 
                 <div className="mediic-right-side cursor-scale small">

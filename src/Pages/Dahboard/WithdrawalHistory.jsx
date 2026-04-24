@@ -109,9 +109,8 @@ const WithdrawalHistory = () => {
     return (
         <div className="downline-main-wrapper withdrawal-history-container p-4 mb-4">
             <div className="d-flex justify-content-between mb-3">
-                <h2 className="withdrawal-title">Withdrawal Release</h2>
+                <h2 className="withdrawal-title mb-3">Withdrawal Release</h2>
             </div>
-            <hr style={{ border: "1px solid #282727" }} />
 
 
             <div className="entries-search-bar entries-control">
