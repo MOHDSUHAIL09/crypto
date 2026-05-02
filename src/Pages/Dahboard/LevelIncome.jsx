@@ -58,7 +58,7 @@ const LevelIncome = () => {
   }, [open, show, op]);
 
 useEffect(() => {
-  const regno = userData.regno;
+const regno = localStorage.getItem("regno");
   const findlvl = 10;
 
   apiClient.get(`/Dashboard/team-counts`, {
@@ -75,7 +75,7 @@ useEffect(() => {
         teamCount: apiData.totalTeam ?? 0,
         active: apiData.activeTeam ?? 0,
         inactive: apiData.inactiveTeam ?? 0,
-        directId: apiData.directId ?? 0,
+      
       },
     ]);
   })
@@ -95,7 +95,7 @@ useEffect(() => {
   const teamData = levels[0] || {};
   const menuItems = [
     { name: "Total Team", icon: <FaUserPlus />, value: teamData.teamCount },
-    { name: "DirectId",icon: <FaUsers />, value: userData.directId },
+   { name: "DirectId", icon: <FaUsers />, value: userData?.directId ?? 0 },
     { name: "--" },
     { name: "--" },
     { name: "Active Team", icon: <FaUsers />, value: teamData.active },

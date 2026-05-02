@@ -197,7 +197,7 @@ import { useUser } from "../../context/UserContext";
 // Import images (same as Signup)
 import logoImg from "../../assets/images/logo.png";
 import logo2Img from "../../assets/images/logo2.png";
-import signupImage from "../../assets/images/resource/appoinment.png"; 
+import signupImage from "../../assets/images/resource/appoinment.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -280,51 +280,51 @@ const Login = () => {
               </div>
 
               {/* Desktop Navigation */}
-                  <div className="col-lg-10 d-none d-lg-block">
-                              <nav className="mediic_menu">
-                                <ul className="nav_scroll">
-                                  <li><NavLink className="mdy-hover cursor-scale small" to="/">Home</NavLink></li>
-                                  <li><NavLink className="mdy-hover cursor-scale small" to="/about">Why Healthcare?</NavLink></li>
-                                  <li><NavLink className="mdy-hover cursor-scale small" to="#">Our Approach</NavLink></li>
-                                  <li>
-                                    <NavLink className="mdy-hover cursor-scale small" to="#">Services</NavLink>
-                                    <ul className="sub-menu">
-                                      <li><Link to="/service">Our Service</Link></li>
-                                      <li><Link to="/service-details">Certifications</Link></li>
-                                    </ul>
-                                  </li>
-                                  <li><NavLink className="mdy-hover cursor-scale small" to="/contact">Contact Us</NavLink></li>
-                                </ul>
-                                <div className="mediic-right-side cursor-scale small">
-                          
-                                  <div className="mediic-button">
-                                    <Link to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"} className="wallet-header">
-                                      Login
-                                     
-                                      <div className="mediic-hover-btn hover-btn"></div>
-                                      <div className="mediic-hover-btn hover-btn2"></div>
-                                      <div className="mediic-hover-btn hover-btn3"></div>
-                                      <div className="mediic-hover-btn hover-btn4"></div>
-                                    </Link>
-                                  </div>
-                                   <div className="mediic-button">
-                                    <Link to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/signup"} className="wallet-header">
-                                      signup
-                                    
-                                      <div className="mediic-hover-btn hover-btn"></div>
-                                      <div className="mediic-hover-btn hover-btn2"></div>
-                                      <div className="mediic-hover-btn hover-btn3"></div>
-                                      <div className="mediic-hover-btn hover-btn4"></div>
-                                    </Link>
-                                  </div>
-                                  <div className="sidebar">
-                                    <div className="nav-btn navSidebar-button" onClick={() => setIsInfoGroupActive(true)}>
-                                      <span><i><CgMenuGridR /></i></span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </nav>
-                            </div>
+              <div className="col-lg-10 d-none d-lg-block">
+                <nav className="mediic_menu">
+                  <ul className="nav_scroll">
+                    <li><NavLink className="mdy-hover cursor-scale small" to="/">Home</NavLink></li>
+                    <li><NavLink className="mdy-hover cursor-scale small" to="/about">Why Healthcare?</NavLink></li>
+                    <li><NavLink className="mdy-hover cursor-scale small" to="#">Our Approach</NavLink></li>
+                    <li>
+                      <NavLink className="mdy-hover cursor-scale small" to="#">Services</NavLink>
+                      <ul className="sub-menu">
+                        <li><Link to="/service">Our Service</Link></li>
+                        <li><Link to="/service-details">Certifications</Link></li>
+                      </ul>
+                    </li>
+                    <li><NavLink className="mdy-hover cursor-scale small" to="/contact">Contact Us</NavLink></li>
+                  </ul>
+                  <div className="mediic-right-side cursor-scale small">
+
+                    <div className="mediic-button">
+                      <Link to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"} className="wallet-header">
+                        Login
+
+                        <div className="mediic-hover-btn hover-btn"></div>
+                        <div className="mediic-hover-btn hover-btn2"></div>
+                        <div className="mediic-hover-btn hover-btn3"></div>
+                        <div className="mediic-hover-btn hover-btn4"></div>
+                      </Link>
+                    </div>
+                    <div className="mediic-button">
+                      <Link to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/signup"} className="wallet-header">
+                        signup
+
+                        <div className="mediic-hover-btn hover-btn"></div>
+                        <div className="mediic-hover-btn hover-btn2"></div>
+                        <div className="mediic-hover-btn hover-btn3"></div>
+                        <div className="mediic-hover-btn hover-btn4"></div>
+                      </Link>
+                    </div>
+                    <div className="sidebar">
+                      <div className="nav-btn navSidebar-button" onClick={() => setIsInfoGroupActive(true)}>
+                        <span><i><CgMenuGridR /></i></span>
+                      </div>
+                    </div>
+                  </div>
+                </nav>
+              </div>
 
               {/* Mobile Menu Toggle */}
               <div className="col-6 d-lg-none text-end">
@@ -373,27 +373,57 @@ const Login = () => {
         {isMobileMenuOpen && (
           <div className="mobile-menu-drawer-overlay" onClick={() => setIsMobileMenuOpen(false)}>
             <div className="mobile-menu-drawer" onClick={e => e.stopPropagation()}>
+
               <button className="close-mobile-menu" onClick={() => setIsMobileMenuOpen(false)}>✕</button>
+              <img className='logomenu' src={logoImg} alt='logo'></img>
+
               <nav className="mediic_menu">
                 <ul className="nav_scroll">
-                  <li><NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink></li>
-                  <li><NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>Why Healthcare?</NavLink></li>
-                  <li><NavLink to="#" onClick={() => setIsMobileMenuOpen(false)}>Our Approach</NavLink></li>
-                  <li><NavLink to="#" onClick={() => setIsMobileMenuOpen(false)}>Services</NavLink></li>
+                  <li>
+                    <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink>
+                  </li>
+                  <li><NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</NavLink></li>
+                  <li>
+                    <NavLink to="#">Pages</NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="#">Services</NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="#">Blog</NavLink>
+                  </li>
                   <li><NavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</NavLink></li>
+
+                  <Link
+                    to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
+                    className="wallet-header01"
+                  >
+                    <div className="mediic-button01">
+
+                      Login
+
+                      <div className="mediic-hover-btn hover-btn"></div>
+                      <div className="mediic-hover-btn hover-btn2"></div>
+                      <div className="mediic-hover-btn hover-btn3"></div>
+                      <div className="mediic-hover-btn hover-btn4"></div>
+
+                    </div></Link>
+
+
                   <div className="mediic-button01">
                     <Link
-                      to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
+                      to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/Signup"}
                       className="wallet-header01"
-                      onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      Dashboard
+                      signup
+
                       <div className="mediic-hover-btn hover-btn"></div>
                       <div className="mediic-hover-btn hover-btn2"></div>
                       <div className="mediic-hover-btn hover-btn3"></div>
                       <div className="mediic-hover-btn hover-btn4"></div>
                     </Link>
                   </div>
+
                 </ul>
               </nav>
             </div>
@@ -404,9 +434,9 @@ const Login = () => {
         <div className="mediic-appoinment">
           <div className="container">
             <div className="row appoinment align-items-center">
-               <div className="col-lg-6 signup-left-col">
-               <img src={signupImage} alt="Signup Illustration" className="signup-side-image" />
-           </div>
+              <div className="col-lg-6 signup-left-col">
+                <img src={signupImage} alt="Signup Illustration" className="signup-side-image" />
+              </div>
               <div className="col-lg-6" data-aos="zoom-in-left">
                 <div className="mediic-section-title2">
                   <h4>LOGIN ACCOUNT</h4>

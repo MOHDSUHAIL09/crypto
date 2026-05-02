@@ -8663,3 +8663,9 @@ button.swiper-pagination-bullet {
 width: 100%;
 box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.1);
 }
+.wallet-header01{
+  color: #fff;
+}
+.wallet-header01:hover{
+  color: #d0860f !important;
+}

@@ -244,6 +244,71 @@ const Signup = () => {
       </div>
 
       {/* Sidebar / Mobile Menu - copy from your existing code */}
+      {isMobileMenuOpen && (
+        <div className="mobile-menu-drawer-overlay" onClick={() => setIsMobileMenuOpen(false)}>
+          <div className="mobile-menu-drawer" onClick={e => e.stopPropagation()}>
+
+            <button className="close-mobile-menu" onClick={() => setIsMobileMenuOpen(false)}>✕</button>
+            <img className='logomenu' src={logoImg} alt='logo'></img>
+
+            <nav className="mediic_menu">
+              <ul className="nav_scroll">
+                <li>
+                  <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink>
+                </li>
+                <li><NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</NavLink></li>
+                <li>
+                  <NavLink to="#">Pages</NavLink>
+                </li>
+                <li>
+                  <NavLink to="#">Services</NavLink>
+                </li>
+                <li>
+                  <NavLink to="#">Blog</NavLink>
+                </li>
+                <li><NavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</NavLink></li>
+
+
+                <div className="mediic-button01">
+                  <Link
+                    to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
+                    className="wallet-header01"
+                  >
+                    Login
+
+                    <div className="mediic-hover-btn hover-btn"></div>
+                    <div className="mediic-hover-btn hover-btn2"></div>
+                    <div className="mediic-hover-btn hover-btn3"></div>
+                    <div className="mediic-hover-btn hover-btn4"></div>
+                  </Link>
+                </div>
+
+                <Link
+                  to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/Signup"}
+                  className="wallet-header01"
+                >
+                  <div className="mediic-button01">
+
+                    signup
+
+                    <div className="mediic-hover-btn hover-btn"></div>
+                    <div className="mediic-hover-btn hover-btn2"></div>
+                    <div className="mediic-hover-btn hover-btn3"></div>
+                    <div className="mediic-hover-btn hover-btn4"></div>
+
+                  </div> </Link>
+
+              </ul>
+            </nav>
+          </div>
+        </div>
+      )}
+
+
+
+
+
+
 
       {/* Signup Form */}
       <div className="mediic-appoinment">
@@ -267,7 +332,7 @@ const Signup = () => {
                     </div>
                     <div className="col-lg-12">
                       <div className="form-box">
-                        <input type="text" value={formData.sponsorName} readOnly placeholder="Sponsor Name" className="readonly-input" style={{color: "#db330e"}}/>
+                        <input type="text" value={formData.sponsorName} readOnly placeholder="Sponsor Name" className="readonly-input" style={{ color: "#db330e" }} />
                       </div>
                     </div>
                     <div className="col-lg-12">

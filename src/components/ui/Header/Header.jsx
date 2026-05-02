@@ -122,7 +122,7 @@ const Header = () => {
                   </div> */}
 
 
-        <div className="mediic-button">
+                  <div className="mediic-button">
                     <Link
                       to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
                       className="wallet-header"
@@ -152,7 +152,7 @@ const Header = () => {
                     </Link>
                   </div>
 
-                  
+
 
                   {/* Sidebar (info-group) Button */}
                   <div className="sidebar">
@@ -210,14 +210,14 @@ const Header = () => {
                   <h2>About Company</h2>
                   <p>Mango Wealth Planner specializes in healthcare and pharmaceutical investments, combining financial expertise with deep sector knowledge to build resilient, growth-oriented portfolios in the essential healthcare sector.
                   </p>
-<ul className="list-style-one">
-  <li>
-    <span className="icon fa-envelope"></span>
-    <a href="mailto:healthcare@mangowealthplanner.com" style={{color: "#fff"}}>
-      healthcare@mangowealthplanner.com
-    </a>
-  </li>
-</ul>
+                  <ul className="list-style-one">
+                    <li>
+                      <span className="icon fa-envelope"></span>
+                      <a href="mailto:healthcare@mangowealthplanner.com" style={{ color: "#fff" }}>
+                        healthcare@mangowealthplanner.com
+                      </a>
+                    </li>
+                  </ul>
                   <ul className="social-box">
                     <li><a href="#"><i className="fa-brands fa-facebook-f"></i></a></li>
                     <li><a href="#"><i className="fa-brands fa-twitter"></i></a></li>
@@ -272,13 +272,13 @@ const Header = () => {
                   </Link>
                 </div>
 
-                
+
                 <div className="mediic-button01">
                   <Link
                     to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
                     className="wallet-header01"
                   >
-                    
+
 
                     <div className="mediic-hover-btn hover-btn"></div>
                     <div className="mediic-hover-btn hover-btn2"></div>
