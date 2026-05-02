@@ -25,7 +25,7 @@ const Customer = () => {
             <div className="col-lg-5">
               <div className="subscribe-right">
                 <div className="call-icon">
-                  <img src={callImg} alt="call" style={{width: "70px"}}/>
+                  <img src={callImg} alt="call" style={{width: "50px"}}/>
                 </div>
               <div className="mediic-btn text-right cursor-scale small">
   <a href="mailto:healthcare@mangowealthplanner.com">

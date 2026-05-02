@@ -51,7 +51,7 @@ const Investmentprocess = () => {
               <div className="top-mediic-section section-border">
                 <div className="mediic-section-title">
                   <h4>Investment</h4>
-                  <h1>Our Healthcare Investment Process</h1>
+                  <h1 style={{textAlign: "center"}}>Our Healthcare Investment Process</h1>
                 </div>
               </div>
             </div>

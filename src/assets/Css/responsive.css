@@ -1475,7 +1475,6 @@
   .mediic-section-title h1 {
     font-size: 34px;
     line-height: 35px;
-    text-align: left;
   }
 
   .top-mediic-section2 {
@@ -1578,7 +1577,7 @@
   /* Testimonial Section */
 
   .testimonial-section {
-    padding: 60px 0px 120px;
+    padding: 60px 0px 50px;
   }
 
   .testi-single-box {
@@ -1823,7 +1822,7 @@
 }
 
 /* small mobile :320px. */
-@media only screen and (min-width: 320px) and (max-width: 479px) {
+@media only screen and (min-width: 299px) and (max-width: 479px) {
   .sticky {
     position: absolute !important;
   }
@@ -1940,8 +1939,7 @@
 
   .mediic-section-title h1 {
     font-size: 21px;
-    line-height: 21px;
-    text-align: left;
+    line-height: 30px;
   }
 
   .mediic-section-title h4 {

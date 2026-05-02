@@ -1,6 +1,6 @@
 import React from "react";
 import investmentImg from "../assets/images/resource/bot.png";
-import shap1 from '../assets/images/resource/shape1.png'
+// import shap1 from '../assets/images/resource/shape1.png'
 
 const AiPoweredInvestment = () => {
   return (
@@ -16,9 +16,9 @@ const AiPoweredInvestment = () => {
                 </div>
               </div>
             </div>
-            <div className="mediic-shape">
+            {/* <div className="mediic-shape">
               <img src={shap1} className="img-fluid" alt="shape" />
-            </div>
+            </div> */}
           </div>
           <div className="row">
             {/* Main feature box - using same team-single-box style */}
