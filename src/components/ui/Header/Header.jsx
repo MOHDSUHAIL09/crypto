@@ -242,7 +242,7 @@ const Header = () => {
 
             <nav className="mediic_menu">
               <ul className="nav_scroll">
-                <li>
+                <li className='mt-2'>
                   <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink>
                 </li>
                 <li><NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</NavLink></li>

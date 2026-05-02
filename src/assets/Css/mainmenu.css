@@ -206,7 +206,8 @@
 
 /* Hover effect */
 .mobile-menu-drawer .mediic_menu ul li a:hover {
-  background: #e0e0e0;
+  background: #002570;
+  color: #fff;
 }
 
 .logomenu{
