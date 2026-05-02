@@ -275,11 +275,11 @@ const Header = () => {
 
                 <div className="mediic-button01">
                   <Link
-                    to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
+                    to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/signup"}
                     className="wallet-header01"
                   >
 
-
+               signup
                     <div className="mediic-hover-btn hover-btn"></div>
                     <div className="mediic-hover-btn hover-btn2"></div>
                     <div className="mediic-hover-btn hover-btn3"></div>
