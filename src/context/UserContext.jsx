@@ -52,7 +52,7 @@ export const UserProvider = ({ children }) => {
       if (res.data.success) {
         const apiData = res.data.data;
         const newUserData = {
-          regno: apiData.Regno || regno,
+          regno: apiData.Regno ||apiData.regno,
           name: apiData.fname,
           me: apiData.loginid,
           MobileNo: apiData.mobile,
