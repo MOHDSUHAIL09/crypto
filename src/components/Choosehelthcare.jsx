@@ -17,17 +17,14 @@ const InvestmentProcess = () => {
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col-lg-4 pr-0">
-              <div className="testimonial-thumb">
-                <img src={testiImg} alt="testimonial" />
+          <div className="row justify-content-center align-items-center">
+            <div className="col-lg-5 col-md-6 ">
+              <div className="">
+                <img src={testiImg} className='img-fluid rounded-4' alt="testimonial" />
               </div>
             </div>
-            <div className="col-lg-1 pl-0 pr-0"></div>
-            <div className="col-lg-7 pl-0">
-              <div className="row">
-                <div className="col-lg-12">
-                  <div className="testimonial-single-slide">
+             <div className="col-lg-7 col-md-6">
+               <div className="testimonial-single-slide">
                     <div className="testi-icon">
                       <img src={quoteImg} alt="quote" />
                     </div>
@@ -43,9 +40,8 @@ const InvestmentProcess = () => {
                     <div className="authors-info">
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
+             </div>
+        
           </div>
         </div>
       </div>

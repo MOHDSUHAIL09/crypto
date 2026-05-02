@@ -1621,6 +1621,7 @@
 
   .mediic-subscribe {
     margin: 0;
+            
   }
 
   .subscribe-right {
@@ -2140,6 +2141,7 @@
 
   .mediic-subscribe {
     margin: 0;
+    margin-bottom: 20px;
   }
 
   .subscribe-right {

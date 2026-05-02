@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaWallet,
   FaCopy,
@@ -26,7 +26,22 @@ const ProUserCard = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+// Add this useEffect inside the Signup component, after the existing state declarations
+// Add this new useEffect inside the Signup component, after the existing handleChange function
+useEffect(() => {
+  // Get the 'ref' parameter from the current URL
+  const params = new URLSearchParams(window.location.search);
+  const refCode = params.get("ref");
 
+  // If a referral code exists and the sponsor ID field is empty, auto-fill it
+  if (refCode && !FormData.referrer_Id) {
+    setFormData(prev => ({
+      ...prev,
+      referrer_Id: refCode,
+      introRegNo: refCode // Also set the introRegNo field if needed
+    }));
+  }
+}, []); // This effect runs only once when the component first loads
   return (
     <div className="pro-card">
       {/* ========== TOP BAR ========== */}

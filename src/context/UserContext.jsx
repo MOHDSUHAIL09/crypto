@@ -207,7 +207,7 @@ export const UserProvider = ({ children }) => {
   const loginUser = (userData, token) => {
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("token", token);
-    localStorage.setItem("regno", userData.Regno);
+    localStorage.setItem("regno", userData.regno);
     setUser(userData);
     setTimeout(() => fetchData(), 100);
   };

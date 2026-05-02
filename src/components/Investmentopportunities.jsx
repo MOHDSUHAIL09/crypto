@@ -39,7 +39,7 @@ const Medical = () => {
                 </p>
               </div>
               <div className="mediic-button">
-                <Link to="/appointment">
+                <Link to="/signup">
                   Read More
                   <img src={arrowImg} alt="arrow" />
                   <div className="mediic-hover-btn hover-btn"></div>

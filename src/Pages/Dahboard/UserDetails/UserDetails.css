@@ -183,8 +183,9 @@ span .label-light {
   background: transparent;
   flex-grow: 1;
   font-size: 18px;
-  padding: 0 10px;
+  padding: 12px;
   outline: none;
+
 }
 
 

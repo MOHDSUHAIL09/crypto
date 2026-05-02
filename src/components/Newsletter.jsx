@@ -25,19 +25,19 @@ const Customer = () => {
             <div className="col-lg-5">
               <div className="subscribe-right">
                 <div className="call-icon">
-                  <img src={callImg} alt="call" />
+                  <img src={callImg} alt="call" style={{width: "70px"}}/>
                 </div>
-                <div className="mediic-btn text-right cursor-scale small">
-                  <a href="contact.html">
-                    <span className="mediic-btn__hover"></span>
-                    <span className="mediic-btn__hover"></span>
-                    <span className="mediic-btn__hover"></span>
-                    <span className="mediic-btn__hover"></span>
-                    <span className="mediic-btn__hover"></span>
-                    <span className="mediic-btn__hover"></span>
-                    +44 920 090 505
-                  </a>
-                </div>
+              <div className="mediic-btn text-right cursor-scale small">
+  <a href="mailto:healthcare@mangowealthplanner.com">
+    <span className="mediic-btn__hover"></span>
+    <span className="mediic-btn__hover"></span>
+    <span className="mediic-btn__hover"></span>
+    <span className="mediic-btn__hover"></span>
+    <span className="mediic-btn__hover"></span>
+    <span className="mediic-btn__hover"></span>
+    healthcare@mangowealthplanner.com
+  </a>
+</div>
               </div>
             </div>
           </div>

@@ -9,10 +9,10 @@
     text-transform: uppercase;
     display: inline-block; 
     transition: 0.5s;
-    margin-bottom: 20px !important;
+    /* margin-bottom: 20px !important; */
     border-radius: 10px;  
     width: calc(100% - 10px) !important;
-    margin: 0 5px 20px 5px;
+    margin: 0 5px 5px 5px;
     padding: 12px;
 }
 .wallet-header01{
@@ -149,6 +149,12 @@
   text-transform: capitalize;
   width: 90%;
   float: left;
+  background-color: rgb(196, 194, 194);
+    text-transform: uppercase;
+    border-radius: 10px;  
+    width: calc(100% - 10px) !important;
+    margin: 0 5px 5px 5px;
+    padding: 12px;
 }
 
 /* Submenu */

@@ -1,91 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import lightLogo from "../../../assets/images/logo.png";
-// import darkLogo from "../../../assets/images/dark-logo.png";
-
-// const Header = () => {
-//   const [menuOpen, setMenuOpen] = useState(false);
-//   const navigate = useNavigate();
-
-
-//   useEffect(() => {
-//     const handleScroll = () => {
-//       const header = document.querySelector("header");
-//       if (!header) return;
-
-//       if (window.scrollY > 50) header.classList.add("fixed");
-//       else header.classList.remove("fixed");
-//     };
-
-//     window.addEventListener("scroll", handleScroll);
-//     return () => window.removeEventListener("scroll", handleScroll);
-//   }, []);
-
-//   return (
-//     <header className="header">
-
-
-//       <div className="logo">
-//          <img className="light" src={lightLogo} alt="logo" />
-//          <img className="dark" src={darkLogo} alt="logo" /> 
-//       </div>
-
-
-//       <div className="main-menu">
-
-//         <div
-//           className={`menu-icon ${menuOpen ? "active" : ""}`}
-//           onClick={() => setMenuOpen(!menuOpen)}
-//         >
-//           <span></span>
-//           <span></span>
-//           <span></span>   
-//         </div>
-
-//         <nav className={`onepage ${menuOpen ? "show" : ""}`}>  
-//           <ul>
-//             <li className="active"><a href="#top">Home</a></li>
-//             <li><a href="#about">About ico</a></li>
-//             <li><a href="#token">Token</a></li>
-//             <li><a href="#roadmap">Roadmap</a></li>
-//             <li><a href="#team">Team</a></li>
-//             <li><a href="#press">Press</a></li>
-
-//             {/* 🔥 DASHBOARD BUTTON */}
-//             <li className="nav-btn">
-//               <button
-//                 onClick={() => {
-//                   const isLoggedIn =
-//                     localStorage.getItem("isLoggedIn") === "true";
-
-//                   if (isLoggedIn) {
-//                     navigate("/dashboard");  
-//                   } else {
-//                     navigate("/login");      
-//                   }
-//                 }}
-//                 className="wallet-header"
-//               >
-//                 Dashboard
-//               </button>
-//             </li>
-
-//           </ul>
-//         </nav>
-//       </div>
-//     </header>
-//   );
-// };
-
-// export default Header;
-
-
-
-
-
-
-
-
 // src/components/Header.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
@@ -101,11 +13,11 @@ import '../../../assets/Css/responsive.css'
 // Image imports
 import logoImg from '../../../assets/images/logo.png';
 import logo2Img from '../../../assets/images/logo2.png';
-import arrowImg from '../../../assets/images/resource/arrow.png';
+// import arrowImg from '../../../assets/images/resource/arrow.png';
 
 const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
-  const [isSearchActive, setIsSearchActive] = useState(false);
+  // const [isSearchActive, setIsSearchActive] = useState(false);
   const [isInfoGroupActive, setIsInfoGroupActive] = useState(false);
   // const [isCartGroupActive, setIsCartGroupActive] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -124,26 +36,27 @@ const Header = () => {
     document.body.classList.add('loaded');
     return () => {
       document.body.classList.remove('loaded');
+
     };
   }, []);
 
   // Toggle search popup (add/remove 'search-active' class on body)
-  useEffect(() => {
-    if (isSearchActive) {
-      document.body.classList.add('search-active');
-    } else {
-      document.body.classList.remove('search-active');
-    }
-  }, [isSearchActive]);
+  // useEffect(() => {
+  //   if (isSearchActive) {
+  //     document.body.classList.add('search-active');
+  //   } else {
+  //     document.body.classList.remove('search-active');
+  //   }
+  // }, [isSearchActive]);
 
-  // Close search popup on ESC key
-  useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === 'Escape') setIsSearchActive(false);
-    };
-    document.addEventListener('keydown', handleEsc);
-    return () => document.removeEventListener('keydown', handleEsc);
-  }, []);
+  // // Close search popup on ESC key
+  // useEffect(() => {
+  //   const handleEsc = (e) => {
+  //     if (e.key === 'Escape') setIsSearchActive(false);
+  //   };
+  //   document.addEventListener('keydown', handleEsc);
+  //   return () => document.removeEventListener('keydown', handleEsc);
+  // }, []);
 
 
 
@@ -204,27 +117,42 @@ const Header = () => {
                 </ul>
 
                 <div className="mediic-right-side cursor-scale small">
-                  {/* Search Button */}
-                  <div className="search-box-btn search-box-outer" onClick={() => setIsSearchActive(true)}>
+                  {/* <div className="search-box-btn search-box-outer" onClick={() => setIsSearchActive(true)}>
                     <i className="fa-solid fa-magnifying-glass"></i>
-                  </div>
+                  </div> */}
 
 
-
-                  {/* Appointment Button */}
-                  <div className="mediic-button">
+        <div className="mediic-button">
                     <Link
                       to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
                       className="wallet-header"
                     >
-                      Get Dashboard
-                      <img src={arrowImg} alt="" />
+                      LOGIN
+                      {/* <img src={arrowImg} alt="" /> */}
                       <div className="mediic-hover-btn hover-btn"></div>
                       <div className="mediic-hover-btn hover-btn2"></div>
                       <div className="mediic-hover-btn hover-btn3"></div>
                       <div className="mediic-hover-btn hover-btn4"></div>
                     </Link>
                   </div>
+
+
+                  {/* Appointment Button */}
+                  <div className="mediic-button">
+                    <Link
+                      to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/signup"}
+                      className="wallet-header"
+                    >
+                      Signup
+                      {/* <img src={arrowImg} alt="" /> */}
+                      <div className="mediic-hover-btn hover-btn"></div>
+                      <div className="mediic-hover-btn hover-btn2"></div>
+                      <div className="mediic-hover-btn hover-btn3"></div>
+                      <div className="mediic-hover-btn hover-btn4"></div>
+                    </Link>
+                  </div>
+
+                  
 
                   {/* Sidebar (info-group) Button */}
                   <div className="sidebar">
@@ -251,7 +179,7 @@ const Header = () => {
       </div>
 
       {/* Search Popup (exact HTML from original) */}
-      <div className={`search-popup ${isSearchActive ? 'search-active' : ''}`}>
+      {/* <div className={`search-popup ${isSearchActive ? 'search-active' : ''}`}>
         <button className="close-search style-two" onClick={() => setIsSearchActive(false)}>
           <span className="flaticon-multiply"><i className="fa-solid fa-xmark"></i></span>
         </button>
@@ -261,7 +189,7 @@ const Header = () => {
             <button type="submit"><i className="fa fa-search"></i></button>
           </div>
         </form>
-      </div>
+      </div> */}
 
       {/* Info Group Sidebar (xs-sidebar-group) */}
       <div className={`xs-sidebar-group info-group ${isInfoGroupActive ? 'isActive' : ''}`}>
@@ -282,10 +210,14 @@ const Header = () => {
                   <h2>About Company</h2>
                   <p>Mango Wealth Planner specializes in healthcare and pharmaceutical investments, combining financial expertise with deep sector knowledge to build resilient, growth-oriented portfolios in the essential healthcare sector.
                   </p>
-                  <ul className="list-style-one">
-                    <li><span className="icon fa-phone"></span>+1 800 123 456 789</li>
-                    <li><span className="icon fa-envelope"></span>healthcare@mangowealthplanner.com</li>
-                  </ul>
+<ul className="list-style-one">
+  <li>
+    <span className="icon fa-envelope"></span>
+    <a href="mailto:healthcare@mangowealthplanner.com" style={{color: "#fff"}}>
+      healthcare@mangowealthplanner.com
+    </a>
+  </li>
+</ul>
                   <ul className="social-box">
                     <li><a href="#"><i className="fa-brands fa-facebook-f"></i></a></li>
                     <li><a href="#"><i className="fa-brands fa-twitter"></i></a></li>
@@ -331,7 +263,22 @@ const Header = () => {
                     to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
                     className="wallet-header01"
                   >
-                    Dashboard
+                    Login
+
+                    <div className="mediic-hover-btn hover-btn"></div>
+                    <div className="mediic-hover-btn hover-btn2"></div>
+                    <div className="mediic-hover-btn hover-btn3"></div>
+                    <div className="mediic-hover-btn hover-btn4"></div>
+                  </Link>
+                </div>
+
+                
+                <div className="mediic-button01">
+                  <Link
+                    to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
+                    className="wallet-header01"
+                  >
+                    
 
                     <div className="mediic-hover-btn hover-btn"></div>
                     <div className="mediic-hover-btn hover-btn2"></div>

@@ -165,7 +165,7 @@ a.mdy-hover:hover:before {
   position: relative;
   z-index: 1;
   transition: 0.5s;
-  margin: 0 9px 0 14px;
+  margin: 0 5px 0 1px;
 }
 
 .mediic-button a img {
@@ -751,8 +751,9 @@ span.wood-animation img {
   width: 500px;
 }
 .team0-thumb1{
-  height: 440px;
   border-radius: 12px;
+  margin-top: -25px;
+
 }
 .about-thumb2 {
   mix-blend-mode: multiply;
@@ -812,7 +813,7 @@ span.wood-animation img {
   position: relative;
   z-index: 1;
   transition: 0.5s;
-  margin: 0 9px 0 14px;
+  /* margin: 0 9px 0 14px; */
 }
 
 .mediic-button a img {
@@ -1013,6 +1014,7 @@ span.wood-animation img {
   border: 1px solid rgba(255, 255, 255, 0.3);
   margin: 34px 0 0;
   padding: 13px 30px;
+  color: #c3bfbf;
 }
 
 .service-single-box .mediic-hover-btn {
@@ -1021,6 +1023,7 @@ span.wood-animation img {
 
 .service-single-box .mediic-button a:hover {
   border: 1px solid var(--primary-color);
+  color: #fff;
 }
 
 .service-single-box:hover .serivce-icon img {
@@ -1512,7 +1515,7 @@ h3.service-title {
 
 /* Testimonial Slide */
 .testimonial-single-slide {
-  padding: 120px 54px 65px;
+  /* padding: 120px 54px 65px; */
   padding: 25px;
   border-radius: 30px;
   position: relative;
@@ -1607,9 +1610,7 @@ span.author-appellation:before {
 }
 
 /* Section title */
-
 .top-mediic-section.section-border {
-  margin: 0 0 60px;
   border-bottom: 2px solid rgba(255, 255, 255, 0.20196078431372547);
 }
 
@@ -2345,7 +2346,6 @@ li.blg-admin i {
 
 .subscribe-right .mediic-btn a {
   border: 1px solid transparent;
-  font-size: 18px;
   transition: 0.5s;
 }
 
@@ -4783,6 +4783,7 @@ mediic Start Contact Inner Page
     font-size: 23px;
     align-items: center;
     text-align: center;
+    margin-left: 10px;
 }
 .nav-btn.navSidebar-button:hover{
   color: #000;
@@ -4900,7 +4901,6 @@ ul.list-style-one li {
 ul.list-style-one li span {
   font-size: 22px;
   font-weight: 500;
-  color: var(--secondary-color);
   margin: 0 10px 0 0px;
 }
 
@@ -8660,6 +8660,6 @@ button.swiper-pagination-bullet {
 }
 
 .blog-thumb-im{
-width: 200px;
+width: 100%;
 box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.1);
 }

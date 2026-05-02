@@ -1,5 +1,5 @@
 import React from "react";
-import investmentImg from "../assets/images/resource/bot.jpg";
+import investmentImg from "../assets/images/resource/bot.png";
 import shap1 from '../assets/images/resource/shape1.png'
 
 const AiPoweredInvestment = () => {
@@ -17,7 +17,7 @@ const AiPoweredInvestment = () => {
               </div>
             </div>
             <div className="mediic-shape">
-              <img src={shap1} alt="shape" />
+              <img src={shap1} className="img-fluid" alt="shape" />
             </div>
           </div>
           <div className="row">
@@ -25,7 +25,7 @@ const AiPoweredInvestment = () => {
             <div className="col-lg-6 col-md-6">
               <div className="team-single-box.">
                 <div className="team0-thumb">
-                  <img className="team0-thumb1" src={investmentImg} alt="AI Investment Analysis" />
+                  <img className="team0-thumb1" src={investmentImg} className="img-fluid" alt="AI Investment Analysis" />
                 </div>
               </div>
             </div>

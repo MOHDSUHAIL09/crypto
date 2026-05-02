@@ -6,7 +6,7 @@ import { MdAddCard } from "react-icons/md";
 import toast from "react-hot-toast";
 import Stake from "./Stake";
 import { useUser } from "../../../context/UserContext";
-import apiClient from '../../../api/apiClient';
+import apiClient from "../../../api/apiClient"
 import '../../../assets/dashboardcss/css/Dashboard.css';
 import { IoSend } from 'react-icons/io5';
 

@@ -57,21 +57,30 @@ const LevelIncome = () => {
     };
   }, [open, show, op]);
 
-  useEffect(() => {
-    const regno = 1;
-    apiClient.get(`/Dashboard/team-counts/${regno}`)
-      .then((res) => {
-        const apiData = res.data.data;
-        setLevels([
-          {
-            teamCount: apiData.TeamCount,
-            active: apiData.ActiveTeam,
-            inactive: apiData.InactiveTeam,
-          },
-        ]);
-      })
-      .catch((err) => console.log("❌ API ERROR:", err));
-  }, []);
+useEffect(() => {
+  const regno = userData.regno;
+  const findlvl = 10;
+
+  apiClient.get(`/Dashboard/team-counts`, {
+    params: { regno, findlvl }
+  })
+  .then((res) => {
+    console.log("Team API response:", res.data);
+    
+    // ✅ Data is directly in res.data (not res.data.data)
+    const apiData = res.data;
+    
+    setLevels([
+      {
+        teamCount: apiData.totalTeam ?? 0,
+        active: apiData.activeTeam ?? 0,
+        inactive: apiData.inactiveTeam ?? 0,
+        directId: apiData.directId ?? 0,
+      },
+    ]);
+  })
+  .catch((err) => console.log("❌ API ERROR:", err));
+}, [userData]);
 
   // Animation control for Team modal
   useEffect(() => {
@@ -86,7 +95,7 @@ const LevelIncome = () => {
   const teamData = levels[0] || {};
   const menuItems = [
     { name: "Total Team", icon: <FaUserPlus />, value: teamData.teamCount },
-    { name: "--" },
+    { name: "DirectId",icon: <FaUsers />, value: userData.directId },
     { name: "--" },
     { name: "--" },
     { name: "Active Team", icon: <FaUsers />, value: teamData.active },
