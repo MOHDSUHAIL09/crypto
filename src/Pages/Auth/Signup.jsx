@@ -8,7 +8,7 @@ import apiClient from "../../api/apiClient";
 // Images
 import logoImg from "../../assets/images/logo.png";
 import logo2Img from "../../assets/images/logo2.png";
-import signupImage from "../../assets/images/resource/appoinment.png"; 
+import signupImage from "../../assets/images/resource/appoinment.png";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ const Signup = () => {
     const refCode = params.get("ref");
     console.log("🔍 URL params:", window.location.search);
     console.log("🔍 refCode from URL:", refCode);
-    
+
     if (refCode && !formData.referrer_Id) {
       console.log("✅ Auto-filling sponsor ID with:", refCode);
       setFormData(prev => ({
@@ -203,9 +203,9 @@ const Signup = () => {
                     </li>
                     <li><NavLink to="/contact">Contact Us</NavLink></li>
                   </ul>
-                 
+
                   <div className="mediic-right-side">
-                     <div className="mediic-button">
+                    <div className="mediic-button">
                       <Link to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"} className="wallet-header">
                         login
                         <div className="mediic-hover-btn hover-btn"></div>
@@ -224,12 +224,12 @@ const Signup = () => {
                       </Link>
                     </div>
                     <div className="sidebar">
-                                       <div className="nav-btn navSidebar-button" onClick={() => setIsInfoGroupActive(true)}>
-                                         <span><CgMenuGridR className="menu-icon" /></span>
-                   
-                   
-                                       </div>
-                                     </div>
+                      <div className="nav-btn navSidebar-button" onClick={() => setIsInfoGroupActive(true)}>
+                        <span><CgMenuGridR className="menu-icon" /></span>
+
+
+                      </div>
+                    </div>
                   </div>
                 </nav>
               </div>
@@ -267,7 +267,7 @@ const Signup = () => {
                     </div>
                     <div className="col-lg-12">
                       <div className="form-box">
-                        <input type="text" value={formData.sponsorName} readOnly placeholder="Sponsor Name" className="readonly-input" />
+                        <input type="text" value={formData.sponsorName} readOnly placeholder="Sponsor Name" className="readonly-input" style={{color: "#db330e"}}/>
                       </div>
                     </div>
                     <div className="col-lg-12">
