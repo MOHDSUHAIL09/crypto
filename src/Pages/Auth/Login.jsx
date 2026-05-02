@@ -378,8 +378,8 @@ const Login = () => {
               <img className='logomenu' src={logoImg} alt='logo'></img>
 
               <nav className="mediic_menu">
-                <ul className="nav_scroll">
-                  <li>
+                <ul className="nav_scroll ">
+                  <li className="mt-2">
                     <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink>
                   </li>
                   <li><NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</NavLink></li>
