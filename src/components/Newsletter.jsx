@@ -22,7 +22,7 @@ const Customer = () => {
                 </div>
               </div>
             </div>
-            <div className="col-lg-6">
+            <div className="col-lg-4">
               <div className="subscribe-right">
                 <div className="call-icon">
                   <img src={callImg} alt="call" style={{width: "50px"}}/>

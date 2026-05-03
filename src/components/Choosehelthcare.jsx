@@ -17,13 +17,13 @@ const InvestmentProcess = () => {
               </div>
             </div>
           </div>
-          <div className="row justify-content-center align-items-center">
-            <div className="col-lg-5 col-md-6 ">
+          <div className="row justify-content-center align-items-center gap-3">
+            <div className="col-lg-6 col-md-12 ">
               <div className="">
                 <img src={testiImg} className='img-fluid rounded-4' alt="testimonial" />
               </div>
             </div>
-             <div className="col-lg-7 col-md-6">
+             <div className="col-lg-6 col-md-12">
                <div className="testimonial-single-slide">
                     <div className="testi-icon">
                       <img src={quoteImg} alt="quote" />

@@ -1301,7 +1301,7 @@ h4.port-title a {
   justify-content: flex-end;
   gap: 1.5rem;
   width: calc((100% / 5) - var(--gap));
-  height: 505px;
+  height: 490px;
   text-align: center;
   transition: width 0.5s ease-in-out;
 }
@@ -1546,7 +1546,7 @@ h3.service-title {
   display: inline-block;
 }
 .testi-desc p span{
-  color: rgba(26, 62, 2, 0.995)
+  color: rgba(212, 150, 15, 0.995)
 }
 
 .author-name h4 {

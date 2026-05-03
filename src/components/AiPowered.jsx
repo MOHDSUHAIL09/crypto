@@ -36,7 +36,7 @@ const AiPoweredInvestment = () => {
                 <div className="team-content">
                   <h4>Real-time AI Insights</h4>
                   <span>Clinical trials · Approvals · Trends</span>
-                  <p style={{ marginTop: "20px", color: "#555" }}>
+                  <p style={{ marginTop: "20px", color: "#090555" }}>
                     MANGO WEALTH PLANNER utilizes advanced AI algorithms to analyze
                     healthcare markets, predict pharmaceutical approvals, and optimize
                     hospital investment portfolios. Our proprietary Med-Analytica
