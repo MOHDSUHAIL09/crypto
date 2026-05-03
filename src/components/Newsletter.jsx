@@ -10,32 +10,35 @@ const Customer = () => {
       <div className="mediic-subscribe">
         <div className="container">
           <div className="row align-items-center">
-            <div className="col-lg-7">
+            <div className="col-lg-6">
               <div className="subscribe-content">
                 <div className="subscribe-icon cursor-scale">
-                  <img src={subscribeImg} alt="subscribe" />
+                  <img style={{width: "50px"}} src={subscribeImg} alt="subscribe" />
                 </div>
                 <div className="subscribe-title">
-                  <h1 className="cursor-scale small">
+                  <h1 className="cursor-scale small mb-3">
                     Mango Wealth Planner Experience.
                   </h1>
                 </div>
               </div>
             </div>
-            <div className="col-lg-5">
+            <div className="col-lg-6">
               <div className="subscribe-right">
                 <div className="call-icon">
                   <img src={callImg} alt="call" style={{width: "50px"}}/>
                 </div>
-              <div className="mediic-btn text-right cursor-scale small">
-  <a href="mailto:healthcare@mangowealthplanner.com">
+
+              <div className="mediic-btn text-right cursor-scale small" style={{ width: "10px",}}>
+     <a href="mailto:healthcare@mangowealthplanner.com">
     <span className="mediic-btn__hover"></span>
     <span className="mediic-btn__hover"></span>
     <span className="mediic-btn__hover"></span>
     <span className="mediic-btn__hover"></span>
     <span className="mediic-btn__hover"></span>
     <span className="mediic-btn__hover"></span>
+    <span style={{fontSize: "10px"}}>
     healthcare@mangowealthplanner.com
+    </span>
   </a>
 </div>
               </div>
