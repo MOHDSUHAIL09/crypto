@@ -11,50 +11,60 @@ const DownlineTeam = () => {
   const [loading, setLoading] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [totalBusiness, setTotalBusiness] = useState(0); // ✅ Added state for totalBusiness
   const pageSize = 10;
   const regno = localStorage.getItem("regno");
 
   // ================= API =================
-const fetchUsers = async (selectedLevel, page) => {
-  if (!regno) return;
-  setLoading(true);
-  try {
-    let findlvl;
-    if (selectedLevel === 0) findlvl = -1;
-    else findlvl = selectedLevel - 1; // 0-based (change to selectedLevel if 1-based)
+  const fetchUsers = async (selectedLevel, page) => {
+    if (!regno) return;
+    setLoading(true);
+    try {
+      let findlvl;
+      if (selectedLevel === 0) {
+        findlvl = -1; 
+      } else {
+        findlvl = selectedLevel; 
+      }
 
-    const payload = {
-      mregno: Number(regno),
-      type: 1,
-      findlvl: findlvl,
-      pageIndex: page,
-      pageSize: pageSize,
-    };
-    console.log("📤 Payload:", payload);
+      const payload = {
+        mregno: Number(regno),
+        type: 1,
+        findlvl: findlvl,
+        pageIndex: page,
+        pageSize: pageSize,
+      };
 
-      const response = await apiClient.post("/Dashboard/downline-team", payload);
+      const response = await apiClient.post("/Dashboard/downline-team", payload);  
+      console.log("📥 DownLine-Api:", response?.data);
       
       const resData = response?.data?.data?.data || [];
       let count = response?.data?.data?.recordCount || 0;
-      
-      // Agar recordCount 0 hai lekin data hai to data ki length se count set karo
-      if (count === 0 && resData.length > 0) {
-        // Yahan humein actual total records count chahiye, jo API nahi de raha
-        // Isliye hum man lenge ki total records 10 se zyada hain
-        // Aap yahan pe ek API call kar sakte ho total count ke liye
-        count = 1000; // Temporary fix - actual API se total count aana chahiye
-      }
+      let business = response?.data?.data?.totalBusiness || 0; // ✅ Get totalBusiness from API
+
+      console.log("✅ API Total Business:", business);
+      console.log("✅ API Total Records:", count);
 
       setUsers(resData);
       setTotalRecords(count);
+      setTotalBusiness(business); // ✅ Set totalBusiness from API
       
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setLoading(false);
-  }
-};
+    } catch (error) {
+      console.error("API Error:", error);
+      setUsers([]);
+      setTotalRecords(0);
+      setTotalBusiness(0);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  // Reset to page 1 when level changes
+  useEffect(() => {
+    setPageIndex(1);
+  }, [level]);
+
+  // Fetch users when level or pageIndex changes
   useEffect(() => {
     fetchUsers(level, pageIndex);
   }, [level, pageIndex]);
@@ -66,57 +76,55 @@ const fetchUsers = async (selectedLevel, page) => {
       u.Name?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const totalBusiness = users.reduce((sum, u) => sum + (u.FundInvest || 0), 0);
+  // ❌ Remove this line - don't calculate manually anymore
+  // const totalBusiness = users.reduce((sum, u) => sum + (u.FundInvest || 0), 0);
 
   // ================= PAGINATION LOGIC =================
-  const totalPages = Math.ceil(totalRecords / pageSize) || 1;
-
-  console.log("Total Pages:", totalPages);
+  const totalPages = Math.ceil(totalRecords / pageSize);
 
   const getPagination = () => {
+    if (totalRecords === 0 || totalPages <= 1) {
+      return [1];
+    }
+
     const current = pageIndex;
     const total = totalPages;
-
-    if (totalRecords === 0) {
-      return [1];
-    }
-
-    if (total === 1) {
-      return [1];
-    }
-
     const pages = [];
+    
     pages.push(1);
-
+    
     let start = Math.max(2, current - 1);
     let end = Math.min(total - 1, current + 1);
-
-
+    
+    if (start > 2) {
+      pages.push("...");
+    }
+    
     for (let i = start; i <= end; i++) {
       if (!pages.includes(i)) {
         pages.push(i);
       }
     }
-
+    
     if (end < total - 1) {
       pages.push("...");
     }
-
+    
     if (total > 1 && !pages.includes(total)) {
       pages.push(total);
     }
-
+    
     return pages;
   };
 
   const goToPreviousPage = () => {
-    if (pageIndex > 1 && totalRecords > 0) {
+    if (pageIndex > 1) {
       setPageIndex(pageIndex - 1);
     }
   };
 
   const goToNextPage = () => {
-    if (pageIndex < totalPages && totalRecords > 0) {
+    if (pageIndex < totalPages) {
       setPageIndex(pageIndex + 1);
     }
   };
@@ -144,18 +152,17 @@ const fetchUsers = async (selectedLevel, page) => {
             value={level}
             onChange={(e) => {
               setLevel(Number(e.target.value));
-              setPageIndex(1);
             }}
           >
-            <option value={0}>All</option>
+            <option value={0}>All Levels</option>
             {Array.from({ length: 30 }, (_, i) => (
-              <option key={i} value={i + 1}>Level {i + 1}</option>
+              <option key={i + 1} value={i + 1}>Level {i + 1}</option>
             ))}
           </select>
         </div>
         <div>
           <p>Total Team: {totalRecords}</p>
-          <p>Total Business: {totalBusiness}</p>
+          <p>Total Business: ${totalBusiness.toLocaleString()}</p> 
         </div>
       </div>
 
@@ -173,59 +180,64 @@ const fetchUsers = async (selectedLevel, page) => {
       {/* TABLE */}
       <div className="report-card">
         <CustomTable columns={columns} loading={loading}>
-          {filteredUsers.map((user, index) => {
-            const serialNo = (pageIndex - 1) * pageSize + index + 1;
-            const formattedNo = serialNo.toString().padStart(2, "0");
+          {filteredUsers.length > 0 ? (
+            filteredUsers.map((user, index) => {
+              const serialNo = (pageIndex - 1) * pageSize + index + 1;
+              const formattedNo = serialNo.toString().padStart(2, "0");
 
-            return (
-              <tr key={index}>
-                <td className="text-center">
-                  <div className="sr-no-circle mx-auto">
-                    {formattedNo}
-                  </div>
-                </td>
-                <td className="text-center">
-                  <div className="user-name-text">{user.loginid}</div>
-                  <div className="user-id-subtext">{user.Name || "N/A"}</div>
-                </td>
-                <td className="text-center">
-                  <div className="sponsor-id-text">{user.Sponsor}</div>
-                  <div className="user-id-subtext">{user.sponsername}</div>
-                </td>
-                <td className="text-center">
-                  <div className="amount-text-green">
-                    {user.FundInvest > 0 ? `$${user.FundInvest.toLocaleString()}` : "$0"}
-                  </div>
-                  <div className="date-subtext">
-                    {user.TopupDate}
-                  </div>
-                </td>
-                <td className="pe-3">
-                  <div className={`status-pill mx-auto ${user.kitPrice > 0 ? "active" : "inactive"}`}>
-                    <span className="dot"></span>
-                    {user.kitPrice > 0 ? "Active" : "Inactive"}
-                  </div>
-                </td>
-
-                <td className="pe-3">
-                  <Link
-                    to={`/dashboard/downlineUserHistory?regno=${user.regno}&loginid=${user.loginid}`}
-                    className="capital-payout-btn"
-                    style={{ padding: "12px 20px" }}
-                  >
-                    View
-                  </Link>
-                </td>
-              </tr>
-
-            );
-          })}
+              return (
+                <tr key={user.regno || index}>
+                  <td className="text-center">
+                    <div className="sr-no-circle mx-auto">
+                      {formattedNo}
+                    </div>
+                  </td>
+                  <td className="text-center">
+                    <div className="user-name-text">{user.loginid || "N/A"}</div>
+                    <div className="user-id-subtext">{user.Name || "N/A"}</div>
+                  </td>
+                  <td className="text-center">
+                    <div className="sponsor-id-text">{user.Sponsor || "N/A"}</div>
+                    <div className="user-id-subtext">{user.sponsername || "N/A"}</div>
+                  </td>
+                  <td className="text-center">
+                    <div className="amount-text-green">
+                      {user.FundInvest > 0 ? `$${user.FundInvest.toLocaleString()}` : "$0"}
+                    </div>
+                    <div className="date-subtext">
+                      {user.TopupDate || "-"}
+                    </div>
+                  </td>
+                  <td className="pe-3">
+                    <div className={`status-pill mx-auto ${user.kitPrice > 0 ? "active" : "inactive"}`}>
+                      <span className="dot"></span>
+                      {user.kitPrice > 0 ? "Active" : "Inactive"}
+                    </div>
+                  </td>
+                  <td className="pe-3">
+                    <Link
+                      to={`/dashboard/downlineUserHistory?regno=${user.regno}&loginid=${user.loginid}`}
+                      className="capital-payout-btn"
+                      style={{ padding: "12px 20px" }}
+                    >
+                      View
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan={columns.length} className="text-center py-5">
+                {loading ? "Loading..." : "No records found"}
+              </td>
+            </tr>
+          )}
         </CustomTable>
 
-
+        {/* PAGINATION */}
         {totalPages > 1 && (
           <div className="d-flex justify-content-center align-items-center mt-3 mb-3 flex-wrap gap-2 gap-md-3">
-
             <button
               onClick={goToPreviousPage}
               disabled={pageIndex === 1}
@@ -250,7 +262,6 @@ const fetchUsers = async (selectedLevel, page) => {
             >
               ←
             </button>
-
 
             {getPagination().map((page, i) => (
               <button
@@ -304,7 +315,6 @@ const fetchUsers = async (selectedLevel, page) => {
                 {page}
               </button>
             ))}
-
 
             <button
               onClick={goToNextPage}

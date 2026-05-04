@@ -23,10 +23,10 @@ const Cards = () => {
   const [otpTimer, setOtpTimer] = useState(0);
   const [otpIntervalId, setOtpIntervalId] = useState(null);
   const [usdToInrRate, setUsdToInrRate] = useState(null);
-  // ✅ FIXED: correct state names
   const [fetchingRate, setFetchingRate] = useState(false);
   const [rateError, setRateError] = useState(null);
-  const [, setTimeLeft] = useState("");
+  // ✅ FIXED: store timeLeft value
+  const [timeLeft, setTimeLeft] = useState("");
   const [copied, setCopied] = useState(false);
 
   // Payout input amount state
@@ -97,9 +97,20 @@ const Cards = () => {
     }
   };
 
+  // Countdown timer effect
   useEffect(() => {
     const DateString = userData?.topupdate;
+    if (!DateString) {
+      setTimeLeft("No activation date found");
+      return;
+    }
+
     const targetDate = new Date(DateString);
+    if (isNaN(targetDate.getTime())) {
+      setTimeLeft("Invalid date");
+      return;
+    }
+
     targetDate.setDate(targetDate.getDate() + 365);
     targetDate.setHours(0, 0, 0, 0);
 
@@ -107,6 +118,11 @@ const Cards = () => {
       const now = new Date().getTime();
       const targetTime = targetDate.getTime();
       const timeDiff = targetTime - now;
+
+      if (timeDiff <= 0) {
+        setTimeLeft("Subscription expired");
+        return;
+      }
 
       const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
@@ -277,6 +293,41 @@ const Cards = () => {
 
   return (
     <>
+<div className="row top-refers g-2 mt-2 px-3">
+  <div className="col-12 col-md-6">
+    {timeLeft && (
+      <div className="countdown-timer text-center  fw-bold" style={{ 
+        fontSize: '14px', 
+        color: '#ffffff',
+        boxShadow: '0 4px 12px rgba(33, 33, 33, 0.2)',
+        padding: '12px 15px',
+      }}>
+        {timeLeft}
+      </div>
+    )}
+  </div>
+
+
+  <div className="countdown-timer col-12 col-md-6">
+    <div style={{
+      padding: '12px 15px', 
+    }}>
+      <p className="referral-mobile-only text-center mb-0">
+        <strong className="d-flex align-items-center justify-content-center justify-content-md-center fw-bold flex-wrap gap-1">
+          <span style={{ color: "#ffffff", fontSize: "14px" }}>Referral Link :</span>
+          <span style={{ fontSize: '14px', color: "#ffffff" }} className="fw-bold">
+            {referralLink}
+          </span>
+          <FaRegCopy
+            style={{ cursor: 'pointer', color: "#ffb700" }}
+            onClick={handleCopy}
+          />
+        </strong>
+      </p>
+    </div>
+  </div>
+</div>
+
       <div className="row p-3">
         {/* 1. User Info Card */}
         <div className="col-lg-5 col-md-9">
@@ -309,6 +360,8 @@ const Cards = () => {
 
                 <div className="timer d-flex justify-content-between">
                   <div className="">
+                  
+                    <div className=''>
                     <p className="mb-1"><strong>Me :</strong>&nbsp; {userData?.me || "N/A"}</p>
                     <p className="mb-1">
                       <strong>
@@ -316,20 +369,14 @@ const Cards = () => {
                         <FaRegCopy style={{ cursor: 'pointer', marginLeft: '5px' }} onClick={() => copyReferral(userData?.referral)} />
                       </strong>
                     </p>
+                    </div>
 
-                    {/* ✅ Only visible on mobile: full referral link */}
-                    <p className="mb-1 referral-mobile-only">
-                      <strong>
-                        Referral Link : &nbsp;
-                        <span style={{ fontSize: '12px', color: "#196133" }}>
-                          {referralLink.length > 30 ? `${referralLink.substring(0, 20)}...` : referralLink}
-                        </span>
-                        <FaRegCopy
-                          style={{ cursor: 'pointer', marginLeft: '5px' }}
-                          onClick={handleCopy}
-                        />
-                      </strong>
-                    </p>
+                
+
+
+
+
+
                   </div>
                 </div>
               </div>

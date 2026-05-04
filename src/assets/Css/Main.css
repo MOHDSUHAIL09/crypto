@@ -54,7 +54,7 @@ Tags: consulting, finance, corporate, business, consultant, multipurpose, techno
     transition: 0.5s;
     z-index: 1;
     position: relative;
-    /* padding: 20px 10px 20px; */
+    padding: 20px 10px 20px;
 }
 
 .sticky {
@@ -8669,3 +8669,5 @@ box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.1);
 .wallet-header01:hover{
   color: #d0860f !important;
 }
+
+

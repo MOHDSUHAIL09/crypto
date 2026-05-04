@@ -10,7 +10,7 @@ const Customer = () => {
       <div className="mediic-subscribe">
         <div className="container">
           <div className="row align-items-center">
-            <div className="col-lg-6">
+            <div className="col-lg-5 col-md-4">
               <div className="subscribe-content">
                 <div className="subscribe-icon cursor-scale">
                   <img style={{width: "50px"}} src={subscribeImg} alt="subscribe" />
@@ -22,7 +22,7 @@ const Customer = () => {
                 </div>
               </div>
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-5 col-md-2">
               <div className="subscribe-right">
                 <div className="call-icon">
                   <img src={callImg} alt="call" style={{width: "50px"}}/>

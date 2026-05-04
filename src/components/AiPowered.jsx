@@ -25,7 +25,7 @@ const AiPoweredInvestment = () => {
             <div className="col-lg-6 col-md-6">
               <div className="team-single-box.">
                 <div className="team0-thumb">
-                  <img className="team0-thumb1" src={investmentImg} className="img-fluid" alt="AI Investment Analysis" />
+                  <img className="img-fluid team0-thumb1" src={investmentImg}  alt="AI Investment Analysis" />
                 </div>
               </div>
             </div>
