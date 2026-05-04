@@ -12,7 +12,7 @@ const DownlineUserHistory = () => {
   const targetLoginid = searchParams.get("loginid");  
 
   const [downlineData, setDownlineData] = useState([]);
-  const [targetUserInfo, setTargetUserInfo] = useState(null); // store loginid & regno
+  // const [targetUserInfo, setTargetUserInfo] = useState(null); 
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [pageIndex, setPageIndex] = useState(1);
@@ -22,6 +22,7 @@ const DownlineUserHistory = () => {
 
 
   // Fetch downline data (same as before)
+  
   useEffect(() => {
     const fetchDownline = async () => {
       const regno = targetRegno || userData?.regno || userData?.Regno;
@@ -35,11 +36,11 @@ const DownlineUserHistory = () => {
         const payload = {
           mregno: Number(regno),
           type: 1,
-          findlvl: -1,
+          findlvl: 1,
           pageIndex: 1,
-          pageSize: 10000,
+          pageSize: 100,
         };
-        const response = await apiClient.post("/Dashboard/downline-team", payload);
+        const response = await apiClient.post("/Dashboard/member-downline-team", payload);
         let apiData = response?.data?.data?.data || [];
         if (apiData.length === 0) {
           setDownlineData([]);

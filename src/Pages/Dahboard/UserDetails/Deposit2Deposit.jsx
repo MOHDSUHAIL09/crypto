@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./UserDetails.css";
 
 export const Deposit2Deposit = () => {
-  const { userData, investNow } = useUser();
+  const { userData, investNow, fetchUserData } = useUser();
   const navigate = useNavigate();
 
   // ---------- Helper: get loginid & regno ----------
@@ -36,18 +36,19 @@ export const Deposit2Deposit = () => {
     localStorage.getItem('regno')
   );
 
-  // ---------- State (FIXED) ----------
+  // ---------- State ----------
   const [amount1, setAmount1] = useState(100);
   const [investUserId1, setInvestUserId1] = useState("");
-  const [checkingUser1, setCheckingUser1] = useState(false);   // ✅ fixed
+  const [checkingUser1, setCheckingUser1] = useState(false);   
   const [validUser1, setValidUser1] = useState(false);
-  const [userName1, setUserName1] = useState("");              // ✅ fixed
+  const [userName1, setUserName1] = useState("");              
   const [loading1, setLoading1] = useState(false);
   const [amount2, setAmount2] = useState(100);
   const [otp, setOtp] = useState("");
   const [loading2, setLoading2] = useState(false);
   const [otpTimer, setOtpTimer] = useState(0);
   const [otpIntervalId, setOtpIntervalId] = useState(null);
+  
   const depositOptions = [100, 300, 500, 1000, 10000, 50000];
   const isLoading = !userData;
 
@@ -58,14 +59,13 @@ export const Deposit2Deposit = () => {
     return `$${num.toFixed(2)}`;
   };
 
-  // ---------- P2P user check (FIXED API call) ----------
+  // ---------- P2P user check ----------
   const checkUser1 = async (id) => {
     if (!id.trim()) return;
     setCheckingUser1(true);
     try {
-      // ✅ Use apiClient.get() correctly
       const res = await apiClient.get(`/User/check-user?loginid=${id}`);
-      const data = res.data;   // Axios already parses JSON
+      const data = res.data;
       const name = data?.data?.Name || data?.data?.name || "";
       if (data?.success && data.data) {
         setValidUser1(true);
@@ -86,7 +86,7 @@ export const Deposit2Deposit = () => {
     }
   };
 
-  // ---------- P2P Transfer ----------
+  // ---------- P2P Transfer (Deposit to Deposit) ----------
   const handleInvest1 = async () => {
     if (!amount1 || !investUserId1) {
       toast.error("Please enter User ID and Amount");
@@ -105,6 +105,7 @@ export const Deposit2Deposit = () => {
         setInvestUserId1("");
         setUserName1("");
         setValidUser1(false);
+        await fetchUserData(); 
       }
     } catch (err) {
       console.error("Transfer error:", err);
@@ -114,7 +115,7 @@ export const Deposit2Deposit = () => {
     }
   };
 
-  // ---------- SEND OTP ----------
+  // ---------- SEND OTP for Self Transfer ----------
   const sendOtp = async () => {
     if (!regno) {
       toast.error("Registration number not found. Please login again.");
@@ -146,51 +147,76 @@ export const Deposit2Deposit = () => {
     }
   };
 
-  // ---------- SELF TRANSFER with OTP verification ----------
-  const handleInvest2 = async () => {
-    if (!amount2) {
-      toast.error("Enter amount");
+  // ========== NEW: SELF TRANSFER with Fund Transfer API ==========
+const handleSelfTransfer = async () => {
+  // Validation
+  if (!amount2 || amount2 <= 0) {
+    toast.error("Please enter valid amount");
+    return;
+  }
+  if (amount2 > userData.totalWallet) {
+    toast.error(`Insufficient Income Wallet balance. Available: ${formatBalance(userData.totalWallet)}`);
+    return;
+  }
+  if (!otp) {
+    toast.error("Please enter OTP");
+    return;
+  }
+
+  setLoading2(true);
+  try {
+    // Step 1: Verify OTP
+    const verifyResponse = await apiClient.post('/User/verify-otp', null, {
+      params: { loginid, regno, otp }
+    });
+
+    if (!verifyResponse.data.success) {
+      toast.error(verifyResponse.data.message || "Invalid OTP");
+      setLoading2(false);
       return;
     }
-    if (amount2 > userData.totalWallet) {
-      toast.error("Insufficient Income Wallet balance");
-      return;
-    }
-    if (!otp) {
-      toast.error("Enter OTP");
-      return;
-    }
 
-    setLoading2(true);
-    try {
-      // Verify OTP
-      const verifyResponse = await apiClient.post('/User/verify-otp', null, {
-        params: { loginid, regno, otp }
-      });
+    // Step 2: Call Fund Transfer API
+    const transferPayload = {
+      regno: regno,
+      reciveId: loginid, 
+      amount: amount2
+    };
 
-      if (!verifyResponse.data.success) {
-        toast.error(verifyResponse.data.message || "Invalid OTP");
-        return;
-      }
+    console.log("📤 Sending transfer payload:", transferPayload);
 
-      // Proceed with transfer
-      const res = await investNow(userData.me, amount2);
-      toast.success(res.message);
+    const transferResponse = await apiClient.post("/IncomePayout/fund-transfer", transferPayload);
+    console.log("📥 Transfer response:", transferResponse.data);
 
-      if (res.success) {
-        setAmount2(100);
-        setOtp("");
-        setOtpTimer(0);
-        if (otpIntervalId) clearInterval(otpIntervalId);
+    if (transferResponse.data.success) {
+      toast.success(transferResponse.data.message || "Transfer successful!");
+      
+      // Reset form
+      setAmount2(100);
+      setOtp("");
+      setOtpTimer(0);
+      if (otpIntervalId) {
+        clearInterval(otpIntervalId);
         setOtpIntervalId(null);
       }
-    } catch (err) {
-      console.error(err);
-      toast.error("Error processing transfer");
-    } finally {
-      setLoading2(false);
+      
+      // ✅ Refresh user data (without page reload)
+      await fetchUserData();
+      
+      // ✅ Optional: Show updated balance
+      toast.info(`Updated Income Wallet: ${formatBalance(userData.totalWallet)}`);
+      
+    } else {
+      toast.error(transferResponse.data.message || "Transfer failed");
     }
-  };
+  } catch (err) {
+    console.error("Transfer error:", err);
+    const errorMsg = err.response?.data?.message || err.message || "Network error";
+    toast.error(errorMsg);
+  } finally {
+    setLoading2(false);
+  }
+};  
 
   // Cleanup timer on unmount
   useEffect(() => {
@@ -208,7 +234,7 @@ export const Deposit2Deposit = () => {
           <div className="loading">Loading Wallet...</div>
         ) : (
           <div className="deposit-col d-flex flex-lg-nowrap flex-wrap justify-content-between align-items-start p-1">
-            {/* SELF TRANSFER CARD */}
+            {/* SELF TRANSFER CARD - Income Wallet to Deposit Wallet */}
             <div className="deposit-card">
               <div className="d-flex justify-content-between ">
                 <div className="deposit-title">
@@ -260,7 +286,7 @@ export const Deposit2Deposit = () => {
                     <div className="input-container1">
                       <input
                         type="text"
-                        value={userData.me}
+                        value={userData.me || loginid}
                         readOnly
                         style={{ color: "#4f4949", cursor: "not-allowed" }}
                       />
@@ -287,8 +313,14 @@ export const Deposit2Deposit = () => {
                       className="amount-input"
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}
+                      placeholder="Enter OTP"
                     />
-                    <button className="clear-btn" onClick={sendOtp} disabled={otpTimer > 0}>
+                    <button 
+                      className="clear-btn" 
+                      onClick={sendOtp} 
+                      disabled={otpTimer > 0}
+                      title={otpTimer > 0 ? `Wait ${Math.floor(otpTimer / 60)}:${(otpTimer % 60).toString().padStart(2, "0")}` : "Send OTP"}
+                    >
                       {otpTimer > 0
                         ? `${Math.floor(otpTimer / 60)}:${(otpTimer % 60)
                           .toString()
@@ -297,14 +329,18 @@ export const Deposit2Deposit = () => {
                     </button>
                   </div>
 
-                  <button className="deposit-btn" onClick={handleInvest2} disabled={loading2}>
+                  <button 
+                    className="deposit-btn" 
+                    onClick={handleSelfTransfer} 
+                    disabled={loading2 || !otp || amount2 <= 0}
+                  >
                     {loading2 ? "Processing..." : "Transfer"}
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* P2P TRANSFER CARD */}
+            {/* P2P TRANSFER CARD - Deposit to Deposit */}
             <div className="deposit-card">
               <div className="d-flex justify-content-between ">
                 <div className="deposit-title">
@@ -329,7 +365,7 @@ export const Deposit2Deposit = () => {
 
               <div className="summary-section">
                 <div className="summary-row main">
-                  <span className="label-box">Wallet Balance</span>
+                  <span className="label-box">Deposit Wallet</span>
                   <span className="value" style={{ fontWeight: "800" }}>
                     {formatBalance(userData.Depositfund)}
                   </span>
@@ -342,7 +378,7 @@ export const Deposit2Deposit = () => {
                       type="range"
                       className="slider"
                       min="0"
-                      max={userData.Depositfund}
+                      max={userData.Depositfund || 10000}
                       step="1"
                       value={amount1}
                       onChange={(e) => setAmount1(Number(e.target.value))}
@@ -364,8 +400,8 @@ export const Deposit2Deposit = () => {
                     </div>
                   </div>
 
-                  {checkingUser1 && <small>Checking...</small>}
-                  {validUser1 && <small className="success-msg">✓ {userName1}</small>}
+                  {checkingUser1 && <small className="text-muted">Checking...</small>}
+                  {validUser1 && <small className="success-msg" style={{ color: "green" }}>✓ {userName1}</small>}
 
                   <div className="options-grid">
                     {depositOptions.map((opt) => (
@@ -393,7 +429,11 @@ export const Deposit2Deposit = () => {
                     </button>
                   </div>
 
-                  <button className="deposit-btn" onClick={handleInvest1} disabled={!validUser1 || loading1}>
+                  <button 
+                    className="deposit-btn" 
+                    onClick={handleInvest1} 
+                    disabled={!validUser1 || loading1 || amount1 <= 0}
+                  >
                     {loading1 ? "Processing..." : "Deposit"}
                   </button>
                 </div>

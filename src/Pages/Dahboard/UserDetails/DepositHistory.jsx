@@ -3,12 +3,11 @@ import React, { useState, useEffect } from "react";
 import { useUser } from "../../../context/UserContext";
 import apiClient from "../../../api/apiClient";
 import CustomTable from "../CustomTable/CustomTable";
-import { useLocation } from "react-router-dom";
 import "./UserDetails.css";
 
 const DepositHistory = () => {
   const { userData } = useUser();
-  const location = useLocation();
+
 
   // Deposit state (client-side pagination)
   const [historyData, setHistoryData] = useState([]);      // all deposit data
@@ -20,7 +19,7 @@ const DepositHistory = () => {
   const [depositCurrentPage, setDepositCurrentPage] = useState(1);
   const depositItemsPerPage = 10;
   
-  const filterType = location.state?.type || "ALL";
+  const filterType =  "ALL";
   const regno = Number(userData?.regno || localStorage.getItem("regno"));
   // ========== DEPOSIT: Fetch all data once (client-side pagination) ==========
   const fetchAllDepositData = async () => {

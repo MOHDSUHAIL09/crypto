@@ -36,7 +36,7 @@ const Income = () => {
         style={{ cursor: 'pointer' }}
       >
         All income <br />
-        <strong>{(userData.Working || 0).toFixed(2)}</strong>
+        <strong> ${(userData.Working || 0).toFixed(2)}</strong>
       </div>
 
       <div className="flowchart-line-vertical"></div>
@@ -123,7 +123,7 @@ const Income = () => {
         <div className="flowchart-node flowchart-orange" onClick={() => goToPage("ALL")}>
           Company Profit <br />
           <span style={{ color: "#105614", fontWeight: "700" }}>
-            ${userData?.notvalue || 0}
+            ${userData?.GlobalRoyaltyIncon || 0}
           </span>
         </div>
       </div>

@@ -59,8 +59,8 @@ export const UserProvider = ({ children }) => {
           referral: apiData.introid,
           kid: apiData.kid,
           Depositfund: apiData.topupwallet,
-          BotAmount: apiData.BotAmount,
-          InvestAmount: apiData.InvestAmount,
+          BotFund: apiData.BotFund,
+          Invest: apiData.Invest,
           totalWallet: apiData.totalWallet,
           walletid: apiData.walletid,
           LevelIncome: apiData.LevelIncome,
@@ -83,8 +83,10 @@ export const UserProvider = ({ children }) => {
           RightBusiness: apiData.RightBusiness,
           topupdate: apiData.topupdate,
           Working: apiData.Working,
+          MiningTeamBusiness: apiData.MiningTeamBusiness,
+          topupwallet: apiData.topupwallet,
         };
-        
+         
         setUserData(newUserData);
         localStorage.setItem("userData", JSON.stringify(newUserData));
       }

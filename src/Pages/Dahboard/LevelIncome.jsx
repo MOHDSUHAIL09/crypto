@@ -130,6 +130,10 @@ const regno = localStorage.getItem("regno");
                                     <span className="stext">Direct Id</span>
                                     <span>{userData?.directId || 0}</span>
                                   </div>
+                                    <div className="level-card">
+                                    <span className="stext">Invest Business</span>
+                                    <span>{userData?.MiningTeamBusiness || 0}</span>
+                                  </div>
                                   <div className="level-card">
                                     <span className="stext">Strong/Weaker Leg</span>
                                     <span>{userData?.strongLeg} / {userData?.weakerLeg}</span>

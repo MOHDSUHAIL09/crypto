@@ -11,7 +11,7 @@ const DownlineTeam = () => {
   const [loading, setLoading] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [totalBusiness, setTotalBusiness] = useState(0); // ✅ Added state for totalBusiness
+  const [totalBusiness, setTotalBusiness] = useState(0); 
   const pageSize = 10;
   const regno = localStorage.getItem("regno");
 
@@ -22,7 +22,7 @@ const DownlineTeam = () => {
     try {
       let findlvl;
       if (selectedLevel === 0) {
-        findlvl = -1; 
+        findlvl = 0; 
       } else {
         findlvl = selectedLevel; 
       }
@@ -194,11 +194,11 @@ const DownlineTeam = () => {
                   </td>
                   <td className="text-center">
                     <div className="user-name-text">{user.loginid || "N/A"}</div>
-                    <div className="user-id-subtext">{user.Name || "N/A"}</div>
+                    <div className="user-id-subtext">{user.name || "N/A"}</div>
                   </td>
                   <td className="text-center">
                     <div className="sponsor-id-text">{user.Sponsor || "N/A"}</div>
-                    <div className="user-id-subtext">{user.sponsername || "N/A"}</div>
+                    <div className="user-id-subtext">{user.introName || "N/A"}</div>
                   </td>
                   <td className="text-center">
                     <div className="amount-text-green">

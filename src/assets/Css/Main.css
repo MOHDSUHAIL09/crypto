@@ -2568,7 +2568,7 @@ li.mediic-border {
 .subscribe_form input:focus,
 button:focus {
   outline-color: var(--secondary-color);
-  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+  /* border: 2px solid rgba(255, 255, 255, 0.2) ; */
 }
 
 /* widget */
@@ -3062,6 +3062,7 @@ span.fill {
   }
   .row.appoinment .col-lg-6:last-child {
     order: 1; /* form column becomes first */
+    margin: 20px;
   }
 
 
@@ -8669,5 +8670,21 @@ box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.1);
 .wallet-header01:hover{
   color: #d0860f !important;
 }
+.refers-id{
+ background: linear-gradient(to right, var(--primary-clr), var(--secondary-clr));  
+ padding: 10px;
+ border-radius: 8px;
+}
 
+.ms_auto{
+  margin-left: auto!important;
+}
 
+@media screen and (max-width: 410px) {
+  .ms_auto{
+  margin-left: 0!important;
+  width: 100%;
+ 
+}
+
+}

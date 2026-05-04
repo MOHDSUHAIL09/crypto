@@ -8,7 +8,7 @@ const AccStatement = () => {
   const location = useLocation();
   const columns = ["Sl.No.", "Credit", "Debit", "Date", "Type", "Remark"];
   
-  const [tableData, setTableData] = useState([]); // Current page data
+  const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasNextPage, setHasNextPage] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -19,23 +19,44 @@ const AccStatement = () => {
 
   const stateType = location.state?.transtype || location.state?.type;
   
-  // 🔥 FIX: initialSelectedType ko use karo selectedType ke liye
+  // ✅ FIX: Map URL param to correct API value
   let initialSelectedType = urlType;
-  if (stateType === "fundtransfer" || stateType === "FUND TRANSFER") {
-    initialSelectedType = "fundtransfer";
+  
+  // Map "fundtransfer" to "Fund Transfer" for API
+  if (urlType === "fundtransfer") {
+    initialSelectedType = "Fund Transfer";
+  }
+  // Map state type
+  if (stateType === "Fund Transfer" || stateType === "FUND TRANSFER" || stateType === "fundtransfer") {
+    initialSelectedType = "Fund Transfer";
   }
   
-  const [selectedType, setSelectedType] = useState(initialSelectedType); // ✅ ab state se set hoga
+  const [selectedType, setSelectedType] = useState(initialSelectedType);
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize] = useState(10);
 
   const regno = localStorage.getItem("regno");
 
-  // Function to get display name (added fundtransfer)
+  // ✅ Function to get API param value from display type
+  const getApiTypeValue = (displayType) => {
+    const typeMap = {
+      "ALL": "ALL",
+      "Fund Transfer": "Fund Transfer",
+      "FUND WITHDRAWAL": "FUND WITHDRAWAL",
+      "INSURANCE FEE": "INSURANCE FEE",
+      "LEVEL INCOME": "LEVEL INCOME",
+      "LOST IB INCOME": "LOST IB INCOME",
+      "MATCHING INCOME": "MATCHING INCOME",
+      "TRADING PASSIVE INCOME": "TRADING PASSIVE INCOME"
+    };
+    return typeMap[displayType] || displayType;
+  };
+
+  // Function to get display name
   const getTypeDisplayName = (typeValue) => {
     const typeMap = {
       "ALL": "All Transactions",
-      "fundtransfer": "Fund Transfer",    // ✅ added
+      "Fund Transfer": "Fund Transfer",
       "FUND WITHDRAWAL": "Fund Withdrawal",
       "INSURANCE FEE": "Insurance Fee",
       "LEVEL INCOME": "Level Income",
@@ -50,10 +71,15 @@ const AccStatement = () => {
     fetchStatement();
   }, [pageIndex, selectedType]);
 
-  // Update when URL changes (only if not overridden by state)
   useEffect(() => {
-    const newType = queryParams.get("type") || "ALL";
-    // Agar state se override ho raha hai to URL change ignore karo
+    const newTypeParam = queryParams.get("type") || "ALL";
+    let newType = newTypeParam;
+    
+    // ✅ Map URL param to correct value
+    if (newTypeParam === "fundtransfer") {
+      newType = "Fund Transfer";
+    }
+    
     if (newType !== selectedType && !location.state?.transtype) {
       setSelectedType(newType);
       setPageIndex(1);
@@ -63,14 +89,27 @@ const AccStatement = () => {
   const fetchStatement = async () => {
     try {
       setLoading(true);
+      // ✅ Send the API value (display value is already correct)
+      const apiType = getApiTypeValue(selectedType);
+      
+      console.log("📤 API Request:", {
+        regno: regno,
+        transtype: apiType,
+        pageIndex: pageIndex,
+        pageSize: pageSize,
+      });
+      
       const response = await apiClient.get("/Dashboard/income-report", {
         params: {
           regno: regno,
-          transtype: selectedType,
+          transtype: apiType,
           pageIndex: pageIndex,
           pageSize: pageSize,
-        },
+        },  
       });
+      
+      console.log("📥 API Response:", response.data);
+      
       const apiData = response.data?.data?.data || [];
       const total = response.data?.data?.recordCount || 0;
       setTableData(apiData);
@@ -90,22 +129,28 @@ const AccStatement = () => {
     const newType = event.target.value;
     setSelectedType(newType);
     setPageIndex(1);
-    // Update URL
+    
+    // ✅ Update URL with correct param
+    let urlParam = newType;
+    if (newType === "Fund Transfer") {
+      urlParam = "fundtransfer";
+    }
+    
     const url = new URL(window.location);
-    url.searchParams.set("type", newType);
+    url.searchParams.set("type", urlParam);
     window.history.pushState({}, "", url);
   };
 
-  // Navigation functions for pagination
   const goToPreviousPage = () => {
     if (pageIndex > 1) setPageIndex(pageIndex - 1);
   };
+  
   const goToNextPage = () => {
     if (hasNextPage) setPageIndex(pageIndex + 1);
   };
+  
   const goToPage = (page) => setPageIndex(page);
 
-  // Generate page numbers with ellipsis (original logic)
   const getPagination = () => {
     const totalPages = Math.ceil(totalRecords / pageSize);
     const delta = 2;
@@ -146,7 +191,7 @@ const AccStatement = () => {
               onChange={handleTypeChange}
             >
               <option value="ALL">--Select--</option>
-              <option value="fundtransfer">Fund Transfer</option>   {/* ✅ Added */}
+              <option value="Fund Transfer">Fund Transfer</option>
               <option value="FUND WITHDRAWAL">Fund Withdrawal</option>
               <option value="INSURANCE FEE">Insurance Fee</option>
               <option value="LEVEL INCOME">Level Income</option>

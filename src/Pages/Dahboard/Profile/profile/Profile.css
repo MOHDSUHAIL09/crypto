@@ -499,12 +499,12 @@ input[type="password"].text,
 }
 
 .secondary-btn {
-  background: #638be2;
+  background: #0c4a9a;
   color: #f9f9f9;
 }
 
 .secondary-btn:hover {
-  background: #e2e8f0;
+   background: #638be2;
 }
 
 .security-footer {

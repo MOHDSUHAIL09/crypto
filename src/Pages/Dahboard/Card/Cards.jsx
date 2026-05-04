@@ -25,12 +25,14 @@ const Cards = () => {
   const [usdToInrRate, setUsdToInrRate] = useState(null);
   const [fetchingRate, setFetchingRate] = useState(false);
   const [rateError, setRateError] = useState(null);
-  // ✅ FIXED: store timeLeft value
   const [timeLeft, setTimeLeft] = useState("");
   const [copied, setCopied] = useState(false);
 
   // Payout input amount state
   const [payoutAmount, setPayoutAmount] = useState('');
+  const [minimumWithdraw, setMinimumWithdraw] = useState(0);
+  const [payoutApiBalance, setPayoutApiBalance] = useState(0);
+  const [payoutLoading, setPayoutLoading] = useState(false);
 
   // Context data
   const { userData, stakeData, loading, refreshData } = useUser();
@@ -40,7 +42,7 @@ const Cards = () => {
     ? `${baseUrl}signup?ref=${userData.me}`
     : baseUrl;
 
-  // Copy referral link to clipboard
+
   const handleCopy = () => {
     navigator.clipboard.writeText(referralLink);
     setCopied(true);
@@ -63,6 +65,7 @@ const Cards = () => {
     if (user?.me) return user.me;
     return 'india';
   };
+
   const loginid = getLoginId();
   const regno = userData?.regno || userData?.Regno || localStorage.getItem('regno');
 
@@ -73,6 +76,50 @@ const Cards = () => {
   const copyReferral = (text) => {
     navigator.clipboard.writeText(text);
     toast.success("Sponsor ID Copied!");
+  };
+
+  // ✅ Fetch Payout Balance from API
+  const fetchPayoutBalance = async () => {
+    if (!regno) return;
+    setPayoutLoading(true);
+    try {
+      const response = await apiClient.get(`/IncomePayout/balance/${regno}`);
+      console.log("💰 Payout Balance Response:", response.data);
+
+      // API returns: { success: true, statusCode: 200, response: 29.0645 }
+      if (response.data?.success === true) {
+        const balance = response.data?.response || 0;
+        console.log("✅ Balance:", balance);
+        setPayoutApiBalance(balance);
+      } else {
+        setPayoutApiBalance(0);
+      }
+    } catch (error) {
+      console.error("Error fetching payout balance:", error);
+      setPayoutApiBalance(0);
+    } finally {
+      setPayoutLoading(false);
+    }
+  };
+
+  // ✅ Fetch Minimum Withdraw Limit - CORRECTED
+  const fetchMinimumWithdrawLimit = async () => {
+    try {
+      const response = await apiClient.get(`/IncomePayout/minimun-withdraw-limit`);
+      console.log("💰 Minimum Withdraw Response:", response.data);
+
+      // API returns: { success: true, statusCode: 200, message: "...", data: 20 }
+      if (response.data?.success === true) {
+        const minLimit = response.data?.data || 20;
+        console.log("✅ Minimum Withdraw Limit:", minLimit);
+        setMinimumWithdraw(minLimit);
+      } else {
+        setMinimumWithdraw(20);
+      }
+    } catch (error) {
+      console.error("Error fetching minimum withdraw limit:", error);
+      setMinimumWithdraw(20);
+    }
   };
 
   // Fetch live USD/INR rate
@@ -96,6 +143,14 @@ const Cards = () => {
       setFetchingRate(false);
     }
   };
+
+  // ✅ Fetch data on mount
+  useEffect(() => {
+    if (regno) {
+      fetchPayoutBalance();
+      fetchMinimumWithdrawLimit();
+    }
+  }, [regno, userData?.Remaining]);
 
   // Countdown timer effect
   useEffect(() => {
@@ -194,12 +249,12 @@ const Cards = () => {
       toast.error('Please enter a valid amount');
       return;
     }
-    if (amountNum < 20) {
-      toast.error('Minimum withdrawal amount is $20.00');
+    if (amountNum < minimumWithdraw) {
+      toast.error(`Minimum withdrawal amount is $${minimumWithdraw.toFixed(2)}`);
       return;
     }
-    if (amountNum > (userData?.Remaining || 0)) {
-      toast.error(`Amount exceeds available balance $${userData?.Remaining?.toFixed(2)}`);
+    if (amountNum > displayBalance) {
+      toast.error(`Amount exceeds available balance $${displayBalance.toFixed(2)}`);
       return;
     }
     if (!withdrawOtp || withdrawOtp.length !== 6) {
@@ -270,6 +325,7 @@ const Cards = () => {
       if (withdrawalRes.data?.success) {
         toast.success(`Withdrawal request for $${amountNum.toFixed(2)} submitted successfully!`);
         refreshData();
+        await fetchPayoutBalance();
         setShowWithdrawModal(false);
         setWithdrawAmount('');
         setWithdrawOtp('');
@@ -289,44 +345,27 @@ const Cards = () => {
     }
   };
 
+
+  // ✅ Display balance
+  const displayBalance = payoutApiBalance > 0 ? payoutApiBalance : (userData?.Remaining || 0);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 600);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   if (loading) return <div>Loading...</div>;
 
   return (
     <>
-<div className="row top-refers g-2 mt-2 px-3">
-  <div className="col-12 col-md-6">
-    {timeLeft && (
-      <div className="countdown-timer text-center  fw-bold" style={{ 
-        fontSize: '14px', 
-        color: '#ffffff',
-        boxShadow: '0 4px 12px rgba(33, 33, 33, 0.2)',
-        padding: '12px 15px',
-      }}>
-        {timeLeft}
-      </div>
-    )}
-  </div>
 
 
-  <div className="countdown-timer col-12 col-md-6">
-    <div style={{
-      padding: '12px 15px', 
-    }}>
-      <p className="referral-mobile-only text-center mb-0">
-        <strong className="d-flex align-items-center justify-content-center justify-content-md-center fw-bold flex-wrap gap-1">
-          <span style={{ color: "#ffffff", fontSize: "14px" }}>Referral Link :</span>
-          <span style={{ fontSize: '14px', color: "#ffffff" }} className="fw-bold">
-            {referralLink}
-          </span>
-          <FaRegCopy
-            style={{ cursor: 'pointer', color: "#ffb700" }}
-            onClick={handleCopy}
-          />
-        </strong>
-      </p>
-    </div>
-  </div>
-</div>
 
       <div className="row p-3">
         {/* 1. User Info Card */}
@@ -358,9 +397,8 @@ const Cards = () => {
                   </div>
                 </div>
 
-                <div className="timer d-flex justify-content-between">
-                  <div className="">
-                  
+                <div className="d-flex justify-content-between align-items-center flex-wrap">
+                  <div>
                     <div className=''>
                     <p className="mb-1"><strong>Me :</strong>&nbsp; {userData?.me || "N/A"}</p>
                     <p className="mb-1">
@@ -369,14 +407,24 @@ const Cards = () => {
                         <FaRegCopy style={{ cursor: 'pointer', marginLeft: '5px' }} onClick={() => copyReferral(userData?.referral)} />
                       </strong>
                     </p>
-                    </div>
+                  </div>
+                  </div>
+                  <div className='justify-content-end align-items-center ms_auto'>
+                    <div className='countdown-time w-full'>
+                    {timeLeft && (
+                      <div className="countdown-timer fw-bold " style={{
+                        fontSize: '14px',
+                        color: '#ffffff',
+                        boxShadow: '0 4px 12px rgba(33, 33, 33, 0.2)',
+                        padding: '12px 15px',
+                      }}>
+                        {timeLeft}
+                      </div>
 
-                
-
-
-
-
-
+                    )}
+                  </div>
+                  </div>
+                  <div>
                   </div>
                 </div>
               </div>
@@ -384,7 +432,7 @@ const Cards = () => {
           </div>
         </div>
 
-        {/* 2. Stake Card with Countdown Timer */}
+        {/* 2. Stake Card */}
         <div className="col-lg-4 col-md-5">
           <div className="card1 no-animate custom-card1 p-0 rounded_5">
             <div className="card1-body px-3 py-3">
@@ -404,22 +452,25 @@ const Cards = () => {
                     <div className="d-flex flex-wrap justify-content-between">
                       <Link to="/dashboard/depositHistory">
                         <p className="mb-1">
-                          <strong title='Deposit History'>Deposit Fund : </strong><span className='Investment-text'>
-                            ${userData?.Depositfund || 0}
+                          <strong title='Deposit History'>Deposit Fund : </strong>
+                          <span className='Investment-text'>
+                            ${userData?.topupwallet || 0}
                           </span>
                         </p>
                       </Link>
                       <div className='fundbtn'>
-                        <button type="button" title='fund-deposit' className="wallet-buttton b"><MdAddCard size={20} /></button>
+                        <button type="button" title='fund-deposit' className="wallet-buttton b">
+                          <MdAddCard size={20} />
+                        </button>
                       </div>
                     </div>
 
-                    <div className='investment-wrapper d-flex gap-0 gap-md-4 flex-wrap '>
+                    <div className='investment-wrapper d-flex gap-0 gap-md-4 flex-wrap'>
                       <Link to="/dashboard/investmenthistory">
                         <p className="mb-0">
                           <strong title='Subscription History'>Subscription : </strong>
                           <span className='Investment-text'>
-                            ${(userData?.BotAmount || 0).toLocaleString("en-IN")}
+                            ${(userData?.BotFund || 0).toLocaleString("en-IN")}
                           </span>
                         </p>
                       </Link>
@@ -427,7 +478,7 @@ const Cards = () => {
                         <p className="mb-0 ms-0 md:ms-4">
                           <strong title='Investment History'>Investment : </strong>
                           <span className='Investment-text'>
-                            ${(userData?.InvestAmount || 0).toLocaleString("en-IN")}
+                            ${(userData?.Invest || 0).toLocaleString("en-IN")}
                           </span>
                         </p>
                       </Link>
@@ -460,21 +511,27 @@ const Cards = () => {
                   <div className="d-flex align-items-center justify-content-between">
                     <Link to="/dashboard/WithdrawalHistory">
                       <h6 className='hover-text small-text mb-1' title='WithdrawalHistory'>
-                        Payout Amt : <span className="pay-badge pay-bg"><strong>${parseFloat(userData?.Remaining || 0).toFixed(2)}</strong></span>
+                        Payout Amt :
+                        <span className="pay-badge pay-bg">
+                          <strong className='mt-2'>${displayBalance.toFixed(2)}</strong>
+                        </span>
                       </h6>
                     </Link>
                     <button
                       type="button"
                       className="wallet-buttton"
                       onClick={handlePayoutClick}
+                      disabled={payoutLoading || displayBalance <= 0}
                     >
-                      Payout
+                      {payoutLoading ? "Processing..." : "Payout"}
                     </button>
                   </div>
 
-                  <div className='d-flex align-items-center gap-2'>
+                  <div className='d-flex align-items-center gap-2 mt-2'>
                     <span style={{ color: "green", fontWeight: "bold" }}>Note :</span>
-                    <p style={{ margin: 0, color: "#666", fontSize: "13px" }}> Min Withdrawal $ 20.00</p>
+                    <p style={{ margin: 0, color: "#666", fontSize: "13px" }}>
+                      Min Withdrawal ${minimumWithdraw.toFixed(2)}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -508,7 +565,7 @@ const Cards = () => {
             <div className="modal-body">
               <div className="balance-info">
                 <span>Available balance</span>
-                <strong>${parseFloat(userData?.Remaining || 0).toFixed(2)}</strong>
+                <strong>${displayBalance.toFixed(2)}</strong>
               </div>
 
               <div className='meddle'>
