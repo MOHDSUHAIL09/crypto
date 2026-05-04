@@ -36,8 +36,8 @@ const Adventure = () => {
   return (
     <div className="about-section">
       <div className="container">
-        <div className="row about-bg align-items-center">
-          <div className="col-lg-6 pl-0">
+        <div className="row about-bg align-items-center p-3">
+          <div className="col-lg-6">
             <div className="about-thumb">
               <img className='about-thumb2' src={aboutImg} alt="about" />
             </div>

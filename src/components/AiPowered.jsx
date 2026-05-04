@@ -12,7 +12,7 @@ const AiPoweredInvestment = () => {
               <div className="top-mediic-section text-center">
                 <div className="mediic-section-title">
                   <h4>HEALTHCARE INVESTMENT SUCCESS</h4>
-                  <h1>AI-POWERED HEALTHCARE INVESTMENT ANALYSIS</h1>
+                  <h1 className="mb-5">AI-POWERED HEALTHCARE INVESTMENT ANALYSIS</h1>
                 </div>
               </div>
             </div>

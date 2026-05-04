@@ -59,6 +59,7 @@
   .mediic-section-title h1 {
     font-size: 45px;
     line-height: 45px;
+    margin-bottom: 20px !important;
   }
 
   /* About Section */
@@ -1940,6 +1941,7 @@
   .mediic-section-title h1 {
     font-size: 21px;
     line-height: 30px;
+    margin-bottom: 20px;
   }
 
   .mediic-section-title h4 {

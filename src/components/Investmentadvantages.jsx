@@ -63,7 +63,7 @@ const Service = () => {
           <img src={shapeImg} alt="shape" />
         </div>
      
-        <div className="row service-bg"> 
+        <div className="row service-bg p-4"> 
           <section className="mediic-service-box">
             <div className="category_container">
               {services.map((service, idx) => (

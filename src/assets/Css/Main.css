@@ -653,7 +653,6 @@ span.wood-animation img {
   position: relative;
   z-index: 1;
   display: inline-block;
-  margin-bottom: 12px;
 }
 
 .mediic-section-title h4:before {
@@ -3010,7 +3009,7 @@ span.fill {
 }
 
 .mediic-section-title2{
-  padding: 35px;
+  padding: 30px;
   margin-bottom: -50px;
 }
 
@@ -7660,6 +7659,7 @@ h6 {
 .white h6 {
   color: #fff;
   line-height: 1.2;
+  margin-bottom: 20px;
 }
 
 .white p {
@@ -8686,5 +8686,7 @@ box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.1);
   width: 100%;
  
 }
-
+}
+.auth-form{
+  padding: 30px;
 }
