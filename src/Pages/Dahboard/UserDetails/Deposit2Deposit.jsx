@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { RiP2pFill } from "react-icons/ri";
 import { FaHistory } from "react-icons/fa";
 import { IoSend, IoClose } from "react-icons/io5";
@@ -10,7 +10,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "./UserDetails.css";
 
 export const Deposit2Deposit = () => {
-  const { userData, investNow, fetchUserData } = useUser();
+  // ✅ CHANGE: refreshData instead of fetchUserData
+  const { userData, investNow, refreshData } = useUser();
   const navigate = useNavigate();
 
   // ---------- Helper: get loginid & regno ----------
@@ -48,6 +49,7 @@ export const Deposit2Deposit = () => {
   const [loading2, setLoading2] = useState(false);
   const [otpTimer, setOtpTimer] = useState(0);
   const [otpIntervalId, setOtpIntervalId] = useState(null);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
   
   const depositOptions = [100, 300, 500, 1000, 10000, 50000];
   const isLoading = !userData;
@@ -59,14 +61,30 @@ export const Deposit2Deposit = () => {
     return `$${num.toFixed(2)}`;
   };
 
+  // Button disable condition for P2P Transfer
+  const isP2PButtonDisabled = useMemo(() => {
+    return !validUser1 || loading1 || amount1 <= 0 || !investUserId1 || investUserId1.trim() === "";
+  }, [validUser1, loading1, amount1, investUserId1]);
+
+  // Button disable condition for Self Transfer
+  const isSelfTransferDisabled = useMemo(() => {
+    return loading2 || !otp || otp.trim() === "" || amount2 <= 0;
+  }, [loading2, otp, amount2]);
+
   // ---------- P2P user check ----------
   const checkUser1 = async (id) => {
-    if (!id.trim()) return;
+    if (!id || id.trim() === "") {
+      setValidUser1(false);
+      setUserName1("");
+      return;
+    }
+    
     setCheckingUser1(true);
     try {
       const res = await apiClient.get(`/User/check-user?loginid=${id}`);
       const data = res.data;
       const name = data?.data?.Name || data?.data?.name || "";
+      
       if (data?.success && data.data) {
         setValidUser1(true);
         setUserName1(name);
@@ -88,28 +106,47 @@ export const Deposit2Deposit = () => {
 
   // ---------- P2P Transfer (Deposit to Deposit) ----------
   const handleInvest1 = async () => {
-    if (!amount1 || !investUserId1) {
-      toast.error("Please enter User ID and Amount");
+    // Validation checks
+    if (!investUserId1 || investUserId1.trim() === "") {
+      toast.error("Please enter User ID");
+      return;
+    }
+    if (!amount1 || amount1 <= 0) {
+      toast.error("Please enter valid amount");
+      return;
+    }
+    if (!validUser1) {
+      toast.error("Please enter a valid User ID");
       return;
     }
     if (amount1 > userData.Depositfund) {
-      toast.error("Insufficient Deposit Wallet balance");
+      toast.error(`Insufficient Deposit Wallet balance. Available: ${formatBalance(userData.Depositfund)}`);
       return;
     }
+    
     setLoading1(true);
+    
     try {
       const res = await investNow(investUserId1, amount1);
-      toast.success(res.message);
+      
       if (res.success) {
+        toast.success(res.message || "Transfer successful!");
+        
+        // Reset form on success
         setAmount1(100);
         setInvestUserId1("");
         setUserName1("");
         setValidUser1(false);
-        await fetchUserData(); 
+        
+        // ✅ FIXED: Use refreshData instead of fetchUserData
+        await refreshData();
+        
+      } else {
+        toast.error(res.message || "Transfer failed");
       }
     } catch (err) {
       console.error("Transfer error:", err);
-      toast.error("Error processing transfer");
+      toast.error(err.response?.data?.message || err.message || "Error processing transfer");
     } finally {
       setLoading1(false);
     }
@@ -117,15 +154,24 @@ export const Deposit2Deposit = () => {
 
   // ---------- SEND OTP for Self Transfer ----------
   const sendOtp = async () => {
+    if (isSendingOtp || otpTimer > 0) {
+      return;
+    }
+    
     if (!regno) {
       toast.error("Registration number not found. Please login again.");
       return;
     }
+    
+    setIsSendingOtp(true);
+    
     try {
       const response = await apiClient.post(`/User/genrate-otp?loginid=${loginid}&regno=${regno}`, {});
+      
       if (response.data.success || response.data.status === 'success') {
         toast.success("OTP sent successfully!");
         setOtpTimer(300);
+        
         const interval = setInterval(() => {
           setOtpTimer((prev) => {
             if (prev <= 1) {
@@ -136,87 +182,85 @@ export const Deposit2Deposit = () => {
             return prev - 1;
           });
         }, 1000);
+        
         setOtpIntervalId(interval);
       } else {
         toast.error(response.data.message || "Failed to send OTP");
       }
     } catch (error) {
       console.error("OTP send error:", error);
-      const msg = error.response?.data?.message || "Network error";
-      toast.error(msg);
+      toast.error(error.response?.data?.message || "Network error");
+    } finally {
+      setIsSendingOtp(false);
     }
   };
 
-  // ========== NEW: SELF TRANSFER with Fund Transfer API ==========
-const handleSelfTransfer = async () => {
-  // Validation
-  if (!amount2 || amount2 <= 0) {
-    toast.error("Please enter valid amount");
-    return;
-  }
-  if (amount2 > userData.totalWallet) {
-    toast.error(`Insufficient Income Wallet balance. Available: ${formatBalance(userData.totalWallet)}`);
-    return;
-  }
-  if (!otp) {
-    toast.error("Please enter OTP");
-    return;
-  }
-
-  setLoading2(true);
-  try {
-    // Step 1: Verify OTP
-    const verifyResponse = await apiClient.post('/User/verify-otp', null, {
-      params: { loginid, regno, otp }
-    });
-
-    if (!verifyResponse.data.success) {
-      toast.error(verifyResponse.data.message || "Invalid OTP");
-      setLoading2(false);
+  // ========== SELF TRANSFER with Fund Transfer API ==========
+  const handleSelfTransfer = async () => {
+    // Validation checks
+    if (!amount2 || amount2 <= 0) {
+      toast.error("Please enter valid amount");
       return;
     }
+    if (amount2 > userData.totalWallet) {
+      toast.error(`Insufficient Income Wallet balance. Available: ${formatBalance(userData.totalWallet)}`);
+      return;
+    }
+    if (!otp || otp.trim() === "") {
+      toast.error("Please enter OTP");
+      return;
+    }
+    
+    setLoading2(true);
+    
+    try {
+      // Step 1: Verify OTP
+      const verifyResponse = await apiClient.post('/User/verify-otp', null, {
+        params: { loginid, regno, otp }
+      });
 
-    // Step 2: Call Fund Transfer API
-    const transferPayload = {
-      regno: regno,
-      reciveId: loginid, 
-      amount: amount2
-    };
+      if (!verifyResponse.data.success) {
+        toast.error(verifyResponse.data.message || "Invalid OTP");
+        setLoading2(false);
+        return;
+      }
 
-    console.log("📤 Sending transfer payload:", transferPayload);
+      // Step 2: Call Fund Transfer API
+      const transferPayload = {
+        regno: regno,
+        reciveId: loginid, 
+        amount: amount2
+      };
 
-    const transferResponse = await apiClient.post("/IncomePayout/fund-transfer", transferPayload);
-    console.log("📥 Transfer response:", transferResponse.data);
+      console.log("📤 Sending transfer payload:", transferPayload);
 
-    if (transferResponse.data.success) {
-      toast.success(transferResponse.data.message || "Transfer successful!");
-      
-      // Reset form
-      setAmount2(100);
-      setOtp("");
-      setOtpTimer(0);
-      if (otpIntervalId) {
-        clearInterval(otpIntervalId);
-        setOtpIntervalId(null);
+      const transferResponse = await apiClient.post("/IncomePayout/fund-transfer", transferPayload);
+      console.log("📥 Transfer response:", transferResponse.data);
+
+      if (transferResponse.data.success) {
+        toast.success(transferResponse.data.message || "Transfer successful!");
+        
+        // Reset form on success
+        setAmount2(100);
+        setOtp("");
+        setOtpTimer(0);       
+        if (otpIntervalId) {
+          clearInterval(otpIntervalId);
+          setOtpIntervalId(null);
+        }
+       
+      } else {
+        toast.error(transferResponse.data.message || "Transfer failed");
       }
       
-      // ✅ Refresh user data (without page reload)
-      await fetchUserData();
-      
-      // ✅ Optional: Show updated balance
-      toast.info(`Updated Income Wallet: ${formatBalance(userData.totalWallet)}`);
-      
-    } else {
-      toast.error(transferResponse.data.message || "Transfer failed");
+    } catch (err) {
+      console.error("Transfer error:", err);
+      const errorMsg = err.response?.data?.message || err.message || "Network error";
+      toast.error(errorMsg);
+    } finally {
+      setLoading2(false);
     }
-  } catch (err) {
-    console.error("Transfer error:", err);
-    const errorMsg = err.response?.data?.message || err.message || "Network error";
-    toast.error(errorMsg);
-  } finally {
-    setLoading2(false);
-  }
-};  
+  };  
 
   // Cleanup timer on unmount
   useEffect(() => {
@@ -234,7 +278,7 @@ const handleSelfTransfer = async () => {
           <div className="loading">Loading Wallet...</div>
         ) : (
           <div className="deposit-col d-flex flex-lg-nowrap flex-wrap justify-content-between align-items-start p-1">
-            {/* SELF TRANSFER CARD - Income Wallet to Deposit Wallet */}
+            {/* SELF TRANSFER CARD */}
             <div className="deposit-card">
               <div className="d-flex justify-content-between ">
                 <div className="deposit-title">
@@ -318,21 +362,23 @@ const handleSelfTransfer = async () => {
                     <button 
                       className="clear-btn" 
                       onClick={sendOtp} 
-                      disabled={otpTimer > 0}
-                      title={otpTimer > 0 ? `Wait ${Math.floor(otpTimer / 60)}:${(otpTimer % 60).toString().padStart(2, "0")}` : "Send OTP"}
+                      disabled={isSendingOtp || otpTimer > 0}
+                      title={isSendingOtp ? "Sending OTP..." : (otpTimer > 0 ? `Wait ${Math.floor(otpTimer / 60)}:${(otpTimer % 60).toString().padStart(2, "0")}` : "Send OTP")}
                     >
-                      {otpTimer > 0
-                        ? `${Math.floor(otpTimer / 60)}:${(otpTimer % 60)
-                          .toString()
-                          .padStart(2, "0")}`
-                        : <IoSend />}
+                      {isSendingOtp ? (
+                        <span className="otp-spinner"></span>
+                      ) : otpTimer > 0 ? (
+                        `${Math.floor(otpTimer / 60)}:${(otpTimer % 60).toString().padStart(2, "0")}`
+                      ) : (
+                        <IoSend />
+                      )}
                     </button>
                   </div>
 
                   <button 
                     className="deposit-btn" 
                     onClick={handleSelfTransfer} 
-                    disabled={loading2 || !otp || amount2 <= 0}
+                    disabled={isSelfTransferDisabled}
                   >
                     {loading2 ? "Processing..." : "Transfer"}
                   </button>
@@ -340,7 +386,7 @@ const handleSelfTransfer = async () => {
               </div>
             </div>
 
-            {/* P2P TRANSFER CARD - Deposit to Deposit */}
+            {/* P2P TRANSFER CARD */}
             <div className="deposit-card">
               <div className="d-flex justify-content-between ">
                 <div className="deposit-title">
@@ -393,15 +439,33 @@ const handleSelfTransfer = async () => {
                       <input
                         type="text"
                         value={investUserId1}
-                        onChange={(e) => setInvestUserId1(e.target.value)}
-                        onBlur={() => checkUser1(investUserId1)}
+                        onChange={(e) => {
+                          setInvestUserId1(e.target.value);
+                          if (validUser1) {
+                            setValidUser1(false);
+                            setUserName1("");
+                          }
+                        }}
+                        onBlur={() => {
+                          if (investUserId1 && investUserId1.trim() !== "") {
+                            checkUser1(investUserId1);
+                          } else {
+                            setValidUser1(false);
+                            setUserName1("");
+                          }
+                        }}
                         placeholder="Enter User ID"
                       />
                     </div>
                   </div>
 
-                  {checkingUser1 && <small className="text-muted">Checking...</small>}
+                  {checkingUser1 && <small className="text-muted">Checking user...</small>}
                   {validUser1 && <small className="success-msg" style={{ color: "green" }}>✓ {userName1}</small>}
+                  {investUserId1 && !validUser1 && !checkingUser1 && (
+                    <small style={{ color: "red", display: "block", marginTop: "5px" }}>
+                      ✗ Please enter a valid User ID
+                    </small>
+                  )}
 
                   <div className="options-grid">
                     {depositOptions.map((opt) => (
@@ -432,7 +496,7 @@ const handleSelfTransfer = async () => {
                   <button 
                     className="deposit-btn" 
                     onClick={handleInvest1} 
-                    disabled={!validUser1 || loading1 || amount1 <= 0}
+                    disabled={isP2PButtonDisabled}
                   >
                     {loading1 ? "Processing..." : "Deposit"}
                   </button>

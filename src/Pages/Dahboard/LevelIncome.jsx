@@ -124,7 +124,7 @@ const regno = localStorage.getItem("regno");
                             <div className="popup-backdrop" onClick={() => setOpen(false)} />
                             <div className="popup-modal modal-a">
                               <div className="level-counts-wrapper">
-                                <button className="close-btn" onClick={() => setOpen(false)}>✕</button>
+                                <button className="close-btn-line" onClick={() => setOpen(false)}>✕</button>
                                 <div className="coins">
                                   <div className="level-card">
                                     <span className="stext">Direct Id</span>

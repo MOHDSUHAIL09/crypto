@@ -255,7 +255,7 @@ const Login = () => {
                   <h3 className="cursor-scale small">Login to your account</h3>
                 </div>
                 <div className="contact-form-box">
-                  <div className="auth-form" onSubmit={handleLogin} id="login-form">
+                  <form className="auth-form" onSubmit={handleLogin} id="login-form">
                     <div className="row">
                       <div className="col-lg-12 col-md-12">
                         <div className="form-box">
@@ -305,7 +305,7 @@ const Login = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>

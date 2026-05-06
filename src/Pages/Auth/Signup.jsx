@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link, NavLink } from "react-router-dom";
 import toast from "react-hot-toast";
 import { CgMenuGridR } from "react-icons/cg";
+import { FaCopy, FaCheck, FaUser, FaEnvelope, FaIdCard } from "react-icons/fa";
 import "../../assets/Css/Auth.css";
 import apiClient from "../../api/apiClient";
 
@@ -17,6 +18,11 @@ const Signup = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isInfoGroupActive, setIsInfoGroupActive] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // ADD THESE STATES - YEH MISSING THA
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [registeredUser, setRegisteredUser] = useState(null);
+  const [copiedField, setCopiedField] = useState(null);
 
   const [formData, setFormData] = useState({
     introRegNo: "",
@@ -49,45 +55,38 @@ const Signup = () => {
         referrer_Id: refCode,
         introRegNo: refCode,
       }));
-    } else {
-      console.log("❌ Not auto-filling. refCode:", refCode, "referrer_Id:", formData.referrer_Id);
     }
-  }, []); // Sirf ek baar chalega
+  }, []);
 
   // ========== 2. JAB SPONSOR ID CHANGE HO, SPONSOR NAME FETCH KARO ==========
   useEffect(() => {
     const fetchSponsor = async () => {
       const loginId = formData.referrer_Id;
-      console.log("🔄 Fetching sponsor for loginId:", loginId);
       if (loginId) {
         try {
           const res = await apiClient.get(`/User/check-user?loginid=${loginId}`);
-          console.log("📡 Sponsor API response:", res.data);
           if (res.data?.success && res.data.data) {
             const sponsor = res.data.data.Name;
             const regno = res.data.data.regno;
-            console.log("✅ Sponsor found:", sponsor, "RegNo:", regno);
             setFormData(prev => ({
               ...prev,
               sponsorName: sponsor,
               introRegNo: regno,
             }));
           } else {
-            console.warn("⚠️ Invalid sponsor response");
             setFormData(prev => ({ ...prev, sponsorName: "Invalid Sponsor", introRegNo: "" }));
           }
         } catch (err) {
-          console.error("❌ Sponsor fetch error:", err);
+          console.error("Sponsor fetch error:", err);
           setFormData(prev => ({ ...prev, sponsorName: "Not Found", introRegNo: "" }));
         }
       } else {
-        console.log("⏩ No sponsor ID, clearing name");
         setFormData(prev => ({ ...prev, sponsorName: "", introRegNo: "" }));
       }
     };
     const timer = setTimeout(fetchSponsor, 500);
     return () => clearTimeout(timer);
-  }, [formData.referrer_Id]); // referrer_Id change hone par run hoga
+  }, [formData.referrer_Id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -98,8 +97,23 @@ const Signup = () => {
     }
   };
 
+  // ADD COPY FUNCTION
+  const handleCopy = (text, field) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    toast.success(`${field} copied!`);
+    setTimeout(() => setCopiedField(null), 2000);
+  };
+
+  // ADD MODAL CLOSE FUNCTION
+  const handleModalClose = () => {
+    setShowSuccessModal(false);
+    navigate("/dashboard");
+  };
+
   const handleSignup = async (e) => {
     e.preventDefault();
+        console.log("🔴 Signup button clicked!"); // YEH ADD KAR
     if (!formData.sponsorName || formData.sponsorName === "Invalid Sponsor") {
       toast.error("Valid Sponsor ID daalein!");
       return;
@@ -130,8 +144,25 @@ const Signup = () => {
         localStorage.setItem("user", JSON.stringify(userData));
         localStorage.setItem("regno", userData.Regno);
         localStorage.setItem("isLoggedIn", "true");
-        toast.success("Registration Successful! Redirecting...");
-        setTimeout(() => navigate("/dashboard"), 800);
+        
+        // SET REGISTERED USER FOR MODAL - YEH IMPORTANT THA
+        setRegisteredUser({
+          regno: userData.Regno,
+          loginId: userData.LoginId || userData.loginid || formData.mobile,
+          name: userData.Name || formData.fName,
+          email: userData.Email || formData.email,
+          mobile: userData.Mobile || formData.mobile,
+          sponsorId: formData.referrer_Id,
+          sponsorName: formData.sponsorName,
+          password: formData.password,
+        });
+        
+        // SHOW MODAL - REDIRECT HATAYA
+        setShowSuccessModal(true);
+        toast.success("Registration Successful!");
+        
+        // NO NAVIGATE HERE - MODAL SHOW KARO
+        // setTimeout(() => navigate("/dashboard"), 800); // YE HATANA HAI
       } else {
         toast.error(response.data.message || "Registration Failed");
       }
@@ -143,7 +174,7 @@ const Signup = () => {
     }
   };
 
-  // Scroll effects etc. (same as your original)
+  // Scroll effects
   useEffect(() => {
     const handleScroll = () => setIsSticky(window.scrollY > 100);
     window.addEventListener("scroll", handleScroll);
@@ -166,15 +197,15 @@ const Signup = () => {
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") setIsSearchActive(false);
+      if (e.key === "Escape" && showSuccessModal) setShowSuccessModal(false);
     };
     document.addEventListener("keydown", handleEsc);
     return () => document.removeEventListener("keydown", handleEsc);
-  }, []);
+  }, [showSuccessModal]);
 
   return (
     <>
       <div className="bd-bg">
-        {/* Header - same as your original, skipping for brevity */}
         <div id="sticky-header" className={`mediic_nav_manu ${isSticky ? "sticky" : ""}`}>
           <div className="container-fluid">
             <div className="row align-items-center">
@@ -201,33 +232,23 @@ const Signup = () => {
                         <li><Link to="/service-details">Certifications</Link></li>
                       </ul>
                     </li>
-                    <li><NavLink to="/contact">Contact Us</NavLink></li>
+                    <li><NavLink to="/contact">Contact U</NavLink></li>
                   </ul>
 
                   <div className="mediic-right-side">
                     <div className="mediic-button">
-                      <Link to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"} className="wallet-header">
+                      <Link to= "/login"className="wallet-header">
                         login
-                        <div className="mediic-hover-btn hover-btn"></div>
-                        <div className="mediic-hover-btn hover-btn2"></div>
-                        <div className="mediic-hover-btn hover-btn3"></div>
-                        <div className="mediic-hover-btn hover-btn4"></div>
                       </Link>
                     </div>
                     <div className="mediic-button">
-                      <Link to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/signup"} className="wallet-header">
+                      <Link to="/signup" className="wallet-header">
                         signup
-                        <div className="mediic-hover-btn hover-btn"></div>
-                        <div className="mediic-hover-btn hover-btn2"></div>
-                        <div className="mediic-hover-btn hover-btn3"></div>
-                        <div className="mediic-hover-btn hover-btn4"></div>
                       </Link>
                     </div>
                     <div className="sidebar">
                       <div className="nav-btn navSidebar-button" onClick={() => setIsInfoGroupActive(true)}>
                         <span><CgMenuGridR className="menu-icon" /></span>
-
-
                       </div>
                     </div>
                   </div>
@@ -243,72 +264,30 @@ const Signup = () => {
         </div>
       </div>
 
-      {/* Sidebar / Mobile Menu - copy from your existing code */}
+      {/* Mobile Menu Drawer */}
       {isMobileMenuOpen && (
         <div className="mobile-menu-drawer-overlay" onClick={() => setIsMobileMenuOpen(false)}>
           <div className="mobile-menu-drawer" onClick={e => e.stopPropagation()}>
-
             <button className="close-mobile-menu" onClick={() => setIsMobileMenuOpen(false)}>✕</button>
             <img className='logomenu' src={logoImg} alt='logo'></img>
-
             <nav className="mediic_menu">
               <ul className="nav_scroll">
                 <li className="mt-2">
                   <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink>
                 </li>
                 <li><NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</NavLink></li>
-                <li>
-                  <NavLink to="#">Pages</NavLink>
-                </li>
-                <li>
-                  <NavLink to="#">Services</NavLink>
-                </li>
-                <li>
-                  <NavLink to="#">Blog</NavLink>
-                </li>
                 <li><NavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</NavLink></li>
-
-
                 <div className="mediic-button01">
-                  <Link
-                    to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
-                    className="wallet-header01"
-                  >
-                    Login
-
-                    <div className="mediic-hover-btn hover-btn"></div>
-                    <div className="mediic-hover-btn hover-btn2"></div>
-                    <div className="mediic-hover-btn hover-btn3"></div>
-                    <div className="mediic-hover-btn hover-btn4"></div>
-                  </Link>
+                  <Link to="/login" className="wallet-header01">Login</Link>
                 </div>
-
-                <Link
-                  to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/Signup"}
-                  className="wallet-header01"
-                >
-                  <div className="mediic-button01">
-
-                    signup
-
-                    <div className="mediic-hover-btn hover-btn"></div>
-                    <div className="mediic-hover-btn hover-btn2"></div>
-                    <div className="mediic-hover-btn hover-btn3"></div>
-                    <div className="mediic-hover-btn hover-btn4"></div>
-
-                  </div> </Link>
-
+                <Link to="/signup" className="wallet-header01">
+                  <div className="mediic-button01">signup</div>
+                </Link>
               </ul>
             </nav>
           </div>
         </div>
       )}
-
-
-
-
-
-
 
       {/* Signup Form */}
       <div className="mediic-appoinment">
@@ -375,6 +354,83 @@ const Signup = () => {
           </div>
         </div>
       </div>
+
+      {/* Success Modal - YEH ANDAR AAYEGA RETURN KE */}
+      {showSuccessModal && registeredUser && (
+        <div className="modal-overlay" onClick={handleModalClose}>
+          <div className="success-modal02" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header02">
+              <div className="success-icon02">✓</div>
+              <div className="Registration-text">Registration Successfully</div>
+              <button className="modal-close02" onClick={handleModalClose}>×</button>
+            </div>
+            
+            <div className="modal-body02">
+          
+              
+              <div className="user-details-card02">
+                <div className="Account-text"><FaIdCard /> Your Account Details</div>
+
+
+                                <div className="detail-row02">
+                  <div className="detail-label02">
+                    <FaUser /> Sponsor ID:
+                  </div>
+                  <div className="detail-value02">
+                    {registeredUser.sponsorId}
+                    <button className="copy-btn02" onClick={() => handleCopy(registeredUser.sponsorId, "Sponsor ID")}>
+                      {copiedField === "Sponsor ID" ? <FaCheck /> : <FaCopy />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="detail-row02">
+                  <div className="detail-label02">
+                    <FaUser /> Sponsor Name:
+                  </div>
+                  <div className="detail-value02">
+                    {registeredUser.sponsorName}
+                  </div>
+                </div>
+
+                <div className="detail-row02">
+                  <div className="detail-label02">
+                    <FaUser /> Login ID:
+                  </div>
+                  <div className="detail-value02">
+                    {registeredUser.loginId || registeredUser.mobile}
+                    <button className="copy-btn02" onClick={() => handleCopy(registeredUser.loginId || registeredUser.mobile, "Login ID")}>
+                      {copiedField === "Login ID" ? <FaCheck /> : <FaCopy />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="detail-row02">
+                  <div className="detail-label02">
+                    <FaEnvelope /> Email:
+                  </div>
+                  <div className="detail-value02">
+                    {registeredUser.email}
+                    <button className="copy-btn02" onClick={() => handleCopy(registeredUser.email, "Email")}>
+                      {copiedField === "Email" ? <FaCheck /> : <FaCopy />}
+                    </button>
+                  </div>
+                </div>
+
+
+              </div>
+              
+              <div className="modal-actions02">
+                <Link to="login">
+                <button className="btn-dashboard02" onClick={handleModalClose}>
+                  LOGIN
+                </button>  
+                </Link>          
+              </div>  
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

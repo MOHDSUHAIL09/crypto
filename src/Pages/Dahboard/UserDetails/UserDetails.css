@@ -126,7 +126,7 @@ span .label-light {
   align-items: center;
   gap: 10px;
   background: #CCCFFA;
-  padding: 5px 15px;
+  padding: 8px 15px;
   border-radius: 12px;
   margin-bottom: 20px;
   border: 1px solid #eee;
@@ -535,7 +535,7 @@ font-weight:600;
 }
 
 .dashboard-btn{
-background:#e8af04;
+background: linear-gradient(to right, var(--primary-clr), var(--secondary-clr));
 color:white;
 border:none;
 padding:8px 18px;
@@ -546,7 +546,7 @@ transition:0.3s;
 }
 
 .dashboard-btn:hover{
-background:#b18202;
+background:#a202b1;
 }
 /* d2d history */
 .credit {

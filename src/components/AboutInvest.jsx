@@ -39,15 +39,15 @@ const Adventure = () => {
         <div className="row about-bg align-items-center p-3">
           <div className="col-lg-6">
             <div className="about-thumb">
-              <img className='about-thumb2' src={aboutImg} alt="about" />
+              <img className='about-thumb2' src={aboutImg} alt="about"  />
             </div>
           </div>
           <div className="col-lg-6">
             <div className="top-mediic-section">
               <div className="mediic-section-title">
                 <h4>about our medical</h4>
-                <h1>Why Invest in </h1>
-                <h1><span className='span1'>Healthcare?</span></h1>
+                <h1>Why Invest in <br/><span className='span1'>Healthcare?</span></h1>
+               
               </div>
               <div className="mediic-desc">
                 <p>

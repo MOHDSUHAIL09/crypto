@@ -1278,6 +1278,7 @@ select:focus {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-top: -30px;
 }
 
 .level-card {
@@ -1710,6 +1711,7 @@ select:focus {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  color: #fff;
 }
 
 .ig {
@@ -1898,7 +1900,17 @@ select:focus {
   cursor: pointer;
   color: red;
 }
-
+.close-btn-line {
+  position: absolute;
+  top: -75px;
+  right: 0;
+  background: none;
+  border: none;
+  font-size: 30px;
+  font-weight: 700;
+  cursor: pointer;
+  color: red;
+}
 
 .circle-btn2 {
   position: absolute;
@@ -3333,21 +3345,12 @@ input {
 
 @media (max-width: 768px) {
 .modal-a{
-  margin-top: -120px !important;
+  margin-top: -70px !important;
 }
   .pro-sidebar {
     display: none;
   }
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3495,6 +3498,7 @@ input {
 .modal-close01:hover {
   transform: rotate(90deg);
 }
+
 
 
 
@@ -3673,4 +3677,279 @@ margin-right: 25px;
   .countdown-timer {
     text-align: center !important;
   }
+}
+
+
+
+
+
+
+
+/* Blue - Active */
+.status-badge {
+  background-color: #007bff;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.status-badge:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Green - Both Active */
+.status-badge-green {
+  background-color: #28a745;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.status-badge-green:hover {
+  background-color: #1e7e34;
+  transform: scale(1.05);
+}
+
+/* Red - Inactive */
+.status-badge2 {
+  background-color: #dc3545;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.status-badge2:hover {
+  background-color: #bd2130;
+  transform: scale(1.05);
+}
+
+
+
+
+
+
+
+
+
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+.success-modal02 {
+  background: white;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 550px;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header02 {
+  position: relative;
+  padding: 2px 30px;
+  background: linear-gradient(135deg, #28a745, #1e7e34);
+  border-radius: 20px 20px 0 0;
+  text-align: center;
+  color: white;
+}
+
+.success-icon02 {
+  width: 50px;
+  height: 50px;
+  background: white;
+  color: #28a745;
+  font-size: 35px;
+  border-radius: 50%;
+  display: flex;
+ align-items: center;
+  justify-content: center;
+  margin: 10px auto 10px;
+  font-weight: bold;
+}
+
+.Registration-text {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.modal-close02 {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.modal-close02:hover {
+  transform: rotate(90deg);
+  color: rgb(132, 0, 0);
+}
+
+.modal-body02 {
+  padding: 25px 30px;
+}
+
+.user-details-card02 {
+  background: #f8f9fa;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.Account-text {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-row02 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.detail-row02:last-child {
+  border-bottom: none;
+} 
+
+.detail-row02.highlight {
+  background: #fff3cd;
+  margin: 5px -20px -20px;
+  padding: 12px 20px;
+  border-radius: 0 0 10px 10px;
+}
+
+.detail-label02 {
+  font-weight: 600;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.detail-value02 {
+  color: #333;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  word-break: break-all;
+  text-align: right;
+}
+
+.copy-btn02 {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.copy-btn02:hover {
+  background: rgba(0, 123, 255, 0.1);
+}
+.btn-dashboard02 {
+  background: linear-gradient(135deg, #28a745, #1e7e34);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  flex: 1;
+  width: 100%;
+}
+
+.btn-dashboard02:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+ .Registration-text {
+   font-size: 20px;
+}
+.Account-text{
+  font-size: 16px;
+}
+.detail-label02{
+  font-size: 12px;
+}
+
+  .detail-row02 {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0px;
+  }
+.modal-body02{
+  padding: 10px;
+}
+  
 }

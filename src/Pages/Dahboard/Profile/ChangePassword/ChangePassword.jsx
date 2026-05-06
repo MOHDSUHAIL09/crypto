@@ -34,6 +34,8 @@ const ChangePassword = () => {
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginOtpSent, setLoginOtpSent] = useState(false);
   const [loginOtpVerified, setLoginOtpVerified] = useState(false);
+  const [loginSendingOtp, setLoginSendingOtp] = useState(false);
+  const [loginVerifyingOtp, setLoginVerifyingOtp] = useState(false);
 
   // State for Master Password Change
   const [masterOtp, setMasterOtp] = useState('');
@@ -43,6 +45,22 @@ const ChangePassword = () => {
   const [masterLoading, setMasterLoading] = useState(false);
   const [masterOtpSent, setMasterOtpSent] = useState(false);
   const [masterOtpVerified, setMasterOtpVerified] = useState(false);
+  const [masterSendingOtp, setMasterSendingOtp] = useState(false);
+  const [masterVerifyingOtp, setMasterVerifyingOtp] = useState(false);
+
+  // ✅ Helper function to clean API message (remove email)
+  const cleanApiMessage = (message, defaultMsg) => {
+    if (!message) return defaultMsg;
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmail = emailRegex.test(message.trim());
+    const hasEmail = message.includes('@') && (message.includes('.com') || message.includes('.in') || message.includes('.net'));
+    
+    if (isEmail || hasEmail) {
+      return defaultMsg;
+    }
+    return message;
+  };
 
   // Toast functions
   const showSuccess = (msg) => toast.success(msg, { position: "top-right", autoClose: 3000, theme: "colored" });
@@ -51,16 +69,21 @@ const ChangePassword = () => {
 
   // ========== SEND OTP (Login) ==========
   const handleLoginSendOtp = async () => {
+    if (loginSendingOtp || loginOtpSent) return;
+    
     if (!regno) {
       showError('Registration number not found. Please login again.');
       return;
     }
-    setLoginLoading(true);
+    
+    setLoginSendingOtp(true);
     try {
       const response = await apiClient.post(`/User/genrate-otp?loginid=${loginid}&regno=${regno}`, {});
+      
       if (response.data.success || response.data.status === 'success') {
+        const cleanMessage = cleanApiMessage(response.data.message, 'OTP sent successfully to your registered email!');
+        showSuccess(cleanMessage);
         setLoginOtpSent(true);
-        showSuccess('OTP sent successfully!');
       } else {
         showError(response.data.message || 'Failed to send OTP');
       }
@@ -68,24 +91,29 @@ const ChangePassword = () => {
       const msg = error.response?.data?.message || 'Network error';
       showError(msg);
     } finally {
-      setLoginLoading(false);
+      setLoginSendingOtp(false);
     }
   };
 
   // ========== VERIFY OTP (Login) ==========
   const handleLoginVerifyOtp = async () => {
+    if (loginVerifyingOtp || loginOtpVerified) return;
+    
     if (!loginOtp) {
       showError('Please enter OTP');
       return;
     }
-    setLoginLoading(true);
+    
+    setLoginVerifyingOtp(true);
     try {
       const response = await apiClient.post('/User/verify-otp', null, {
         params: { loginid, regno, otp: loginOtp }
       });
+      
       if (response.data.success) {
         setLoginOtpVerified(true);
-        showSuccess('OTP verified successfully!');
+        const cleanMessage = cleanApiMessage(response.data.message, 'OTP verified successfully!');
+        showSuccess(cleanMessage);
       } else {
         showError(response.data.message || 'Invalid OTP');
       }
@@ -93,12 +121,14 @@ const ChangePassword = () => {
       const msg = error.response?.data?.message || 'Network error';
       showError(msg);
     } finally {
-      setLoginLoading(false);
+      setLoginVerifyingOtp(false);
     }
   };
 
-  // ========== UPDATE LOGIN PASSWORD (with 8 character validation) ==========
+  // ========== UPDATE LOGIN PASSWORD ==========
   const handleLoginUpdatePassword = async () => {
+    if (loginLoading) return;
+    
     if (!loginOtpVerified) {
       showError('Please verify OTP first');
       return;
@@ -111,7 +141,6 @@ const ChangePassword = () => {
       showError('New password and confirm password do not match');
       return;
     }
-    // ✅ Changed from 6 to 8 characters
     if (loginNewPassword.length < 8) {
       showError('Password must be at least 8 characters');
       return;
@@ -124,8 +153,12 @@ const ChangePassword = () => {
         current_password: loginCurrentPassword,
         new_password: loginNewPassword
       });
+      
       if (response.data.success) {
-        showSuccess('Login password updated successfully!');
+        const cleanMessage = cleanApiMessage(response.data.message, 'Login password updated successfully!');
+        showSuccess(cleanMessage);
+        
+        // Reset form
         setLoginOtp('');
         setLoginCurrentPassword('');
         setLoginNewPassword('');
@@ -162,16 +195,21 @@ const ChangePassword = () => {
 
   // ========== SEND OTP (Master) ==========
   const handleMasterSendOtp = async () => {
+    if (masterSendingOtp || masterOtpSent) return;
+    
     if (!regno) {
       showError('Registration number not found.');
       return;
     }
-    setMasterLoading(true);
+    
+    setMasterSendingOtp(true);
     try {
       const response = await apiClient.post(`/User/genrate-otp?loginid=${loginid}&regno=${regno}`, {});
+      
       if (response.data.success || response.data.status === 'success') {
+        const cleanMessage = cleanApiMessage(response.data.message, 'OTP sent successfully to your registered email!');
+        showSuccess(cleanMessage);
         setMasterOtpSent(true);
-        showSuccess('OTP sent successfully!');
       } else {
         showError(response.data.message || 'Failed to send OTP');
       }
@@ -179,24 +217,29 @@ const ChangePassword = () => {
       const msg = error.response?.data?.message || 'Network error';
       showError(msg);
     } finally {
-      setMasterLoading(false);
+      setMasterSendingOtp(false);
     }
   };
 
   // ========== VERIFY OTP (Master) ==========
   const handleMasterVerifyOtp = async () => {
+    if (masterVerifyingOtp || masterOtpVerified) return;
+    
     if (!masterOtp) {
       showError('Please enter OTP');
       return;
     }
-    setMasterLoading(true);
+    
+    setMasterVerifyingOtp(true);
     try {
       const response = await apiClient.post('/User/verify-otp', null, {
         params: { loginid, regno, otp: masterOtp }
       });
+      
       if (response.data.success) {
         setMasterOtpVerified(true);
-        showSuccess('OTP verified successfully!');
+        const cleanMessage = cleanApiMessage(response.data.message, 'OTP verified successfully!');
+        showSuccess(cleanMessage);
       } else {
         showError(response.data.message || 'Invalid OTP');
       }
@@ -204,12 +247,14 @@ const ChangePassword = () => {
       const msg = error.response?.data?.message || 'Network error';
       showError(msg);
     } finally {
-      setMasterLoading(false);
+      setMasterVerifyingOtp(false);
     }
   };
 
-  // ========== UPDATE MASTER PASSWORD (with 8 character validation) ==========
+  // ========== UPDATE MASTER PASSWORD ==========
   const handleMasterUpdatePassword = async () => {
+    if (masterLoading) return;
+    
     if (!masterOtpVerified) {
       showError('Please verify OTP first');
       return;
@@ -218,7 +263,6 @@ const ChangePassword = () => {
       showError('New master password and confirm password do not match');
       return;
     }
-    // ✅ Changed from 6 to 8 characters
     if (masterNewPassword.length < 8) {
       showError('Master password must be at least 8 characters');
       return;
@@ -236,8 +280,12 @@ const ChangePassword = () => {
         new_password: masterNewPassword,
         otp: masterOtp
       });
+      
       if (response.data.success) {
-        showSuccess('Master password updated successfully!');
+        const cleanMessage = cleanApiMessage(response.data.message, 'Master password updated successfully!');
+        showSuccess(cleanMessage);
+        
+        // Reset form
         setMasterOtp('');
         setMasterNewPassword('');
         setMasterConfirmPassword('');
@@ -272,6 +320,15 @@ const ChangePassword = () => {
     showInfo('Master password change cancelled');
   };
 
+  // Button disable conditions
+  const isLoginSendOtpDisabled = loginSendingOtp || loginOtpSent;
+  const isLoginVerifyOtpDisabled = loginVerifyingOtp || loginOtpVerified || !loginOtp;
+  const isLoginUpdateDisabled = loginLoading || !loginOtpVerified || !loginCurrentPassword || !loginNewPassword || !loginConfirmPassword || loginNewPassword !== loginConfirmPassword || loginNewPassword.length < 8;
+  
+  const isMasterSendOtpDisabled = masterSendingOtp || masterOtpSent;
+  const isMasterVerifyOtpDisabled = masterVerifyingOtp || masterOtpVerified || !masterOtp;
+  const isMasterUpdateDisabled = masterLoading || !masterOtpVerified || !masterNewPassword || !masterConfirmPassword || !masterLoginPassword || masterNewPassword !== masterConfirmPassword || masterNewPassword.length < 8;
+
   return (
     <>
       <ToastContainer />
@@ -290,14 +347,25 @@ const ChangePassword = () => {
                   placeholder="Enter OTP"
                   className="form-input"
                   disabled={loginOtpVerified}
+                  autoComplete="off"
                 />
                 {!loginOtpSent ? (
-                  <button onClick={handleLoginSendOtp} disabled={loginLoading} className="send-otp-btn">
-                    {loginLoading ? 'Sending...' : 'SEND OTP'}
+                  <button 
+                    onClick={handleLoginSendOtp} 
+                    disabled={isLoginSendOtpDisabled} 
+                    className="send-otp-btn"
+                    style={{ opacity: isLoginSendOtpDisabled ? 0.6 : 1, cursor: isLoginSendOtpDisabled ? 'not-allowed' : 'pointer' }}
+                  >
+                    {loginSendingOtp ? 'Sending...' : 'SEND OTP'}
                   </button>
                 ) : (
-                  <button onClick={handleLoginVerifyOtp} disabled={loginLoading || loginOtpVerified} className="send-otp-btn">
-                    {loginLoading ? 'Verifying...' : 'VERIFY OTP'}
+                  <button 
+                    onClick={handleLoginVerifyOtp} 
+                    disabled={isLoginVerifyOtpDisabled} 
+                    className="send-otp-btn"
+                    style={{ opacity: isLoginVerifyOtpDisabled ? 0.6 : 1, cursor: isLoginVerifyOtpDisabled ? 'not-allowed' : 'pointer' }}
+                  >
+                    {loginVerifyingOtp ? 'Verifying...' : 'VERIFY OTP'}
                   </button>
                 )}
               </div>
@@ -311,6 +379,7 @@ const ChangePassword = () => {
                 onChange={(e) => setLoginCurrentPassword(e.target.value)}
                 placeholder="Current Password"
                 className="form-input"
+                autoComplete="new-password"
               />
             </div>
 
@@ -322,7 +391,11 @@ const ChangePassword = () => {
                 onChange={(e) => setLoginNewPassword(e.target.value)}
                 placeholder="New Password (min 8 characters)"
                 className="form-input"
+                autoComplete="new-password"
               />
+              {loginNewPassword && loginNewPassword.length < 8 && (
+                <small className="text-danger">Password must be at least 8 characters</small>
+              )}
             </div>
 
             <div className="form-group">
@@ -333,12 +406,21 @@ const ChangePassword = () => {
                 onChange={(e) => setLoginConfirmPassword(e.target.value)}
                 placeholder="Confirm New Password"
                 className="form-input"
+                autoComplete="off"
               />
+              {loginConfirmPassword && loginNewPassword !== loginConfirmPassword && (
+                <small className="text-danger">Passwords do not match</small>
+              )}
             </div>
 
-            <div className="button-group">
-              <button onClick={handleLoginUpdatePassword} disabled={loginLoading || !loginOtpVerified} className="btn-update">
-                UPDATE PASSWORD
+            <div className="button-group01">
+              <button 
+                onClick={handleLoginUpdatePassword} 
+                disabled={isLoginUpdateDisabled} 
+                className="btn-update"
+                style={{ opacity: isLoginUpdateDisabled ? 0.6 : 1, cursor: isLoginUpdateDisabled ? 'not-allowed' : 'pointer' }}
+              >
+                {loginLoading ? 'Updating...' : 'UPDATE PASSWORD'}
               </button>
               <button onClick={handleLoginCancel} className="btn-cancel">
                 CANCEL
@@ -361,14 +443,25 @@ const ChangePassword = () => {
                   placeholder="Enter OTP"
                   className="form-input"
                   disabled={masterOtpVerified}
+                  autoComplete="off"
                 />
                 {!masterOtpSent ? (
-                  <button onClick={handleMasterSendOtp} disabled={masterLoading} className="send-otp-btn">
-                    {masterLoading ? 'Sending...' : 'SEND OTP'}
+                  <button 
+                    onClick={handleMasterSendOtp} 
+                    disabled={isMasterSendOtpDisabled} 
+                    className="send-otp-btn"
+                    style={{ opacity: isMasterSendOtpDisabled ? 0.6 : 1, cursor: isMasterSendOtpDisabled ? 'not-allowed' : 'pointer' }}
+                  >
+                    {masterSendingOtp ? 'Sending...' : 'SEND OTP'}
                   </button>
                 ) : (
-                  <button onClick={handleMasterVerifyOtp} disabled={masterLoading || masterOtpVerified} className="send-otp-btn">
-                    {masterLoading ? 'Verifying...' : 'VERIFY OTP'}
+                  <button 
+                    onClick={handleMasterVerifyOtp} 
+                    disabled={isMasterVerifyOtpDisabled} 
+                    className="send-otp-btn"
+                    style={{ opacity: isMasterVerifyOtpDisabled ? 0.6 : 1, cursor: isMasterVerifyOtpDisabled ? 'not-allowed' : 'pointer' }}
+                  >
+                    {masterVerifyingOtp ? 'Verifying...' : 'VERIFY OTP'}
                   </button>
                 )}
               </div>
@@ -382,7 +475,11 @@ const ChangePassword = () => {
                 onChange={(e) => setMasterNewPassword(e.target.value)}
                 placeholder="New Master Password (min 8 characters)"
                 className="form-input"
+                autoComplete="new-password"
               />
+              {masterNewPassword && masterNewPassword.length < 8 && (
+                <small className="text-danger">Password must be at least 8 characters</small>
+              )}
             </div>
 
             <div className="form-group">
@@ -393,7 +490,11 @@ const ChangePassword = () => {
                 onChange={(e) => setMasterConfirmPassword(e.target.value)}
                 placeholder="Confirm New Master Password"
                 className="form-input"
+                autoComplete="off"
               />
+              {masterConfirmPassword && masterNewPassword !== masterConfirmPassword && (
+                <small className="text-danger">Passwords do not match</small>
+              )}
             </div>
 
             <div className="form-group">
@@ -404,12 +505,18 @@ const ChangePassword = () => {
                 onChange={(e) => setMasterLoginPassword(e.target.value)}
                 placeholder="Enter your login password"
                 className="form-input"
+                autoComplete="new-password"
               />
             </div>
-
-            <div className="button-group">
-              <button onClick={handleMasterUpdatePassword} disabled={masterLoading || !masterOtpVerified} className="btn-update">
-                UPDATE PASSWORD
+            
+            <div className="button-group01">
+              <button 
+                onClick={handleMasterUpdatePassword} 
+                disabled={isMasterUpdateDisabled} 
+                className="btn-update"
+                style={{ opacity: isMasterUpdateDisabled ? 0.6 : 1, cursor: isMasterUpdateDisabled ? 'not-allowed' : 'pointer' }}
+              >
+                {masterLoading ? 'Updating...' : 'UPDATE PASSWORD'}
               </button>
               <button onClick={handleMasterCancel} className="btn-cancel">
                 CANCEL
@@ -422,4 +529,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default ChangePassword;  

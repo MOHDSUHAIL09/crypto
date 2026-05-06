@@ -12,7 +12,7 @@ const WalletWithdrawal = () => {
   const [searchParams] = useSearchParams();
   const rid = searchParams.get('Capital');
 
-  const { userData, loading: userLoading } = useUser();
+  const { userData, loading: userLoading, refreshData } = useUser();
 
   // Helper to get loginid
   const getLoginId = () => {
@@ -52,11 +52,34 @@ const WalletWithdrawal = () => {
   const [otpTimer, setOtpTimer] = useState(0);
   const [otpIntervalId, setOtpIntervalId] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [successAmount, setSuccessAmount] = useState(0); // ✅ ADD THIS
+  const [successAmount, setSuccessAmount] = useState(0);
 
   // Saved addresses
   const accountNumber = localStorage.getItem('accountNumber') || '';
   const bep20Wallet = localStorage.getItem('bep20Wallet') || '';
+
+  // ✅ Check if withdraw button should be disabled
+  const isWithdrawDisabled = () => {
+    const amountNum = parseFloat(withdrawAmount);
+    return (
+      submitting ||
+      verifyingOtp ||
+      !otpSent ||
+      capitalRecord?.remainingCapital <= 0 ||
+      !withdrawAmount ||
+      isNaN(amountNum) ||
+      amountNum <= 0 ||
+      !otp ||
+      otp.length !== 6 ||
+      (selectedMethod === 'BANK CARD' && !accountNumber) ||
+      (selectedMethod === 'USDT TRC20' && !bep20Wallet)
+    );
+  };
+
+  // ✅ Check if OTP button should be disabled
+  const isOtpButtonDisabled = () => {
+    return otpTimer > 0 || sendingOtp || submitting || verifyingOtp;
+  };
 
   // Cleanup timer
   useEffect(() => {
@@ -104,17 +127,22 @@ const WalletWithdrawal = () => {
 
   // Send OTP
   const sendOtp = async () => {
+    if (isOtpButtonDisabled()) return;
+    
     if (!regno) {
       toast.error('Registration number not found. Please login again.');
       return;
     }
+    
     setSendingOtp(true);
     try {
       const response = await apiClient.post(`/User/genrate-otp?loginid=${loginid}&regno=${regno}`, {});
+      
       if (response.data.success || response.data.status === 'success') {
-        toast.success('OTP sent successfully!');
+        toast.success(response.data.message || 'OTP sent successfully!');
         setOtpSent(true);
         setOtpTimer(300);
+        
         const interval = setInterval(() => {
           setOtpTimer((prev) => {
             if (prev <= 1) {
@@ -125,6 +153,7 @@ const WalletWithdrawal = () => {
             return prev - 1;
           });
         }, 1000);
+        
         setOtpIntervalId(interval);
       } else {
         toast.error(response.data.message || 'Failed to send OTP');
@@ -140,6 +169,8 @@ const WalletWithdrawal = () => {
   // Verify OTP and withdraw
   const verifyOtpAndWithdraw = async () => {
     const amountNum = parseFloat(withdrawAmount);
+    
+    // ✅ Validation checks
     if (!withdrawAmount || isNaN(amountNum) || amountNum <= 0) {
       toast.error('Please enter a valid amount');
       return;
@@ -177,7 +208,7 @@ const WalletWithdrawal = () => {
 
     setVerifyingOtp(true);
     try {
-      // OTP verification as QUERY PARAMETERS
+      // OTP verification
       const verifyRes = await apiClient.post('/User/verify-otp', null, {
         params: {
           loginid: loginid,
@@ -205,8 +236,14 @@ const WalletWithdrawal = () => {
       console.log('Withdrawal payload:', payload);
       const withdrawalRes = await apiClient.post('/IncomePayout/capital-payout-withdrawal', payload);
 
+      // ✅ Extract message from API response
+      const responseMessage = withdrawalRes.data?.message;
+      
       if (withdrawalRes.data?.success) {
-        // ✅ Store the withdrawn amount and show modal
+        // Show success message from API
+        toast.success(responseMessage || `Withdrawal request of $${amountNum.toFixed(2)} submitted successfully!`);
+        
+        // Store the withdrawn amount and show modal
         setSuccessAmount(amountNum);
         setShowSuccessModal(true);
         setTimeout(() => setShowSuccessModal(false), 3000);
@@ -219,12 +256,17 @@ const WalletWithdrawal = () => {
         setOtpTimer(0);
         if (otpIntervalId) clearInterval(otpIntervalId);
         setOtpIntervalId(null);
+        
+        // ✅ Refresh user data
+        await refreshData();
+        
       } else {
-        toast.error(withdrawalRes.data?.message || 'Withdrawal failed. Please try again.');
+        toast.error(responseMessage || 'Withdrawal failed. Please try again.');
       }
     } catch (err) {
       console.error('Withdrawal error:', err.response?.data || err);
-      toast.error(err.response?.data?.message || 'Server error. Please try again later.');
+      const errorMsg = err.response?.data?.message || err.message || 'Server error. Please try again later.';
+      toast.error(errorMsg);
     } finally {
       setVerifyingOtp(false);
       setSubmitting(false);
@@ -295,14 +337,16 @@ const WalletWithdrawal = () => {
               <div className="ww-methods methods-grid mt-3">
                 <div
                   className={`method-chip ${selectedMethod === 'BANK CARD' ? 'active' : ''}`}
-                  onClick={() => setSelectedMethod('BANK CARD')}
+                  onClick={() => !submitting && !verifyingOtp && setSelectedMethod('BANK CARD')}
+                  style={{ cursor: submitting || verifyingOtp ? 'not-allowed' : 'pointer', opacity: submitting || verifyingOtp ? 0.6 : 1 }}
                 >
                   <FaCreditCard />
                   <span>BANK CARD</span>
                 </div>
                 <div
                   className={`method-chip ${selectedMethod === 'USDT TRC20' ? 'active' : ''}`}
-                  onClick={() => setSelectedMethod('USDT TRC20')}
+                  onClick={() => !submitting && !verifyingOtp && setSelectedMethod('USDT TRC20')}
+                  style={{ cursor: submitting || verifyingOtp ? 'not-allowed' : 'pointer', opacity: submitting || verifyingOtp ? 0.6 : 1 }}
                 >
                   <span>₿</span>
                   <span>USDT TRC20</span>
@@ -325,6 +369,9 @@ const WalletWithdrawal = () => {
                       />
                     )}
                   </div>
+                  {!accountNumber && (
+                    <small className="text-danger">⚠️ Please add a bank card first</small>
+                  )}
                 </div>
               )}
 
@@ -343,6 +390,9 @@ const WalletWithdrawal = () => {
                       />
                     )}
                   </div>
+                  {!bep20Wallet && (
+                    <small className="text-danger">⚠️ Please add a USDT address first</small>
+                  )}
                 </div>
               )}
 
@@ -393,37 +443,58 @@ const WalletWithdrawal = () => {
                 <button
                   className="clear-btn"
                   onClick={sendOtp}
-                  disabled={otpTimer > 0 || sendingOtp}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                  disabled={isOtpButtonDisabled()}
+                  style={{ 
+                    background: 'none', 
+                    border: 'none', 
+                    cursor: isOtpButtonDisabled() ? 'not-allowed' : 'pointer',
+                    opacity: isOtpButtonDisabled() ? 0.6 : 1
+                  }}
+                  title={otpTimer > 0 ? `Wait ${Math.floor(otpTimer / 60)}:${(otpTimer % 60).toString().padStart(2, '0')}` : "Send OTP"}
                 >
-                  {otpTimer > 0 ? (
+                  {sendingOtp ? (
+                    <span className="otp-spinner-small"></span>
+                  ) : otpTimer > 0 ? (
                     `${Math.floor(otpTimer / 60)}:${(otpTimer % 60).toString().padStart(2, '0')}`
                   ) : (
                     <IoSend />
                   )}
                 </button>
               </div>
-              {!otpSent && (
-                <small className="text-muted">Click the send icon to get OTP</small>
-              )}
-              {otpSent && (
-                <small className="text-success">OTP sent! Enter the code above and click Withdraw Now.</small>
+                     
+              {otpSent && otpTimer === 0 && (
+                <small className="text-warning">⚠️ OTP expired. Please send again.</small>
               )}
 
-              {/* Withdraw Button */}
+              {/* ✅ Withdraw Button with proper disable conditions */}
               <button
                 className="ww-button modal-button mt-3"
                 onClick={verifyOtpAndWithdraw}
-                disabled={submitting || verifyingOtp || !otpSent || capitalRecord.remainingCapital <= 0}
+                disabled={isWithdrawDisabled()}
+                style={{
+                  opacity: isWithdrawDisabled() ? 0.6 : 1,
+                  cursor: isWithdrawDisabled() ? 'not-allowed' : 'pointer'
+                }}
               >
                 {verifyingOtp ? 'Verifying OTP...' : submitting ? 'Processing...' : 'Withdraw Now'}
               </button>
+
+              {/* Show validation messages */}
+              {capitalRecord.remainingCapital <= 0 && (
+                <small className="text-danger d-block mt-2">⚠️ No remaining capital available for withdrawal</small>
+              )}
+              {(!accountNumber && selectedMethod === 'BANK CARD') && (
+                <small className="text-danger d-block mt-2">⚠️ Please add a bank card to withdraw</small>
+              )}
+              {(!bep20Wallet && selectedMethod === 'USDT TRC20') && (
+                <small className="text-danger d-block mt-2">⚠️ Please add a USDT address to withdraw</small>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* ✅ Centered Success Modal (now with successAmount) */}
+      {/* Success Modal */}
       {showSuccessModal && (
         <div className="success-modal-overlay">
           <div className="success-modal">

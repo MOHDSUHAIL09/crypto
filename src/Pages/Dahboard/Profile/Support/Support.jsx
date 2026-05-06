@@ -219,7 +219,7 @@ const Support = () => {
           <div className="modal-content01">
             <div className="modal-header01"><h2>Create New Ticket</h2><button className="modal-close" onClick={() => setShowModal(false)}>✕</button></div>
             <form className="modal-middle" onSubmit={handleSubmit}>
-              <div className="form-group01"><label>Ticket Type *</label>
+              <div className="form-group01"><label className='label01'>Ticket Type *</label>
                 <select name="ticketType" value={formData.ticketType} onChange={handleInputChange} required>
                   <option value="">-- Select Message Type --</option>
                   <option value="income">Income</option>
@@ -233,7 +233,7 @@ const Support = () => {
               <div className="form-group"><label>Subject *</label><input type="text" name="subject" value={formData.subject} onChange={handleInputChange} placeholder="Enter ticket subject" required /></div>
               <div className="form-group"><label>Message *</label><textarea name="messege" value={formData.messege} onChange={handleInputChange} placeholder="Enter detailed message" rows="4" /></div>
               <div className="form-group"><label>Attachment (Optional)</label><input type="file" onChange={handleImageChange} accept="image/*" />{selectedImage && <p style={{ fontSize: '12px', marginTop: '5px' }}>Selected: {selectedImage.name}</p>}</div>
-              <div className="modal-buttons"><button type="button" className="cancel-btn" onClick={() => setShowModal(false)}>Cancel</button><button type="submit" className="submit-btn" disabled={submitting}>{submitting ? 'Creating...' : 'Create Ticket'}</button></div>
+              <div className="modal-buttons"><button type="button" className="cancel-btn" onClick={() => setShowModal(false)}>Cancel</button><button type="submit" className="submit-btn01" disabled={submitting}>{submitting ? 'Creating...' : 'Create Ticket'}</button></div>
             </form>
           </div>
         </div>

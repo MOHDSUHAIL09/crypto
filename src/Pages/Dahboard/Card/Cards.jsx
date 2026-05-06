@@ -12,6 +12,8 @@ import { IoSend } from 'react-icons/io5';
 
 const Cards = () => {
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successAmount, setSuccessAmount] = useState(0);
 
   // Withdraw modal states
   const [withdrawAmount, setWithdrawAmount] = useState('');
@@ -41,7 +43,6 @@ const Cards = () => {
   const referralLink = userData?.me
     ? `${baseUrl}signup?ref=${userData.me}`
     : baseUrl;
-
 
   const handleCopy = () => {
     navigator.clipboard.writeText(referralLink);
@@ -78,6 +79,20 @@ const Cards = () => {
     toast.success("Sponsor ID Copied!");
   };
 
+  // ✅ Helper function to clean API message (remove email)
+  const cleanApiMessage = (message, defaultMsg) => {
+    if (!message) return defaultMsg;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmail = emailRegex.test(message.trim());
+    const hasEmail = message.includes('@') && (message.includes('.com') || message.includes('.in') || message.includes('.net'));
+
+    if (isEmail || hasEmail) {
+      return defaultMsg;
+    }
+    return message;
+  };
+
   // ✅ Fetch Payout Balance from API
   const fetchPayoutBalance = async () => {
     if (!regno) return;
@@ -86,7 +101,6 @@ const Cards = () => {
       const response = await apiClient.get(`/IncomePayout/balance/${regno}`);
       console.log("💰 Payout Balance Response:", response.data);
 
-      // API returns: { success: true, statusCode: 200, response: 29.0645 }
       if (response.data?.success === true) {
         const balance = response.data?.response || 0;
         console.log("✅ Balance:", balance);
@@ -102,13 +116,12 @@ const Cards = () => {
     }
   };
 
-  // ✅ Fetch Minimum Withdraw Limit - CORRECTED
+  // ✅ Fetch Minimum Withdraw Limit
   const fetchMinimumWithdrawLimit = async () => {
     try {
       const response = await apiClient.get(`/IncomePayout/minimun-withdraw-limit`);
       console.log("💰 Minimum Withdraw Response:", response.data);
 
-      // API returns: { success: true, statusCode: 200, message: "...", data: 20 }
       if (response.data?.success === true) {
         const minLimit = response.data?.data || 20;
         console.log("✅ Minimum Withdraw Limit:", minLimit);
@@ -122,26 +135,63 @@ const Cards = () => {
     }
   };
 
-  // Fetch live USD/INR rate
+  // ✅ Fetch live USD/INR rate - FIXED with better error handling
   const fetchUsdToInrRate = async () => {
     setFetchingRate(true);
     setRateError(null);
     try {
-      const response = await fetch('https://api.budjet.org/fiat/USD/INR');
-      const data = await response.json();
-      const rate = data.conversion_result || data.rate;
-      if (rate && typeof rate === 'number') {
+      // Using multiple API endpoints for fallback
+      let rate = null;
+
+      try {
+        const response = await fetch('https://api.budjet.org/fiat/USD/INR');
+        const data = await response.json();
+        rate = data.conversion_result || data.rate;
+      } catch (err) {
+        console.log('Budjet API failed, trying alternative...');
+        // Fallback API
+        const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+        const data = await response.json();
+        rate = data.rates?.INR;
+      }
+
+      if (rate && typeof rate === 'number' && rate > 0) {
         setUsdToInrRate(rate);
+        console.log('✅ USD/INR Rate:', rate);
       } else {
         throw new Error('Invalid rate format');
       }
     } catch (err) {
       console.error('Rate fetch error:', err);
       setRateError('Unable to fetch live conversion rate');
-      toast.error('Could not fetch live rate. Please try again later.');
+      // Set default rate as fallback
+      setUsdToInrRate(84.5);
+      toast.error('Using default rate. Live rate unavailable.');
     } finally {
       setFetchingRate(false);
     }
+  };
+
+  // ✅ Check if withdraw button should be disabled
+  const isWithdrawDisabled = () => {
+    const amountNum = parseFloat(withdrawAmount);
+    return (
+      verifyingOtp ||
+      !otpSent ||
+      !withdrawAmount ||
+      isNaN(amountNum) ||
+      amountNum <= 0 ||
+      amountNum < minimumWithdraw ||
+      amountNum > displayBalance ||
+      !withdrawOtp ||
+      withdrawOtp.length !== 6 ||
+      (selectedMethod === 'USDT TRC20' && !usdToInrRate)
+    );
+  };
+
+  // ✅ Check if OTP button should be disabled
+  const isOtpButtonDisabled = () => {
+    return otpTimer > 0 || sendingOtp || verifyingOtp;
   };
 
   // ✅ Fetch data on mount
@@ -207,19 +257,29 @@ const Cards = () => {
     setShowWithdrawModal(true);
   };
 
-  // Send OTP
+  // ✅ Send OTP - FIXED (No email in toast)
   const sendOtp = async () => {
+    if (isOtpButtonDisabled()) return;
+
     if (!regno) {
       toast.error('Registration number not found');
       return;
     }
+
     setSendingOtp(true);
     try {
       const response = await apiClient.post(`/User/genrate-otp?loginid=${loginid}&regno=${regno}`, {});
+
       if (response.data.success || response.data.status === 'success') {
-        toast.success('OTP sent successfully!');
+        const cleanMessage = cleanApiMessage(
+          response.data.message,
+          'OTP sent successfully to your registered email!'
+        );
+
+        toast.success(cleanMessage);
         setOtpSent(true);
         setOtpTimer(300);
+
         const interval = setInterval(() => {
           setOtpTimer((prev) => {
             if (prev <= 1) {
@@ -230,6 +290,7 @@ const Cards = () => {
             return prev - 1;
           });
         }, 1000);
+
         setOtpIntervalId(interval);
       } else {
         toast.error(response.data.message || 'Failed to send OTP');
@@ -242,9 +303,11 @@ const Cards = () => {
     }
   };
 
-  // Withdraw function
+  // ✅ Withdraw function with Success Modal
   const handleWithdraw = async () => {
     const amountNum = parseFloat(withdrawAmount);
+
+    // Validation checks
     if (!withdrawAmount || isNaN(amountNum) || amountNum <= 0) {
       toast.error('Please enter a valid amount');
       return;
@@ -278,7 +341,7 @@ const Cards = () => {
       }
       walletAddress = card;
       payMode = 'inr';
-      liveRate = usdToInrRate || 0;
+      liveRate = usdToInrRate || 92.5;
     } else if (selectedMethod === 'USDT TRC20') {
       const address = localStorage.getItem('bep20Wallet');
       if (!address) {
@@ -299,6 +362,7 @@ const Cards = () => {
 
     setVerifyingOtp(true);
     try {
+      // Verify OTP
       const verifyRes = await apiClient.post('/User/verify-otp', null, {
         params: {
           loginid: loginid,
@@ -306,12 +370,14 @@ const Cards = () => {
           otp: String(withdrawOtp)
         }
       });
+
       if (!verifyRes.data?.success) {
         toast.error(verifyRes.data?.message || 'Invalid OTP');
         setVerifyingOtp(false);
         return;
       }
 
+      // Proceed with withdrawal
       const payload = {
         regNo: parseInt(regno),
         amount: amountNum,
@@ -319,32 +385,47 @@ const Cards = () => {
         payMode: payMode,
         walletAddress: walletAddress
       };
+
       console.log('Withdrawal payload:', payload);
       const withdrawalRes = await apiClient.post('/IncomePayout/withdraw-request', payload);
 
       if (withdrawalRes.data?.success) {
-        toast.success(`Withdrawal request for $${amountNum.toFixed(2)} submitted successfully!`);
-        refreshData();
+        // ✅ Show success modal instead of toast
+        setSuccessAmount(amountNum);
+        setShowSuccessModal(true);
+
+        // Auto hide modal after 3 seconds
+        setTimeout(() => {
+          setShowSuccessModal(false);
+        }, 3000);
+
+        // Refresh data
+        await refreshData();
         await fetchPayoutBalance();
-        setShowWithdrawModal(false);
-        setWithdrawAmount('');
-        setWithdrawOtp('');
-        setPayoutAmount('');
-        setOtpSent(false);
-        setOtpTimer(0);
-        if (otpIntervalId) clearInterval(otpIntervalId);
-        setOtpIntervalId(null);
+
+        // Reset modal and form after delay
+        setTimeout(() => {
+          setShowWithdrawModal(false);
+          setWithdrawAmount('');
+          setWithdrawOtp('');
+          setPayoutAmount('');
+          setOtpSent(false);
+          setOtpTimer(0);
+          if (otpIntervalId) clearInterval(otpIntervalId);
+          setOtpIntervalId(null);
+        }, 500);
+
       } else {
         toast.error(withdrawalRes.data?.message || 'Withdrawal failed');
       }
     } catch (err) {
       console.error('Withdrawal error:', err.response?.data || err);
-      toast.error(err.response?.data?.message || 'Server error. Please try again.');
+      const errorMsg = err.response?.data?.message || err.message || 'Server error. Please try again.';
+      toast.error(errorMsg);
     } finally {
       setVerifyingOtp(false);
     }
   };
-
 
   // ✅ Display balance
   const displayBalance = payoutApiBalance > 0 ? payoutApiBalance : (userData?.Remaining || 0);
@@ -364,9 +445,6 @@ const Cards = () => {
 
   return (
     <>
-
-
-
       <div className="row p-3">
         {/* 1. User Info Card */}
         <div className="col-lg-5 col-md-9">
@@ -389,42 +467,54 @@ const Cards = () => {
                 <div className="d-flex align-items-center justify-content-between w-100">
                   <p className="mb-0"><strong>Name:</strong>&nbsp; {userData?.name || "N/A"}</p>
                   <div className="mb-2">
-                    {userData?.kid > 0 ? (
-                      <span className="status-badge">Active 🟢</span>
-                    ) : (
-                      <span className="status-badge2">Inactive 🔴</span>
-                    )}
+
+                    {/* Status Badge Logic */}
+                    {(() => {
+                      const botAmount = Number(userData?.BotAmount || 0);  // 100 ki jagah 0
+                      const regularAmount = Number(userData?.Invest || userData?.invest || 0);  // 100 ki jagah 0
+
+                      const isBotActive = botAmount >= 100;
+                      const hasInvest = regularAmount > 0;  // 100 ki jagah 0 (agar invest >0 hai toh active)
+
+                      if (hasInvest && isBotActive) {
+                        // Dono active → GREEN
+                        return <span className="status-badge-green">Active 🟢</span>;
+                      } else if (hasInvest || isBotActive) {
+                        // Sirf bot ya sirf invest → BLUE
+                        return <span className="status-badge">Active 🔵</span>;
+                      } else {
+                        // Kuch nahi → RED
+                        return <span className="status-badge2">Inactive 🔴</span>;
+                      }
+                    })()}
                   </div>
                 </div>
 
                 <div className="d-flex justify-content-between align-items-center flex-wrap">
                   <div>
                     <div className=''>
-                    <p className="mb-1"><strong>Me :</strong>&nbsp; {userData?.me || "N/A"}</p>
-                    <p className="mb-1">
-                      <strong>
-                        Sponsor : &nbsp; {userData?.referral || "No Sponsor"}
-                        <FaRegCopy style={{ cursor: 'pointer', marginLeft: '5px' }} onClick={() => copyReferral(userData?.referral)} />
-                      </strong>
-                    </p>
-                  </div>
+                      <p className="mb-1"><strong>Me :</strong>&nbsp; {userData?.me || "N/A"}</p>
+                      <p className="mb-1">
+                        <strong>
+                          Sponsor : &nbsp; {userData?.referral || "No Sponsor"}
+                          <FaRegCopy style={{ cursor: 'pointer', marginLeft: '5px' }} onClick={() => copyReferral(userData?.referral)} />
+                        </strong>
+                      </p>
+                    </div>
                   </div>
                   <div className='justify-content-end align-items-center ms_auto'>
                     <div className='countdown-time w-full'>
-                    {timeLeft && (
-                      <div className="countdown-timer fw-bold " style={{
-                        fontSize: '14px',
-                        color: '#ffffff',
-                        boxShadow: '0 4px 12px rgba(33, 33, 33, 0.2)',
-                        padding: '12px 15px',
-                      }}>
-                        {timeLeft}
-                      </div>
-
-                    )}
-                  </div>
-                  </div>
-                  <div>
+                      {timeLeft && (
+                        <div className="countdown-timer fw-bold " style={{
+                          fontSize: '14px',
+                          color: '#ffffff',
+                          boxShadow: '0 4px 12px rgba(33, 33, 33, 0.2)',
+                          padding: '12px 15px',
+                        }}>
+                          {timeLeft}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -470,7 +560,7 @@ const Cards = () => {
                         <p className="mb-0">
                           <strong title='Subscription History'>Subscription : </strong>
                           <span className='Investment-text'>
-                            ${(userData?.BotFund || 0).toLocaleString("en-IN")}
+                            ${(userData?.BotAmount || 0).toLocaleString("en-IN")}
                           </span>
                         </p>
                       </Link>
@@ -527,7 +617,7 @@ const Cards = () => {
                     </button>
                   </div>
 
-                  <div className='d-flex align-items-center gap-2 mt-2'>
+                  <div className='d-flex align-items-center gap-2'>
                     <span style={{ color: "green", fontWeight: "bold" }}>Note :</span>
                     <p style={{ margin: 0, color: "#666", fontSize: "13px" }}>
                       Min Withdrawal ${minimumWithdraw.toFixed(2)}
@@ -573,14 +663,16 @@ const Cards = () => {
                 <div className="methods-grid mt-3">
                   <div
                     className={`method-chip ${selectedMethod === 'BANK CARD' ? 'active' : ''}`}
-                    onClick={() => setSelectedMethod('BANK CARD')}
+                    onClick={() => !verifyingOtp && setSelectedMethod('BANK CARD')}
+                    style={{ cursor: verifyingOtp ? 'not-allowed' : 'pointer', opacity: verifyingOtp ? 0.6 : 1 }}
                   >
                     <FaCreditCard />
                     <span>BANK CARD</span>
                   </div>
                   <div
                     className={`method-chip ${selectedMethod === 'USDT TRC20' ? 'active' : ''}`}
-                    onClick={() => setSelectedMethod('USDT TRC20')}
+                    onClick={() => !verifyingOtp && setSelectedMethod('USDT TRC20')}
+                    style={{ cursor: verifyingOtp ? 'not-allowed' : 'pointer', opacity: verifyingOtp ? 0.6 : 1 }}
                   >
                     <span>₿</span>
                     <span>USDT TRC20</span>
@@ -636,11 +728,12 @@ const Cards = () => {
                       placeholder="Enter amount"
                       value={withdrawAmount}
                       onChange={(e) => setWithdrawAmount(e.target.value)}
+                      disabled={verifyingOtp}
                     />
                   </div>
                 </div>
 
-                {/* OTP Input */}
+                {/* OTP Section */}
                 <div className="input-container01 mt-3">
                   <span className="currency-symbol1">OTP</span>
                   <span className="divider">|</span>
@@ -651,33 +744,71 @@ const Cards = () => {
                     maxLength="6"
                     value={withdrawOtp}
                     onChange={(e) => setWithdrawOtp(e.target.value.replace(/\D/g, ''))}
+                    disabled={verifyingOtp}
                   />
                   <button
                     className="clear-btn"
                     onClick={sendOtp}
-                    disabled={otpTimer > 0 || sendingOtp}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                    disabled={isOtpButtonDisabled()}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: isOtpButtonDisabled() ? 'not-allowed' : 'pointer',
+                      opacity: isOtpButtonDisabled() ? 0.6 : 1
+                    }}
+                    title={otpTimer > 0 ? `Wait ${Math.floor(otpTimer / 60)}:${(otpTimer % 60).toString().padStart(2, '0')}` : "Send OTP"}
                   >
-                    {otpTimer > 0 ? (
+                    {sendingOtp ? (
+                      <span className="otp-spinner-small"></span>
+                    ) : otpTimer > 0 ? (
                       `${Math.floor(otpTimer / 60)}:${(otpTimer % 60).toString().padStart(2, '0')}`
                     ) : (
                       <IoSend />
                     )}
                   </button>
                 </div>
-                {!otpSent && <small className="text-muted">Click the send icon to get OTP</small>}
-                {otpSent && <small className="text-success">OTP sent! Enter the code above and click Withdraw Now.</small>}
 
                 {/* Withdraw Button */}
                 <button
                   className="modal-button mt-3"
                   onClick={handleWithdraw}
-                  disabled={verifyingOtp || !otpSent || !withdrawAmount || parseFloat(withdrawAmount) <= 0 || (selectedMethod === 'USDT TRC20' && !usdToInrRate)}
+                  disabled={isWithdrawDisabled()}
+                  style={{
+                    opacity: isWithdrawDisabled() ? 0.6 : 1,
+                    cursor: isWithdrawDisabled() ? 'not-allowed' : 'pointer'
+                  }}
                 >
-                  {verifyingOtp ? 'Verifying...' : 'Withdraw Now'}
+                  {verifyingOtp ? 'Verifying OTP...' : 'Withdraw Now'}
                 </button>
+
+                {/* Validation messages */}
+                {withdrawAmount && parseFloat(withdrawAmount) < minimumWithdraw && (
+                  <small className="text-danger d-block mt-2">
+                    ⚠️ Minimum withdrawal amount is ${minimumWithdraw.toFixed(2)}
+                  </small>
+                )}
+                {withdrawAmount && parseFloat(withdrawAmount) > displayBalance && (
+                  <small className="text-danger d-block mt-2">
+                    ⚠️ Amount exceeds available balance
+                  </small>
+                )}
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ✅ Success Modal - Same as Capital Payout */}
+      {showSuccessModal && (
+        <div className="success-modal-overlay">
+          <div className="success-modal">
+            <div className="checkmark-circle">
+              <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M20 6L9 17L4 12" stroke="white" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div className="success-title">Withdrawal Request Submitted</div>
+            <div className="success-amount">${successAmount.toFixed(2)}</div>
           </div>
         </div>
       )}

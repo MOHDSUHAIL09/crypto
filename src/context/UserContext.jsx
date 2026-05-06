@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import apiClient from "../api/apiClient";
 
-
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -14,7 +13,7 @@ export const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [stakeData, setStakeData] = useState(null);
   const [payoutData, setPayoutData] = useState(null);
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // ================= LOAD FROM LOCALSTORAGE =================
   useEffect(() => {
@@ -52,14 +51,14 @@ export const UserProvider = ({ children }) => {
       if (res.data.success) {
         const apiData = res.data.data;
         const newUserData = {
-          regno: apiData.Regno ||apiData.regno,
+          regno: apiData.Regno || apiData.regno,
           name: apiData.fname,
           me: apiData.loginid,
           MobileNo: apiData.mobile,
           referral: apiData.introid,
           kid: apiData.kid,
           Depositfund: apiData.topupwallet,
-          BotFund: apiData.BotFund,
+          BotAmount: apiData.BotAmount,
           Invest: apiData.Invest,
           totalWallet: apiData.totalWallet,
           walletid: apiData.walletid,
@@ -95,7 +94,7 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  // ================= INVEST NOW (With Separate APIs) =================
+  // ================= INVEST NOW (With Separate APIs & API Message Support) =================
   const investNow = async (reciveId, investAmount) => {
     console.log("=== INVEST NOW CALLED ===");
     console.log("reciveId:", reciveId);
@@ -109,6 +108,8 @@ export const UserProvider = ({ children }) => {
     let updatedData;
     let apiEndpoint;
     let apiBody;
+    let apiMessage = "";
+    let isSuccess = false;
     
     const token = localStorage.getItem("token");
     const regno = user?.Regno || user?.regno || localStorage.getItem("regno");
@@ -174,23 +175,30 @@ export const UserProvider = ({ children }) => {
       
       console.log("API Response:", response.data);
       
-      
+      // ✅ Extract message from API response
       if (response.data.success) {
-        console.log("✅ API success - database updated");
+        isSuccess = true;
+        apiMessage = response.data.message || `Transfer of ${amount} completed successfully!`;
+        console.log("✅ API Success - Database updated:", apiMessage);
+        
         // Refresh from server to confirm
         setTimeout(() => fetchData(), 500);
       } else {
-        console.log("❌ API failed:", response.data.message);
-        // Don't rollback - keep local balance
+        isSuccess = false;
+        apiMessage = response.data.message || "Transfer failed. Please try again.";
+        console.log("❌ API Failed:", apiMessage);
       }
     } catch (error) {
       console.error("API Error:", error.response?.data || error);
-      // Don't show error to user, keep local balance
+      isSuccess = false;
+      apiMessage = error.response?.data?.message || error.message || "Network error. Please check your connection.";
     }
     
+    // ✅ Return proper response with API message
     return { 
-      success: true, 
-      message: `✅ Transfer Successful! $${amount} transferred` 
+      success: isSuccess,
+      message: apiMessage,
+      amount: amount
     };
   };
 

@@ -154,7 +154,7 @@ form {
 
 /* Buttons */
 .cancel-btn,
-.submit-btn {
+.submit-btn01 {
   padding: 10px 20px;
   border-radius: 8px;
   font-weight: 500;
@@ -173,12 +173,12 @@ form {
   background-color: #e5e7eb;
 }
 
-.submit-btn {
+.submit-btn01 {
   background-color: #3b82f6;
   color: white;
 }
 
-.submit-btn:hover:not(:disabled) {
+.submit-btn01:hover:not(:disabled) {
   background-color: #2563eb;
 }
 
@@ -187,15 +187,11 @@ form {
   cursor: not-allowed;
 }
 
-/* Required Field */
-.form-group01 label:has(+ input[required])::after,
-.form-group01 label:has(+ select[required])::after,
-.form-group label:has(+ input[required])::after,
-.form-group label:has(+ select[required])::after {
-  content: " *";
-  color: #ef4444;
+.label01{
+  color: #000;
+  padding: 2px;
+  margin-bottom: 10px; 
 }
-
 /* Toast Notification */
 .toast-notification {
   position: fixed;

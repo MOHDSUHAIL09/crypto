@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import ProtecedRoute from "../../components/route/ProtecedRoute";
 
-import Dashboard from "./Dashboard";
+import Dashboard from "./UserDetails/Dashboard";
 import Header from "./Dasbord-UI/Header";
 import Sidebar from "./Dasbord-UI/Sidebar";
 import DownlineTeam from "./UserDetails/DownLineTeam";
