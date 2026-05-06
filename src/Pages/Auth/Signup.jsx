@@ -276,6 +276,9 @@ const Signup = () => {
                   <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink>
                 </li>
                 <li><NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</NavLink></li>
+                <li><NavLink to="/pages" onClick={() => setIsMobileMenuOpen(false)}>Pages</NavLink></li>
+                <li><NavLink to="/service" onClick={() => setIsMobileMenuOpen(false)}>services</NavLink></li>
+                <li><NavLink to="/bloges" onClick={() => setIsMobileMenuOpen(false)}>BLOG</NavLink></li>
                 <li><NavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</NavLink></li>
                 <div className="mediic-button01">
                   <Link to="/login" className="wallet-header01">Login</Link>
@@ -311,7 +314,7 @@ const Signup = () => {
                     </div>
                     <div className="col-lg-12">
                       <div className="form-box">
-                        <input type="text" value={formData.sponsorName} readOnly placeholder="Sponsor Name" className="readonly-input" style={{ color: "#db330e" }} />
+                        <input type="text" value={formData.sponsorName} readOnly placeholder="Sponsor Name" className="readonly-input" style={{ color: "#008202",fontWeight: "600" }} />
                       </div>
                     </div>
                     <div className="col-lg-12">
@@ -326,7 +329,8 @@ const Signup = () => {
                     </div>
                     <div className="col-lg-12">
                       <div className="form-box d-flex" style={{ gap: "10px" }}>
-                        <span style={{ padding: "1px 15px", background: "#f0f0f0", borderRadius: "8px" }}>+91</span>
+                        <div className="mt-3">
+                        <span style={{ padding: "20pxpx 20px", background: "#f0f0f0", borderRadius: "10px" }}>+91</span></div>
                         <input type="text" name="mobile" placeholder="Mobile Number*" maxLength="10" value={formData.mobile} onChange={handleChange} required style={{ flex: 1 }} />
                       </div>
                     </div>
