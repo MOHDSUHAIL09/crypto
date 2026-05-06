@@ -300,9 +300,9 @@ const Signup = () => {
               <img src={signupImage} alt="Signup Illustration" className="signup-side-image" />
             </div>
             <div className="col-lg-6">
-              <div className="mediic-section-title2">
+              <div className="mediic-section-title22">
                 <h4>SIGNUP ACCOUNT</h4>
-                <h3>Sign up to your account</h3>
+                <h3 className="Sign-text">Sign up to your account</h3>
               </div>
               <div className="contact-form-box">
                 <form onSubmit={handleSignup}>
@@ -330,7 +330,7 @@ const Signup = () => {
                     <div className="col-lg-12">
                       <div className="form-box d-flex" style={{ gap: "10px" }}>
                         <div className="mt-3">
-                        <span style={{ padding: "20pxpx 20px", background: "#f0f0f0", borderRadius: "10px" }}>+91</span></div>
+                        <span style={{ padding: "20px 20px", background: "#f0f0f0", borderRadius: "15px" }}>+91</span></div>
                         <input type="text" name="mobile" placeholder="Mobile Number*" maxLength="10" value={formData.mobile} onChange={handleChange} required style={{ flex: 1 }} />
                       </div>
                     </div>
@@ -347,7 +347,7 @@ const Signup = () => {
                     <div className="col-lg-12">
                       <div className="submit-button">
                         <button type="submit" className="submit-btn" disabled={loading}>
-                          {loading ? "Creating Account..." : "Signup Now"} <i className="bi bi-arrow-return-right"></i>
+                          {loading ? "Creating Account..." : "Signup Now"} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5"/></svg>
                         </button>
                       </div>
                     </div>

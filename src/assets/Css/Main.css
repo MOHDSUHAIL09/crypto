@@ -150,7 +150,6 @@ a.mdy-hover:hover:before {
 .mediic-right-side {
   display: flex;
   float: right;
-  align-items: center;
 }
 
 .mediic-button a {
@@ -733,6 +732,12 @@ span.wood-animation img {
 /* Style two */
 
 .mediic-section-title2 h4 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--secondary-color);
+  padding: 0 0 9px;
+}
+.mediic-section-title22 h4 {
   font-size: 16px;
   font-weight: 500;
   color: var(--secondary-color);
@@ -3044,19 +3049,26 @@ span.fill {
 }
 
 .mediic-section-title2{
-  padding: 15px;
-  margin-bottom: -30px;
+  margin-left: 12px;
 }
+.mediic-section-title22{
+  margin-top: 20px;
+  margin-left: 15px;
+}
+
+
+
 
 .row.appoinment {
   position: relative;
   z-index: 1;
   margin-left: -50px;
-  padding: 20px;
+  padding: 15px;
+  padding-top: 20px;
 }
 
 .contact-form-box {
-  padding: 35px 0 0;
+  padding: 15px 0 0;
 }
 
 .form-box input::placeholder {
@@ -3081,7 +3093,6 @@ span.fill {
 /* Left column image styling */
 .signup-left-col {
   display: flex;
-  align-items: center;
 }
 
 .signup-side-image {
@@ -3093,7 +3104,7 @@ span.fill {
 @media (max-width: 768px) {
   /* Reorder: form on top, image below */
   .row.appoinment .col-lg-6:first-child {
-    order: 2; /* image column becomes second */
+    order: 2; 
   }
   .row.appoinment .col-lg-6:last-child {
     order: 1; /* form column becomes first */
@@ -7631,7 +7642,6 @@ a:focus,
 a:hover {
   text-decoration: none;
   text-decoration: none;
-  color: #002570;
 }
 
 .uppercase {
@@ -8722,7 +8732,4 @@ box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.1);
   width: 100%;
  
 }
-}
-.auth-form{
-  padding: 30px;
 }

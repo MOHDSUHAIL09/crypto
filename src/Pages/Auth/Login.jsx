@@ -129,6 +129,7 @@ const Login = () => {
                         <div className="mediic-hover-btn hover-btn4"></div>
                       </Link>
                     </div>
+                    
                     <div className="sidebar">
                       <div className="nav-btn navSidebar-button" onClick={() => setIsInfoGroupActive(true)}>
                         <span><i><CgMenuGridR /></i></span>
@@ -220,8 +221,6 @@ const Login = () => {
                       <div className="mediic-hover-btn hover-btn4"></div>
 
                     </div></Link>
-
-
                   <div className="mediic-button01">
                     <Link
                       to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/Signup"}
@@ -300,7 +299,7 @@ const Login = () => {
                       <div className="col-lg-12 col-md-6">
                         <div className="submit-button">
                           <button type="submit" className="submit-btn cursor-scale small" disabled={loading}>
-                            {loading ? "Logging in..." : "Login Now"} <i className="bi bi-arrow-return-right"></i>
+                            {loading ? "Logging in..." : "Login Now"} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5"/></svg>
                           </button>
                         </div>
                       </div>
