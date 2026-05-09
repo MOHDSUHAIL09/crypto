@@ -10,16 +10,39 @@ import ProtecedRoute from "./components/route/ProtecedRoute";
 import { UserProvider } from './context/UserContext';
 import Preloader from './Preloader';
 import ForgotPassword from './Pages/Auth/ForgotPassword';
+import Header from './components/ui/Header/Header';
+import Fotter from './components/ui/fotter/Fotter';
+import { Outlet } from 'react-router-dom';
 
+// Layout Component with Header, Footer and Outlet (for normal pages)
+const Layout = () => {
+  return (
+    <>
+      <Header />
+      <div className="midd-container">
+        <Outlet />
+      </div>
+      <Fotter />
+    </>
+  );
+};
+
+// Dashboard Layout without Header & Footer
+const DashboardLayout = () => {
+  return (
+    <>
+      <Outlet /> {/* Only dashboard content, no header/footer */}
+    </>
+  );
+};
 
 function AppContent() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Thoda delay kar do sab load hone ke liye
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1000); // 2 second baad loader hat jayega
+    }, 1000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -32,15 +55,23 @@ function AppContent() {
       <Toaster position="top-center" reverseOrder={false} />
 
       <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/dashboard/*" element={
-          <ProtecedRoute>
-            <Main />
-          </ProtecedRoute>} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="*" element={<ErrorPage />} />
+        {/* Normal pages with Header & Footer */}
+        <Route element={<Layout />}>
+          <Route path="/" element={<Index />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Route>
+
+        {/* Dashboard routes WITHOUT Header & Footer */}
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard/*" element={
+            <ProtecedRoute>
+              <Main />
+            </ProtecedRoute>
+          } />
+        </Route>
       </Routes>
     </>
   );

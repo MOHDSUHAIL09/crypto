@@ -734,13 +734,7 @@ span.wood-animation img {
 .mediic-section-title2 h4 {
   font-size: 16px;
   font-weight: 500;
-  color: var(--secondary-color);
-  padding: 0 0 9px;
-}
-.mediic-section-title22 h4 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--secondary-color);
+  color: var(--laboix-secondary, #0EBD66);
   padding: 0 0 9px;
 }
 

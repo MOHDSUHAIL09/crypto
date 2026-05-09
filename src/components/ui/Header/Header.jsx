@@ -1,302 +1,249 @@
-// src/components/Header.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import logoImg from '../../../assets/images/logo.png';
+import '../../../assets/Css/laboix.css';
 import { CgMenuGridR } from "react-icons/cg";
 
-// CSS imports
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import '../../../assets/Css/Main.css';
-import '../../../assets/Css/mainmenu.css'
-import '../../../assets/Css/responsive.css'
-
-// Image imports
-import logoImg from '../../../assets/images/logo.png';
-import logo2Img from '../../../assets/images/logo2.png';
-// import arrowImg from '../../../assets/images/resource/arrow.png';
+// Import React Icons
+import { 
+  FaTwitter, 
+  FaFacebookF, 
+  FaPinterestP, 
+  FaInstagram,
+  FaPhoneAlt,
+  FaMapMarkerAlt,
+  FaEnvelope,
+  FaTimes
+} from 'react-icons/fa';
+import { HiBars3BottomRight } from "react-icons/hi2";
 
 const Header = () => {
-  const [isSticky, setIsSticky] = useState(false);
-  // const [isSearchActive, setIsSearchActive] = useState(false);
-  const [isInfoGroupActive, setIsInfoGroupActive] = useState(false);
-  // const [isCartGroupActive, setIsCartGroupActive] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Sticky header on scroll
+  // Prevent body scroll when mobile menu is open
   useEffect(() => {
-    const handleScroll = () => {
-      setIsSticky(window.scrollY > 100);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Loader: add 'loaded' class to body after component mount
-  useEffect(() => {
-    document.body.classList.add('loaded');
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
     return () => {
-      document.body.classList.remove('loaded');
-
+      document.body.style.overflow = '';
     };
-  }, []);
-
-  // Toggle search popup (add/remove 'search-active' class on body)
-  // useEffect(() => {
-  //   if (isSearchActive) {
-  //     document.body.classList.add('search-active');
-  //   } else {
-  //     document.body.classList.remove('search-active');
-  //   }
-  // }, [isSearchActive]);
-
-  // // Close search popup on ESC key
-  // useEffect(() => {
-  //   const handleEsc = (e) => {
-  //     if (e.key === 'Escape') setIsSearchActive(false);
-  //   };
-  //   document.addEventListener('keydown', handleEsc);
-  //   return () => document.removeEventListener('keydown', handleEsc);
-  // }, []);
-
-
+  }, [isMobileMenuOpen]);
 
   return (
     <>
-      {/* Main Header */}
-      <div id="sticky-header" className={`mediic_nav_manu ${isSticky ? 'sticky' : ''}`}>
-        <div className="container-fluid">
-          <div className="row align-items-center">
-            {/* Logo */}
-            <div className="col-lg-2 col-6">
-              <div className="logo cursor-scale small">
-                <Link className="logo_img" to="/" title="mediic">
-                  <img className='logo1' src={logoImg} alt="logo" />
-                </Link>
-                <Link className="main_sticky" to="/" title="mediic">
-                  <img className='logo1' src={logo2Img} alt="logo" />
-                </Link>
-              </div>
-            </div>
+      {/* Topbar One Start */}
+      <div className="topbar-one">
 
-            {/* Desktop Navigation */}
-            <div className="col-lg-10 d-none d-lg-block">
-              <nav className="mediic_menu">
-                <ul className="nav_scroll">
-                  {/* Home Dropdown */}
-                  <li>
-                    <NavLink className="mdy-hover cursor-scale small" to="/">Home</NavLink>
-                  </li>
-                  <li><NavLink className="mdy-hover cursor-scale small" to="#">Why Healthcare?</NavLink></li>
-                  <li>
-                    <NavLink className="mdy-hover cursor-scale small" to="#">Our Approach</NavLink>
-                    {/* <ul className="sub-menu">
-                      <li><Link to="/about">About Us</Link></li>
-                      <li><Link to="/service">Our Service</Link></li>
-                      <li><Link to="/team">Our Team</Link></li>
-                      <li><Link to="/team-details">Team Details</Link></li>
-                      <li><Link to="/project">Project</Link></li>
-                      <li><Link to="/project-details">Project Details</Link></li>
-                      <li><Link to="/appointment">Appointment</Link></li>
-                      <li><Link to="/testimonial">Testimonial</Link></li>
-                      <li><Link to="/404">404</Link></li>
-                      <li><Link to="/faq">Faqs</Link></li>
-                      <li><Link to="/contact">Contact Us</Link></li>
-                    </ul> */}
-                  </li>
-                  <li>
-                    <NavLink className="mdy-hover cursor-scale small" to="#">Certifications</NavLink>
-                    {/* <ul className="sub-menu">
-                      <li><Link to="#">Our Service</Link></li>
-                      <li><Link to="#">Certifications</Link></li>
-                    </ul> */}
-                  </li>
-                  <li>
+          <div className="topbar-one__inner px-4">
+            <ul className="list-unstyled topbar-one__info">
 
-                  </li>
-                  <li><NavLink className="mdy-hover cursor-scale small" to="/signup">Contact Us</NavLink></li>
-                </ul>
+              <li className="topbar-one__info__item">
+                <FaMapMarkerAlt className="topbar-one__info__icon" />
+                <span className="topbar-one__info__item__location">
+                  Ground Floor, The Sotheby Building, Rodney Village, Rodney Bay, Gros-Islet, Saint Lucia
+                </span>
+              </li></ul>
 
-                <div className="mediic-right-side cursor-scale small">
-                  {/* <div className="search-box-btn search-box-outer" onClick={() => setIsSearchActive(true)}>
-                    <i className="fa-solid fa-magnifying-glass"></i>
-                  </div> */}
+              <ul className="list-unstyled topbar-one__info">
+              <li className="topbar-one__info__item">
+                <FaEnvelope className="topbar-one__info__icon" />
+                <a className="topbar-one__info__item__email" href="mailto:healthcare@mangowealthplanner.com">
+                  healthcare@mangowealthplanner.com
+                </a>
+              </li>
 
+            </ul>    
 
-                  <div className="mediic-button">
-                    <Link
-                      to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
-                      className="wallet-header"
-                    >
-                      LOGIN
-                      {/* <img src={arrowImg} alt="" /> */}
-                      <div className="mediic-hover-btn hover-btn"></div>
-                      <div className="mediic-hover-btn hover-btn2"></div>
-                      <div className="mediic-hover-btn hover-btn3"></div>
-                      <div className="mediic-hover-btn hover-btn4"></div>
-                    </Link>
-                  </div>
-
-
-                  {/* Appointment Button */}
-                  <div className="mediic-button">
-                    <Link
-                      to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/signup"}
-                      className="wallet-header"
-                    >
-                      Signup
-                      {/* <img src={arrowImg} alt="" /> */}
-                      <div className="mediic-hover-btn hover-btn"></div>
-                      <div className="mediic-hover-btn hover-btn2"></div>
-                      <div className="mediic-hover-btn hover-btn3"></div>
-                      <div className="mediic-hover-btn hover-btn4"></div>
-                    </Link>
-                  </div>
-
-
-
-                  {/* Sidebar (info-group) Button */}
-                  <div className="sidebar">
-                    <div className="nav-btn navSidebar-button" onClick={() => setIsInfoGroupActive(true)}>
-                      <span><CgMenuGridR className="menu-icon" /></span>
-
-
-                    </div>
-                  </div>
-
-
-                </div>
-              </nav>
-            </div>
-
-            {/* Mobile Menu Toggle */}
-            <div className="col-6 d-lg-none text-end">
-              <button className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                <i className="fa-solid fa-bars"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Search Popup (exact HTML from original) */}
-      {/* <div className={`search-popup ${isSearchActive ? 'search-active' : ''}`}>
-        <button className="close-search style-two" onClick={() => setIsSearchActive(false)}>
-          <span className="flaticon-multiply"><i className="fa-solid fa-xmark"></i></span>
-        </button>
-        <form method="get" action="#">
-          <div className="form-group">
-            <input type="search" name="search-field" value="" placeholder="Search..." required />
-            <button type="submit"><i className="fa fa-search"></i></button>
-          </div>
-        </form>
-      </div> */}
-
-      {/* Info Group Sidebar (xs-sidebar-group) */}
-      <div className={`xs-sidebar-group info-group ${isInfoGroupActive ? 'isActive' : ''}`}>
-        <div className="xs-overlay xs-bg-black" onClick={() => setIsInfoGroupActive(false)}></div>
-        <div className="xs-sidebar-widget">
-          <div className="sidebar-widget-container">
-            <div className="widget-heading">
-              <a href="#" className="close-side-widget" onClick={(e) => { e.preventDefault(); setIsInfoGroupActive(false); }}>
-                <i className="fa-solid fa-xmark"></i>
+            <div className="topbar-one__social">
+              <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer"> 
+                <FaTwitter /> 
+                <span className="sr-only">Twitter</span> 
+              </a>
+              <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer"> 
+                <FaFacebookF /> 
+                <span className="sr-only">Facebook</span> 
+              </a>
+              <a href="https://pinterest.com/" target="_blank" rel="noopener noreferrer"> 
+                <FaPinterestP /> 
+                <span className="sr-only">Pinterest</span>
+              </a>
+              <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer"> 
+                <FaInstagram /> 
+                <span className="sr-only">Instagram</span>
               </a>
             </div>
-            <div className="sidebar-textwidget">
-              <div className="sidebar-info-contents">
-                <div className="content-thumb-box">
-                  <img src="assets/images/resource/sidebar-thumb.png" alt="" />
+          </div>
+        </div>
+  
+      
+      {/* Main Header Start */}
+      <header >
+      
+      
+          <div className="main-header__inner  ">
+            <div className="main-header__logo logo-laboix">
+              <Link to="/">
+                <img src={logoImg} alt="logo" width="150" className="main-menu-eight__logo" />
+              </Link>
+            </div>
+
+            {/* Desktop Navigation - Hide on mobile */}
+            <nav className="main-header__nav main-menu d-none d-lg-block">
+              <ul className="main-menu__list">
+                <li>
+                  <NavLink to="/">Home</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/about">Why Healthcare?</NavLink>
+                </li>
+                <li>
+                  <NavLink to="#">Our Approach</NavLink>
+                </li>
+                <li>
+                  <NavLink to="#">Certifications</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/contact">Contact</NavLink>
+                </li>
+              </ul>
+            </nav>
+
+            <div className="main-header__right">
+              {/* Login/Signup buttons - Hide on mobile */}
+              <div className="main-header__link d-none d-md-block">
+                <Link to="/login" className="laboix-btn main-header__btn">
+                  Login
+                </Link>
+              </div>
+              <div className="main-header__link d-none d-md-block">
+                <Link to="/signup" className="laboix-btn main-header__btn">
+                  Signup
+                </Link>
+              </div>
+            
+              {/* Call button - Hide on tablet/mobile */}
+              <a href="tel:+92-3800-8060" className="main-header__right__call d-none d-lg-flex ">
+                <div className="main-header__right__icon">
+                  <FaPhoneAlt />
                 </div>
-                <div className="contact-info">
-                  <h2>About Company</h2>
-                  <p>Mango Wealth Planner specializes in healthcare and pharmaceutical investments, combining financial expertise with deep sector knowledge to build resilient, growth-oriented portfolios in the essential healthcare sector.
-                  </p>
-                  <ul className="list-style-one">
-                    <li>
-                      <span className="icon fa-envelope"></span>
-                      <a href="mailto:healthcare@mangowealthplanner.com" style={{ color: "#fff" }}>
-                        healthcare@mangowealthplanner.com
-                      </a>
-                    </li>
-                  </ul>
-                  <ul className="social-box">
-                    <li><a href="#"><i className="fa-brands fa-facebook-f"></i></a></li>
-                    <li><a href="#"><i className="fa-brands fa-twitter"></i></a></li>
-                    <li><a href="#"><i className="fa-brands fa-instagram"></i></a></li>
-                    <li><a href="#"><i className="fa-brands fa-linkedin-in"></i></a></li>
-                  </ul>
+                <div className="main-header__right__content">
+                  <span className="main-header__right__content__text">Call to Anytime</span>
+                  <h6 className="main-header__right__content__number">+92 3800 8060</h6>
                 </div>
+              </a>
+
+              {/* Mobile Nav Toggler / Hamburger Icon - Only show on mobile */}
+              <div className="mobile-nav-toggler d-lg-none" onClick={() => setIsMobileMenuOpen(true)}>
+                <HiBars3BottomRight className="menu-icon" />
               </div>
             </div>
+
+          </div>
+   
+   
+      </header>
+
+      {/* Mobile Nav Wrapper - Only shows when menu is open */}
+      <div className={`mobile-nav__wrapper ${isMobileMenuOpen ? 'expanded' : ''}`}>
+        <div className="mobile-nav__overlay mobile-nav__toggler" onClick={() => setIsMobileMenuOpen(false)}></div>
+        <div className="mobile-nav__content">
+          <span className="mobile-nav__close mobile-nav__toggler" onClick={() => setIsMobileMenuOpen(false)}>
+            <FaTimes />
+          </span>
+
+          <div className="logo-box">
+            <Link to="/" onClick={() => setIsMobileMenuOpen(false)} aria-label="logo image">
+              <img src={logoImg} width="155" alt="labiox" />
+            </Link>
+          </div>
+
+          <div className="mobile-nav__container">
+            <ul className="mobile-menu__list">
+
+
+   <li class="dropdown">                         
+                      <li>
+                <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink>
+              </li>               
+               <li>
+                <NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>Why Healthcare?</NavLink>
+              </li>
+              <li>
+                <NavLink to="#" onClick={() => setIsMobileMenuOpen(false)}>Our Approach</NavLink>
+              </li>
+              <li>
+                <NavLink to="#" onClick={() => setIsMobileMenuOpen(false)}>Certifications</NavLink>
+              </li>
+              <li>
+                <NavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</NavLink>
+              </li>
+                              
+                            </li>
+
+            
+            </ul>
+          </div>
+
+
+
+
+
+
+
+
+  {/* <ul class="mobile-nav__contact list-unstyled">
+                <li>
+                    <i class="fa fa-envelope"></i>
+                    <a href="mailto:needhelp@laboix.com">
+healthcare@mangowealthplanner.com</a>
+                </li>
+                <li>
+                    <i class="fa fa-phone-alt"></i>
+                    <a href="tel:666-888-0000">666 888 0000</a>
+                </li>
+            </ul> */}
+
+
+            <div className='d-flex gap-1 mb-4'>
+                               <div className="main-header__link01 ">
+                <Link to="/login" className="laboix-btn main-header__btn01">
+                  Login
+                </Link>
+              </div>
+              <div className="main-header__link01">
+                <Link to="/signup" className="laboix-btn main-header__btn001">
+                  Signup
+                </Link>
+              </div>
+              </div>
+      
+
+
+
+
+          <div className="mobile-nav__social">
+            <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
+              <FaTwitter />
+              <span className="sr-only">Twitter</span>
+            </a>
+            <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer">
+              <FaFacebookF />
+              <span className="sr-only">Facebook</span>
+            </a>
+            <a href="https://pinterest.com/" target="_blank" rel="noopener noreferrer">
+              <FaPinterestP />
+              <span className="sr-only">Pinterest</span>
+            </a>
+            <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer">
+              <FaInstagram />
+              <span className="sr-only">Instagram</span>
+            </a>
           </div>
         </div>
       </div>
-
-
-      {/* Mobile Menu Drawer (meanmenu replacement) */}
-      {isMobileMenuOpen && (
-        <div className="mobile-menu-drawer-overlay" onClick={() => setIsMobileMenuOpen(false)}>
-          <div className="mobile-menu-drawer" onClick={e => e.stopPropagation()}>
-
-            <button className="close-mobile-menu" onClick={() => setIsMobileMenuOpen(false)}>✕</button>
-            <img className='logomenu' src={logoImg} alt='logo'></img>
-
-            <nav className="mediic_menu">
-              <ul className="nav_scroll">
-                <li className='mt-2'>
-                  <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink>
-                </li>
-                <li><NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</NavLink></li>
-                <li>
-                  <NavLink to="#">Pages</NavLink>
-                </li>
-                <li>
-                  <NavLink to="#">Services</NavLink>
-                </li>
-                <li>
-                  <NavLink to="#">Blog</NavLink>
-                </li>
-                <li><NavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</NavLink></li>
-
-
-                <div className="mediic-button01">
-                  <Link
-                    to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
-                    className="wallet-header01"
-                  >
-                    Login
-
-                    <div className="mediic-hover-btn hover-btn"></div>
-                    <div className="mediic-hover-btn hover-btn2"></div>
-                    <div className="mediic-hover-btn hover-btn3"></div>
-                    <div className="mediic-hover-btn hover-btn4"></div>
-                  </Link>
-                </div>
-
-
-                <div className="mediic-button01">
-                  <Link
-                    to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/signup"}
-                    className="wallet-header01"
-                  >
-
-               signup
-                    <div className="mediic-hover-btn hover-btn"></div>
-                    <div className="mediic-hover-btn hover-btn2"></div>
-                    <div className="mediic-hover-btn hover-btn3"></div>
-                    <div className="mediic-hover-btn hover-btn4"></div>
-                  </Link>
-                </div>
-
-              </ul>
-            </nav>
-          </div>
-        </div>
-      )}
-
-
-
-      {/* Original mobile-menu-area (for meanmenu) - hide because we use custom drawer */}
-      <div className="mobile-menu-area d-none"></div>
     </>
   );
 };

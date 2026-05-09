@@ -7,17 +7,12 @@ import apiClient from "../../api/apiClient";
 import { useUser } from "../../context/UserContext";
 
 // Import images (same as Signup)
-import logoImg from "../../assets/images/logo.png";
-import logo2Img from "../../assets/images/logo2.png";
 import signupImage from "../../assets/images/resource/appoinment.png";
 
 const Login = () => {
   const navigate = useNavigate();
   const { loginUser } = useUser(); // from context
   const [loading, setLoading] = useState(false);
-  const [isSticky, setIsSticky] = useState(false);
-  const [isInfoGroupActive, setIsInfoGroupActive] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     loginId: "",
@@ -60,13 +55,6 @@ const Login = () => {
     }
   };
 
-  // Sticky header effect
-  useEffect(() => {
-    const handleScroll = () => setIsSticky(window.scrollY > 100);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   useEffect(() => {
     document.body.classList.add('loaded');
     return () => document.body.classList.remove('loaded');
@@ -76,172 +64,6 @@ const Login = () => {
   return (
     <>
       <div className="bd-bg">
-        {/* Main Header - identical to Signup */}
-        <div id="sticky-header" className={`mediic_nav_manu ${isSticky ? 'sticky' : ''}`}>
-          <div className="container-fluid">
-            <div className="row align-items-center">
-              <div className="col-lg-2 col-6">
-                <div className="logo cursor-scale small">
-                  <Link className="logo_img" to="/" title="mediic">
-                    <img className="logo1" src={logoImg} alt="logo" />
-                  </Link>
-                  <Link className="main_sticky" to="/" title="mediic">
-                    <img className="logo1" src={logo2Img} alt="logo" />
-                  </Link>
-                </div>
-              </div>
-
-              {/* Desktop Navigation */}
-              <div className="col-lg-10 d-none d-lg-block">
-                <nav className="mediic_menu">
-                  <ul className="nav_scroll">
-                    <li><NavLink className="mdy-hover cursor-scale small" to="/">Home</NavLink></li>
-                    <li><NavLink className="mdy-hover cursor-scale small" to="/about">Why Healthcare?</NavLink></li>
-                    <li><NavLink className="mdy-hover cursor-scale small" to="#">Our Approach</NavLink></li>
-                    <li>
-                      <NavLink className="mdy-hover cursor-scale small" to="#">Services</NavLink>
-                      <ul className="sub-menu">
-                        <li><Link to="/service">Our Service</Link></li>
-                        <li><Link to="/service-details">Certifications</Link></li>
-                      </ul>
-                    </li>
-                    <li><NavLink className="mdy-hover cursor-scale small" to="/contact">Contact Us</NavLink></li>
-                  </ul>
-                  <div className="mediic-right-side cursor-scale small">
-
-                    <div className="mediic-button">
-                      <Link to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"} className="wallet-header">
-                        Login
-
-                        <div className="mediic-hover-btn hover-btn"></div>
-                        <div className="mediic-hover-btn hover-btn2"></div>
-                        <div className="mediic-hover-btn hover-btn3"></div>
-                        <div className="mediic-hover-btn hover-btn4"></div>
-                      </Link>
-                    </div>
-                    <div className="mediic-button">
-                      <Link to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/signup"} className="wallet-header">
-                        signup
-
-                        <div className="mediic-hover-btn hover-btn"></div>
-                        <div className="mediic-hover-btn hover-btn2"></div>
-                        <div className="mediic-hover-btn hover-btn3"></div>
-                        <div className="mediic-hover-btn hover-btn4"></div>
-                      </Link>
-                    </div>
-                    
-                    <div className="sidebar">
-                      <div className="nav-btn navSidebar-button" onClick={() => setIsInfoGroupActive(true)}>
-                        <span><i><CgMenuGridR /></i></span>
-                      </div>
-                    </div>
-                  </div>
-                </nav>
-              </div>
-
-              {/* Mobile Menu Toggle */}
-              <div className="col-6 d-lg-none text-end">
-                <button className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                  <i className="fa-solid fa-bars"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        {/* Info Group Sidebar */}
-        <div className={`xs-sidebar-group info-group ${isInfoGroupActive ? 'isActive' : ''}`}>
-          <div className="xs-overlay xs-bg-black" onClick={() => setIsInfoGroupActive(false)}></div>
-          <div className="xs-sidebar-widget">
-            <div className="sidebar-widget-container">
-              <div className="widget-heading">
-                <a href="#" className="close-side-widget" onClick={(e) => { e.preventDefault(); setIsInfoGroupActive(false); }}>
-                  <i className="fa-solid fa-xmark"></i>
-                </a>
-              </div>
-              <div className="sidebar-textwidget">
-                <div className="sidebar-info-contents">
-                  <div className="contact-info">
-                    <h2>About Company</h2>
-                    <p>Mango Wealth Planner specializes in healthcare and pharmaceutical investments, combining financial expertise with deep sector knowledge to build resilient, growth-oriented portfolios in the essential healthcare sector</p>
-                    <ul className="list-style-one">
-                      <li><span className="icon fa-phone"></span>+1 800 123 456 789</li>
-                      <li><span className="icon fa-envelope"></span>healthcare@mangowealthplanner.com</li>
-                    </ul>
-                    <ul className="social-box">
-                      <li><a href="#"><i className="fa-brands fa-facebook-f"></i></a></li>
-                      <li><a href="#"><i className="fa-brands fa-twitter"></i></a></li>
-                      <li><a href="#"><i className="fa-brands fa-instagram"></i></a></li>
-                      <li><a href="#"><i className="fa-brands fa-linkedin-in"></i></a></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Menu Drawer */}
-        {isMobileMenuOpen && (
-          <div className="mobile-menu-drawer-overlay" onClick={() => setIsMobileMenuOpen(false)}>
-            <div className="mobile-menu-drawer" onClick={e => e.stopPropagation()}>
-
-              <button className="close-mobile-menu" onClick={() => setIsMobileMenuOpen(false)}>✕</button>
-              <img className='logomenu' src={logoImg} alt='logo'></img>
-
-              <nav className="mediic_menu">
-                <ul className="nav_scroll ">
-                  <li className="mt-2">
-                    <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink>
-                  </li>
-                  <li><NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</NavLink></li>
-                  <li>
-                    <NavLink to="#">Pages</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="#">Services</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="#">Blog</NavLink>
-                  </li>
-                  <li><NavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</NavLink></li>
-
-                  <Link
-                    to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/login"}
-                    className="wallet-header01"
-                  >
-                    <div className="mediic-button01">
-
-                      Login
-
-                      <div className="mediic-hover-btn hover-btn"></div>
-                      <div className="mediic-hover-btn hover-btn2"></div>
-                      <div className="mediic-hover-btn hover-btn3"></div>
-                      <div className="mediic-hover-btn hover-btn4"></div>
-
-                    </div></Link>
-                  <div className="mediic-button01">
-                    <Link
-                      to={localStorage.getItem("isLoggedIn") === "true" ? "/dashboard" : "/Signup"}
-                      className="wallet-header01"
-                    >
-                      signup
-
-                      <div className="mediic-hover-btn hover-btn"></div>
-                      <div className="mediic-hover-btn hover-btn2"></div>
-                      <div className="mediic-hover-btn hover-btn3"></div>
-                      <div className="mediic-hover-btn hover-btn4"></div>
-                    </Link>
-                  </div>
-
-                </ul>
-              </nav>
-            </div>
-          </div>
-        )}
-
-        {/* Login Form Section - replaces signup form */}
         <div className="mediic-appoinment">
           <div className="container">
             <div className="row appoinment align-items-center">
@@ -283,7 +105,7 @@ const Login = () => {
                       <div className="col-lg-12">
                         <p className="signup-footer-text">
                           Forgot password?{" "}
-                          <a href="/forgot-password" onClick={(e) => { e.preventDefault(); navigate("/forgotpassword"); }}>
+                          <a href="/forgot-password" className="colorr" onClick={(e) => { e.preventDefault(); navigate("/forgotpassword"); }}>
                             Reset Here
                           </a>
                         </p>
@@ -291,14 +113,14 @@ const Login = () => {
                       <div className="col-lg-12">
                         <p className="signup-footer-text">
                           Don't have an account?{" "}
-                          <a href="/signup" onClick={(e) => { e.preventDefault(); navigate("/signup"); }}>
+                          <a href="/signup" className="colorr" onClick={(e) => { e.preventDefault(); navigate("/signup"); }}>
                             Create Account
                           </a>
                         </p>
                       </div>
                       <div className="col-lg-12 col-md-6">
                         <div className="submit-button">
-                          <button type="submit" className="submit-btn cursor-scale small" disabled={loading}>
+                          <button type="submit" className="laboix-btn" disabled={loading}>
                             {loading ? "Logging in..." : "Login Now"} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5"/></svg>
                           </button>
                         </div>

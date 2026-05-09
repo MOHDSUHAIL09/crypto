@@ -1,110 +1,108 @@
-// src/components/Service.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FaHeartbeat, FaFlask, FaGlobeAmericas, FaArrowRight } from 'react-icons/fa';
 
-// Image imports
-import shapeImg from '../assets/images/resource/shape1.png';
-import serviceBg from '../assets/images/resource/service-bg.png';
-import serviceSmallBg from '../assets/images/resource/service-small-bg.png';
-import serviceIcon1 from '../assets/images/resource/service-icon.png';
-import serviceIcon2 from '../assets/images/resource/service-icon2.png';
-import serviceIcon3 from '../assets/images/resource/service-icon3.png';
-import serviceIcon4 from '../assets/images/resource/service-icon4.jpg';
-// import serviceIcon5 from '../assets/images/resource/service-icon5.png';
-import arrowImg from '../assets/images/resource/arrow.png';
+// Import images
+import secTitleImg from '../assets/images01/shapes/sec-title-s-1.png';
+import blogImg1 from '../assets/images01/blog/blog-1-1.png';
+import blogImg2 from '../assets/images01/blog/blog-1-2.png';
+import blogImg3 from '../assets/images01/blog/blog-1-3.png';
+import serviceBg from '../assets/images01/shapes/service-shape-1-1.png';
 
-const Service = () => {
-  // Service data array with title, icon, paragraph, and className
-  const services = [
+const Investmentadvantages = () => {
+  const blogPosts = [
     {
-      title: 'Essential Services',
-      icon: serviceIcon1,
-      paragraph: 'Healthcare remains essential regardless of economic conditions, providing stable returns and consistent growth. The aging global population and rising chronic diseases ensure sustained demand.',
-      className: ''
+      id: 1,
+      image: blogImg1,
+      alt: "Healthcare essential services",
+      icon: <FaHeartbeat />,
+      authorName: "Essential Services",
+      title: "Healthcare remains essential regardless of economic conditions, providing stable returns and consistent growth. The aging global population and rising chroni...",
+      delay: "400ms"
     },
     {
-      title: 'Innovation Driven',
-      icon: serviceIcon2,
-      paragraph: 'Pharmaceutical R&D and biotech innovations create breakthrough investment opportunities. The global pharmaceutical market is projected to reach $1.5 trillion by 2025.',
-      className: ''
+      id: 2,
+      image: blogImg2,
+      alt: "Innovation driven",
+      icon: <FaFlask />,
+      authorName: "Innovation Driven",
+      title: "Pharmaceutical R&D and biotech innovations create breakthrough investment opportunities. The global pharmaceutical market is projected to reach $1.5 trillion by 2025.",
+      delay: "600ms"
     },
     {
-      title: 'Global Expansion',
-      icon: serviceIcon3,
-      paragraph: 'Emerging markets present significant growth opportunities as healthcare access expands. Developing countries are increasing healthcare spending at double-digit rates annual',
-      className: ''
-    },
-    {
-      title: 'Regulated Security',
-      icon: serviceIcon4,
-      paragraph: 'Stringent regulations and patent protections provide investment security and competitive advantages in pharmaceutical and medical device sectors.',
-      className: 'update'
-    },
-    // {
-    //   title: 'Internal Medicine',
-    //   icon: serviceIcon5,
-    //   paragraph: 'Comprehensive adult healthcare focusing on prevention, diagnosis, and management of chronic diseases such as diabetes, hypertension, and heart conditions.',
-    //   className: 'update'
-    // },
+      id: 3,
+      image: blogImg3,
+      alt: "Global expansion",
+      icon: <FaGlobeAmericas />,
+      authorName: "Global Expansion",
+      title: "Emerging markets present significant growth opportunities as healthcare access expands. Developing countries are increasing healthcare spending at double-digit rates annual",
+      delay: "800ms"
+    }
   ];
 
   return (
-    <div className="service-section">
-      <div className="container-fluid">
+    <section className="blog-one service-page service-page--one">
+      <div
+        className="service-page__bg"
+        style={{ backgroundImage: `url(${serviceBg})` }}
+      ></div>
+
+      <div className="container">
         <div className="row">
-          <div className="top-mediic-section">
-            <div className="mediic-section-title text-center">
-              <h4>our mediic services</h4>
-              <h1>Investment advantages</h1>
+          <div className="col-12">
+            <div className="sec-title text-center wow fadeInUp" data-wow-duration="1500ms">
+              <h6 className="sec-title__tagline">
+                <img src={secTitleImg} alt="Article" className="sec-title__img" />
+                Investment
+              </h6>
+              <h3 className="sec-title__title">
+                Investment Advantages
+              </h3>
             </div>
           </div>
         </div>
-        <div className="mediic-shape">
-          <img src={shapeImg} alt="shape" />
-        </div>
-     
-        <div className="row service-bg p-4"> 
-          <section className="mediic-service-box">
-            <div className="category_container">
-              {services.map((service, idx) => (
-                <div key={idx} className={`content ${service.className}`}>
-                  <img src={serviceBg} className="professio_image" alt="Profession" />
-                  <img src={serviceSmallBg} className="profile_image" alt="Profile" />
-                  <div className="service-content">
-                    <div className="medical-icon">
-                      <img className='medical-icon1' src={service.icon}  alt="icon" style={{width: "80px"}} />
-                    </div>
-                    <h3 className="service-title">{service.title}</h3>
+        <div className="row gutter-y-30">
+          {blogPosts.map((post) => (
+            <div className="col-md-6 col-lg-4" key={post.id}>
+              <div
+                className="blog-card wow fadeInUp animated"
+                data-wow-duration="1500ms"
+                data-wow-delay={post.delay}
+                style={{ visibility: 'visible', animationDuration: '1500ms', animationDelay: post.delay, animationName: 'fadeInUp' }}
+              >
+                <div className="blog-card__image">
+                  <div className="blog-card__image__item">
+                    <img src={post.image} alt={post.alt} />
+                    <Link to="/blog-details-right.html" className="blog-card__image__link"></Link>
                   </div>
-                  <div className="wrapper">
-                    <div className="profile_quote">
-                      <p>{service.paragraph}</p>
-                      <div className="mediic-button">
-                        <Link to="/appointment">
-                          Read More
-                          <img src={arrowImg} alt="icon" />
-                          <div className="mediic-hover-btn hover-btn"></div>
-                          <div className="mediic-hover-btn hover-btn2"></div>
-                          <div className="mediic-hover-btn hover-btn3"></div>
-                          <div className="mediic-hover-btn hover-btn4"></div>
-                        </Link>
-                      </div>
-                    </div>
+                  <div className="blog-card__date" >
+                    <span className="blog-card__date__icon " style={{fontSize: "22px",}}>{post.icon}</span>
                   </div>
                 </div>
-              ))}
+                <div className="blog-card__content">
+                  <div className="blog-card__author">
+                    <Link to="/blog-details.html" className="blog-card__author__item">
+                      <div className="blog-card__author__content">
+                        <h6 className="blog-card__author__name">{post.authorName}</h6>
+                      </div>
+                    </Link>
+                  </div>
+                  <h3 className="blog-card__title">
+                    <Link to="/blog-details-right.html" style={{ fontSize: "16px" }}>{post.title}</Link>
+                  </h3>
+                  <div className="blog-card__content__btn">
+                    <Link to="/blog-details-right.html" className="blog-card__content__btn__link">
+                      Read More <FaArrowRight className="read-more-icon" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
-          </section>
-          <div className="service-bottom text-center">
-            <span>
-              <p>Click any of the above services to learn more</p>
-              <Link to="/service-details">View Our All Services</Link>
-            </span>
-          </div>
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
-export default Service;
+export default Investmentadvantages

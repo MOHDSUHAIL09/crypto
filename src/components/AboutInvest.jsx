@@ -1,157 +1,123 @@
-// src/components/Adventure.jsx
-import React, { useEffect, useRef } from 'react';
-import Swiper from 'swiper';
-import { Mousewheel, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import '../assets/Css/Main.css'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { HiOutlineMail } from "react-icons/hi";
 
 
-// Image imports
-import aboutImg from '../assets/images/resource/about-3.webp';
-import aboutIcon from '../assets/images/resource/about-icon.png';
-import aboutIcon2 from '../assets/images/resource/about-icon2.png';
+// Import images
+import aboutImg1 from '../assets/images01/about/about-2-1.png';
+import aboutImg2 from '../assets/images01/about/about-s-2-1.png';
+import secTitleShape from '../assets/images01/shapes/sec-title-s-1.png';
+import aboutShape1 from '../assets/images01/shapes/about-shape-2-1.png';
+import aboutShape2 from '../assets/images01/shapes/about-shape-1-1.png';
 
-const Adventure = () => {
-  const swiperRef = useRef(null);
+// Import React Icons
+import { FaCheckCircle, FaPhoneAlt } from 'react-icons/fa';
+import { MdBloodtype, MdAnalytics } from 'react-icons/md';
 
-  useEffect(() => {
-    const swiper = new Swiper(swiperRef.current, {
-      modules: [Mousewheel, Pagination],   // ← mousewheel ke liye zaroori
-      direction: 'vertical',
-      slidesPerView: 2,
-      spaceBetween: 30,
-      mousewheel: true,                    // ← mouse scroll enable
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-    });
-
-    return () => {
-      if (swiper) swiper.destroy(true, true);
-    };
-  }, []);
-
+const AboutTwo = () => {
   return (
-    <div className="about-section">
+    <section className="about-two">
       <div className="container">
-        <div className="row about-bg align-items-center p-3">
+        <div className="row">
           <div className="col-lg-6">
-            <div className="about-thumb">
-              <img className='about-thumb2' src={aboutImg} alt="about"  />
+            <div className="about-two__left wow fadeInLeft" data-wow-duration="700ms" data-wow-delay="500ms">
+              <div className="about-two__thumb">
+                <div className="about-two__thumb__item">
+                  <img src={aboutImg1} alt="laboix" />
+                </div>
+                <div className="about-two__thumb__item about-two__thumb__item--two">
+                  <img src={aboutImg2} alt="laboix" />
+                  <div className="about-two__items">
+                    <div className="about-two__box">
+                      <div className="about-two__box__icon">
+                        <HiOutlineMail/>
+                      </div>
+                      <div className="about-two__box__content">
+                        <span className="about-two__box__subtitle">Contact to anytime</span>
+                        <a href="tel:92-3080-808" className="about-two__box__text">healthcare@mangowealthplanner.com</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div className="col-lg-6">
-            <div className="top-mediic-section">
-              <div className="mediic-section-title">
-                <h4>about our medical</h4>
-                <h1>Why Invest in <br/><span className='span1'>Healthcare?</span></h1>
-               
-              </div>
-              <div className="mediic-desc">
-                <p>
-               The healthcare sector offers recession-resistant growth, consistent demand, and significant innovation potential. Our strategic approach focuses on:
+            <div className="about-two__right">
+              <div className="about-two__top">
+                <div className="sec-title text-start wow fadeInUp" data-wow-duration="1500ms">
+                  <h6 className="sec-title__tagline">
+                    <img src={secTitleShape} alt="About Us" className="sec-title__img" />
+                    About Us
+                  </h6>
+                  <h3 className="sec-title__title">Why Invest in Healthcare?</h3>
+                </div>
+                <p className="about-two__top__text">
+The healthcare sector offers a unique combination of recession-resistant growth, consistent long-term demand, and strong innovation potential, making it one of the most resilient and attractive industries for strategic investment and sustainable expansion.
                 </p>
               </div>
-            </div>
 
-            {/* Swiper Slider */}
-            <div className="swiper about" ref={swiperRef}>
-              <div className="swiper-wrapper">
-                {/* Slide 1 */}
-                <div className="swiper-slide">
-                  <div className="about-mediic-service">
-                    <div className="about-icon">
-                      <img src={aboutIcon2} alt="icon" />
-                    </div>
-                    <div className="about-content">
-                      <h3>Infection Prevention</h3>
-                      <p>
-                        Professional intellectual capital without enterprise
-                        users Seamlessly matrix value e-commerce
-                      </p>
-                    </div>
+              <div className="about-two__feature wow fadeInUp" data-wow-duration="700ms" data-wow-delay="500ms">
+                <div className="about-two__feature__item">
+                  <div className="about-two__feature__icon">
+                    <MdBloodtype />
                   </div>
+                  <h4 className="about-two__feature__title">
+                    <Link to="/services">Infection Prevention</Link>
+                  </h4>
+                  <p className="about-two__feature__text">
+                    Professional intellectual capital without enterprise users Seamlessly matrix value e-commerce
+                  </p>
                 </div>
-                {/* Slide 2 */}
-                <div className="swiper-slide">
-                  <div className="about-mediic-service">
-                    <div className="about-icon upp">
-                      <img src={aboutIcon} alt="icon" />
-                    </div>
-                    <div className="about-content">
-                      <h3>Technological Advancements</h3>
-                      <p>
-                       Innovations like telemedicine, AI diagnostics, and modern equipment are transforming the industry.
-                      </p>
-                    </div>
+                <div className="about-two__feature__item">
+                  <div className="about-two__feature__icon">
+                    <MdAnalytics />
                   </div>
-                </div>
-                {/* Slide 3 */}
-                <div className="swiper-slide">
-                  <div className="about-mediic-service">
-                    <div className="about-icon">
-                      <img src={aboutIcon2} alt="icon" />
-                    </div>
-                    <div className="about-content">
-                      <h3>High Return Potential</h3>
-                      <p>
-                       With rising demand, healthcare investments often offer strong long-term returns.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                {/* Slide 4 */}
-                <div className="swiper-slide">
-                  <div className="about-mediic-service">
-                    <div className="about-icon">
-                      <img src={aboutIcon2} alt="icon" />
-                    </div>
-                    <div className="about-content">
-                      <h3>Social Impact</h3>
-                      <p>
-                    Investing in healthcare contributes to saving lives and improving community well-being.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                {/* Slide 5 */}
-                <div className="swiper-slide">
-                  <div className="about-mediic-service">
-                    <div className="about-icon upp">
-                      <img src={aboutIcon} alt="icon" />
-                    </div>
-                    <div className="about-content">
-                      <h3>Aging Population</h3>
-                      <p>
-                       Rising elderly population increases demand for medical care and services.e
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                {/* Slide 6 */}
-                <div className="swiper-slide">
-                  <div className="about-mediic-service">
-                    <div className="about-icon">
-                      <img src={aboutIcon2} alt="icon" />
-                    </div>
-                    <div className="about-content">
-                      <h3>Consistent Growth</h3>
-                      <p>
-                       The healthcare sector continues to expand due to population growth and increasing life expectancy.       
-                      </p>
-                    </div>
-                  </div>
+                  <h4 className="about-two__feature__title">
+                    <Link to="/services">High Return Potential</Link>
+                  </h4>
+                  <p className="about-two__feature__text">
+                    With rising demand, healthcare investments often offer strong long-term returns.
+                  </p>
                 </div>
               </div>
-              <div className="swiper-pagination"></div>
+
+             <ul
+  className="about-two__list list-unstyled wow fadeInUp"
+  data-wow-duration="700ms"
+  data-wow-delay="500ms"
+>
+  <li className="about-two__list__item">
+    <FaCheckCircle /> Recession-resistant sector with consistent long-term demand
+  </li>
+
+  <li className="about-two__list__item">
+    <FaCheckCircle /> Strong growth opportunities in healthcare & pharmaceutical innovation
+  </li>
+
+  <li className="about-two__list__item">
+    <FaCheckCircle /> Focused on building sustainable wealth through strategic investments
+  </li>
+
+</ul>
+
+              <div className="about-two__link">
+                <Link to="/about" className="about-two__link__btn laboix-btn">
+                  Discover More
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <div className="about-two__shape">
+        <img src={aboutShape1} alt="shape" />
+      </div>
+      <div className="about-two__shape--two">
+        <img src={aboutShape2} alt="shape" />
+      </div>
+    </section>
   );
 };
 
-export default Adventure;
+export default AboutTwo;

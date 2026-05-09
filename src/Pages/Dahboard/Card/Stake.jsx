@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import toast from "react-hot-toast";
-import AgreementForm from "./InvestmentForm/AgreementForm";
+import AgreementForm from "../InvestmentForm/AgreementForm";
 import apiClient from "../../../api/apiClient";
 import { useUser } from "../../../context/UserContext"
 

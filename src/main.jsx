@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/Css/animate.css'
+import './assets/Css/laboix.css'
 
 import './assets/Css/mainmenu.css'
 import './assets/Css/responsive.css'

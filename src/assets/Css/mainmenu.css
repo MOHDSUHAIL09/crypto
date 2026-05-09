@@ -81,23 +81,24 @@
 /* ============================================= */
 .close-mobile-menu {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 40px;
-  height: 40px;
+  top: 8px;
+  right: 8px;
   background: transparent;
   border: none;
   color: #fff;
   font-size: 28px;
   cursor: pointer;
   z-index: 10;
-  text-indent: -9999em;
   display: block;
   padding: 18px;
+  font-weight: 900;
+}
+.close-mobile-menu:hover{
+  color: red;
 }
 
 /* Simulate three lines for close button (optional) */
-.close-mobile-menu::before,
+/* .close-mobile-menu::before,
 .close-mobile-menu::after,
 .close-mobile-menu span {
   content: '';
@@ -111,7 +112,7 @@
 }
 .close-mobile-menu::before { top: 12px; }
 .close-mobile-menu::after { bottom: 12px; }
-.close-mobile-menu span { top: 50%; transform: translate(-50%, -50%); }
+.close-mobile-menu span { top: 50%; transform: translate(-50%, -50%); } */
 
 /* ============================================= */
 /* Navigation styles (exactly like meanmenu)    */

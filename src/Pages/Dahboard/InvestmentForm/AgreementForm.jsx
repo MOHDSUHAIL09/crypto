@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import './AgreementForm.css';
 import { FaRegCopy } from "react-icons/fa";
-import apiClient from '../../../../api/apiClient';
-import { useUser } from '../../../../context/UserContext';
+import apiClient from '../../../api/apiClient';
+import { useUser } from '../../../context/UserContext';
 
 const AgreementForm = ({ open, onClose, loginId }) => {
   const { userData, refreshData } = useUser();
@@ -226,7 +226,7 @@ const AgreementForm = ({ open, onClose, loginId }) => {
                   </div>
                   <div className="min-invest-badge">Minimum investment: $1000.00</div>
                 </div>
-                <div className="wallet-section">
+                {/* <div className="wallet-section">
                   <p className="wallet-label">Cryptocurrency wallet address or bank account number</p>
                   <div className="wallet-input-wrapper">
                     <input
@@ -240,7 +240,7 @@ const AgreementForm = ({ open, onClose, loginId }) => {
                     />
                   </div>
                   <p className="wallet-hint">Ensure the wallet is BEP-20 compatible and bank details are correct.</p>
-                </div>
+                </div> */}
               </section>
 
               {/* Trading bot subscription */}

@@ -205,93 +205,6 @@ const Signup = () => {
 
   return (
     <>
-      <div className="bd-bg">
-        <div id="sticky-header" className={`mediic_nav_manu ${isSticky ? "sticky" : ""}`}>
-          <div className="container-fluid">
-            <div className="row align-items-center">
-              <div className="col-lg-2 col-6">
-                <div className="logo cursor-scale small">
-                  <Link className="logo_img" to="/">
-                    <img className="logo1" src={logoImg} alt="logo" />
-                  </Link>
-                  <Link className="main_sticky" to="/">
-                    <img className="logo1" src={logo2Img} alt="logo" />
-                  </Link>
-                </div>
-              </div>
-              <div className="col-lg-10 d-none d-lg-block">
-                <nav className="mediic_menu">
-                  <ul className="nav_scroll">
-                    <li><NavLink to="/">Home</NavLink></li>
-                    <li><NavLink to="/about">Why Healthcare?</NavLink></li>
-                    <li><NavLink to="#">Our Approach</NavLink></li>
-                    <li>
-                      <NavLink to="#">Services</NavLink>
-                      <ul className="sub-menu">
-                        <li><Link to="/service">Our Service</Link></li>
-                        <li><Link to="/service-details">Certifications</Link></li>
-                      </ul>
-                    </li>
-                    <li><NavLink to="/contact">Contact U</NavLink></li>
-                  </ul>
-
-                  <div className="mediic-right-side">
-                    <div className="mediic-button">
-                      <Link to= "/login"className="wallet-header">
-                        login
-                      </Link>
-                    </div>
-                    <div className="mediic-button">
-                      <Link to="/signup" className="wallet-header">
-                        signup
-                      </Link>
-                    </div>
-                    <div className="sidebar">
-                      <div className="nav-btn navSidebar-button" onClick={() => setIsInfoGroupActive(true)}>
-                        <span><CgMenuGridR className="menu-icon" /></span>
-                      </div>
-                    </div>
-                  </div>
-                </nav>
-              </div>
-              <div className="col-6 d-lg-none text-end">
-                <button className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                  <i className="fa-solid fa-bars"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu Drawer */}
-      {isMobileMenuOpen && (
-        <div className="mobile-menu-drawer-overlay" onClick={() => setIsMobileMenuOpen(false)}>
-          <div className="mobile-menu-drawer" onClick={e => e.stopPropagation()}>
-            <button className="close-mobile-menu" onClick={() => setIsMobileMenuOpen(false)}>✕</button>
-            <img className='logomenu' src={logoImg} alt='logo'></img>
-            <nav className="mediic_menu">
-              <ul className="nav_scroll">
-                <li className="mt-2">
-                  <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</NavLink>
-                </li>
-                <li><NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</NavLink></li>
-                <li><NavLink to="/pages" onClick={() => setIsMobileMenuOpen(false)}>Pages</NavLink></li>
-                <li><NavLink to="/service" onClick={() => setIsMobileMenuOpen(false)}>services</NavLink></li>
-                <li><NavLink to="/bloges" onClick={() => setIsMobileMenuOpen(false)}>BLOG</NavLink></li>
-                <li><NavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</NavLink></li>
-                <div className="mediic-button01">
-                  <Link to="/login" className="wallet-header01">Login</Link>
-                </div>
-                <Link to="/signup" className="wallet-header01">
-                  <div className="mediic-button01">signup</div>
-                </Link>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      )}
-
       {/* Signup Form */}
       <div className="mediic-appoinment">
         <div className="container">
@@ -341,15 +254,15 @@ const Signup = () => {
                     </div>
                     <div className="col-lg-12">
                       <p className="signup-footer-text">
-                        Already have an account? <a href="/login" onClick={(e) => { e.preventDefault(); navigate("/login"); }}>Login Here</a>
+                        Already have an account? <a href="/login" className="colorr" onClick={(e) => { e.preventDefault(); navigate("/login"); }}>Login Here</a>
                       </p>
                     </div>
                     <div className="col-lg-12">
-                      <div className="submit-button">
-                        <button type="submit" className="submit-btn" disabled={loading}>
+                      
+                        <button type="submit" className="laboix-btn" disabled={loading}>
                           {loading ? "Creating Account..." : "Signup Now"} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5"/></svg>
                         </button>
-                      </div>
+                   
                     </div>
                   </div>
                 </form>

@@ -3707,7 +3707,7 @@ margin-right: 25px;
 
 /* Green - Both Active */
 .status-badge-green {
-  background-color: #28a745;
+  background-color: #32563b;
   color: white;
   padding: 5px 12px;
   border-radius: 20px;
@@ -3718,11 +3718,12 @@ margin-right: 25px;
   gap: 5px;
   transition: all 0.3s ease;
   cursor: default;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
 }
 
+
 .status-badge-green:hover {
-  background-color: #1e7e34;
-  transform: scale(1.05);
+  background-color: #1d4026;
 }
 
 /* Red - Inactive */

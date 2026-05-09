@@ -1,188 +1,149 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaPinterestP,
+  FaInstagram,
+  FaPhoneAlt,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaClock,
+  FaArrowRight
+} from 'react-icons/fa';
 
-// Import images
-import logo2Img from '../../..//assets/images/logo2.png'
-import footerImg1 from '../../..//assets/images/resource/footer-img-1.png'
-import footerImg2 from '../../../assets/images/resource/footer-img-2.png'
+import logoImg from '../../../assets/images/logo.png';
 
 const Footer = () => {
   return (
-    <>
-      <div className="footer-section">
+    <footer className="main-footer main-footer--one">
+      <div className="main-footer__inner">
         <div className="container">
           <div className="row">
-            <div className="col-lg-4 col-md-5">
-              <div className="widget widgets-company-info">
-                <div className="company-logo cursor-scale small">
-                  <Link to="/">
-                    <img className='logo1' src={logo2Img} alt="logo" />
-                  </Link>
-                </div>
-                <div className="company-info-desc">
-                  <p>
-                    Mango Wealth Planner specializes in healthcare and pharmaceutical investments, combining financial expertise with deep sector knowledge to build resilient, growth-oriented portfolios in the essential healthcare sector.
-                  </p>
-                </div>
-                <div className="mediic-info">
-                  <h3>+123 (4567) - 890</h3>
-                  <p><span>Email us :</span> healthcare@mangowealthplanner.com</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6">
-              <div className="widget widget-nav-menu">
-                <h4 className="widget-title">Healthcare Investment Areas</h4>
-                <div className="menu-quick-link-content">
-                  <ul className="footer-menu">
-                    <li>
-                      <i className="bi bi-star-fill"></i>
-                      <Link to="/about"> Hospital Infrastructure </Link>
-                    </li>
-                    <li>
-                      <i className="bi bi-star-fill"></i>
-                      <Link to="/team"> Pharmaceuticals </Link>
-                    </li>
-                    <li>
-                      <i className="bi bi-star-fill"></i>
-                      <Link to="/blog-grid"> Biotechnology </Link>
-                    </li>
-                    <li>
-                      <i className="bi bi-star-fill"></i>
-                      <Link to="/contact"> Medical Devices </Link>
-                    </li>
-                    <li>
-                      <i className="bi bi-star-fill"></i>
-                      <Link to="/testimonial"> Healthcare Technology </Link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            {/* <div className="col-lg-2 col-md-6">
-              <div className="widget widget-nav-menu">
-                <h4 className="widget-title">Services</h4>
-                <div className="menu-quick-link-content">
-                  <ul className="footer-menu">
-                    <li>
-                      <i className="bi bi-star-fill"></i>
-                      <Link to="/service"> Our Service </Link>
-                    </li>
-                    <li>
-                      <i className="bi bi-star-fill"></i>
-                      <Link to="#"> Privacy </Link>
-                    </li>
-                    <li>
-                      <i className="bi bi-star-fill"></i>
-                      <Link to="/appointment"> Appointment </Link>
-                    </li>
-                    <li>
-                      <i className="bi bi-star-fill"></i>
-                      <Link to="#"> Partners </Link>
-                    </li>
-                    <li>
-                      <i className="bi bi-star-fill"></i>
-                      <Link to="/faq"> FAQ </Link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div> */}
-
-
-{/* col-2 == 4 */}
-             <div className="col-lg-4 col-md-6">
-              <div className="widget widget-nav-menu">
-                <h4 className="widget-title">Contact Our Healthcare Team</h4>
-                <div className="menu-quick-link-content">
-                  <ul className="footer-menu">
-                    <li>
-                      {/* <i className="bi bi-star-fill"></i>  */}
-                      <Link to="/service"> <div className='fotter-addresh'>Ground Floor, The Sotheby Building, Rodney Village, Rodney Bay, Gros-Islet, Saint Lucia</div></Link>
-                    </li>
-
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-
-
-
-
-
-
-            {/* <div className="col-lg-3 col-md-6 pr-0 pl-0">
-              <div className="mediic-address">
-                <h4 className="widget-title">Contact Our Healthcare   Team</h4>
-                <div className="footer-mediic-contact">
-                  <ul className="mediic-service-times">
-                    <li className="mediic-border">
-                      Monday to Friday : <span>9:00 - 20:00</span>
-                    </li>
-                    <li>Saturday - Sunday : <span>Closed</span></li>
-                  </ul>
-                  <form action="https://formspree.io/f/myyleorq" method="POST" id="dreamit-form">
-                    <div className="subscribe_form">
-                      <input
-                        type="email"
-                        name="email"
-                        placeholder="Enter Your E-Mail"
-                      />
-                      <div className="subscribe_form_send">
-                        <button type="submit" className="submits-btn">
-                          <i className="bi bi-arrow-up-right"></i>
-                        </button>
-                      </div>
-                    </div>
-                    <div id="status"></div>
-                    <label className="widget-check">
-                      <input type="checkbox" />
-                      Agree Terms and Condition
-                      <span className="checkmark01"></span>
-                    </label>
-                  </form>
-                </div>
-              </div>
-            </div> */}
-            <div className="foorer-shape">
-              <div className="footer-thumb">
-                <img src={footerImg1} alt="" />
-              </div>
-              <div className="footer-thumb1">
-                <img src={footerImg2} alt="" />
-              </div>
-            </div>
-          </div>
-          <div className="row footer-btm">
-            <div className="col-lg-6 col-md-6">
-              <div className="mediic-social-icon cursor-scale small">
-                <a href="#">
-                  <i className="fab fa-facebook-f"></i>
-                </a>
-                <a href="#">
-                  <i className="fa-brands fa-linkedin-in"></i>
-                </a>
-                <a href="#">
-                  <i className="fa-brands fa-x-twitter"></i>
-                </a>
-                <a href="#">
-                  <i className="fab fa-pinterest-p"></i>
-                </a>
-              </div>
-            </div>
-            <div className="col-lg-6 col-md-6">
-              <div className="mediic-company-desc text-right">
-                <p>
-                      ©2026 Mango Wealth Planner - Healthcare Investment Specialists
+            {/* Column 1 - Info & Newsletter */}
+            <div className="col-md-6 col-xl-3">
+              <div className="footer-widget footer-widget--info">
+                <Link to="/">
+                  <img src={logoImg} alt="logo" width="160" className="main-menu-eight__logo mb-3" />
+                </Link>
+                <p className="footer-widget__text">
+                  Mango Wealth Planner specializes in healthcare and pharmaceutical investments, combining financial expertise with deep sector knowledge to build resilient, growth-oriented portfolios in the essential healthcare sector.
                 </p>
+                <div className="footer-widget__newsletter mc-form">
+                  <input type="email" name="EMAIL" placeholder="Email" />
+                  <button type="submit" className="laboix-btn laboix-btn--submite">
+                    <FaArrowRight />
+                  </button>
+                </div>
+                <div className="mc-form__response"></div>
+              </div>
+            </div>
+
+            {/* Column 2 - Links */}
+            <div className="col-md-6 col-xl-3">
+              <div className="footer-widget footer-widget--link">
+                <h4 className="footer-widget__title">Healthcare Investment Areas</h4>
+                <ul className="list-unstyled footer-widget__links">
+                  <li className="footer-widget__links__item">
+                    <Link to="/about">Hospital Infrastructure</Link>
+                  </li>
+                  <li className="footer-widget__links__item">
+                    <Link to="/contact">Pharmaceuticals</Link>
+                  </li>
+                  <li className="footer-widget__links__item">
+                    <Link to="/blog-list">Biotechnology</Link>
+                  </li>
+                  <li className="footer-widget__links__item">
+                    <Link to="/services">Medical Devices</Link>
+                  </li>
+                  <li className="footer-widget__links__item">
+                    <Link to="/packages">Healthcare Technology</Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Column 3 - Contact */}
+            <div className="col-md-6 col-xl-3">
+              <div className="footer-widget footer-widget--about">
+                <h4 className="footer-widget__title">Explore</h4>
+                <ul className="list-unstyled footer-widget__links">
+                  <li className="footer-widget__links__item">
+                    <Link to="/">Home</Link>
+                  </li>
+                  <li className="footer-widget__links__item">
+                    <Link to="/why-healthcare">Why Healthcare?</Link>
+                  </li>
+                  <li className="footer-widget__links__item">
+                    <Link to="/our-approach">Our Approach</Link>
+                  </li>
+                  <li className="footer-widget__links__item">
+                    <Link to="/certifications">Certifications</Link>
+                  </li>
+                  <li className="footer-widget__links__item">
+                    <Link to="/contact">Contact</Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            {/* Column 4 - Opening Hours */}
+            <div className="col-md-6 col-xl-3">
+              <div className="footer-widget footer-widget--time">
+                <h4 className="footer-widget__title">Contact Our Healthcare Team</h4>
+                Ground Floor, The Sotheby Building, Rodney Village, Rodney Bay, Gros-Islet, Saint Lucia
+
+                <ul className="list-unstyled footer-widget__info">
+                  <li className="footer-widget__info__item">
+
+                    <a href="mailto:michael.mitc@example.com">healthcare@mangowealthplanner.com</a>
+                  </li>
+                </ul>
+                <div className="footer-widget__social">
+                  <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer">
+                    <FaFacebookF />
+                    <span className="sr-only">Facebook</span>
+                  </a>
+                  <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
+                    <FaTwitter />
+                    <span className="sr-only">Twitter</span>
+                  </a>
+                  <a href="https://pinterest.com/" target="_blank" rel="noopener noreferrer">
+                    <FaPinterestP />
+                    <span className="sr-only">Pinterest</span>
+                  </a>
+                  <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer">
+                    <FaInstagram />
+                    <span className="sr-only">Instagram</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
-  )
-}
 
-export default Footer
+
+      {/* Bottom Bar */}
+      <div className="main-footer__bottom">
+        <div className="container">
+          <div className="main-footer__bottom__inner">
+            <p className="main-footer__copyright">
+              &copy; Copyright <span className="dynamic-year"></span> ©2026 Mango Wealth Planner - Healthcare Investment Specialists
+            </p>
+          </div>
+        </div>
+      </div>
+      {/* Decorative Shapes */}
+      <div className="main-footer__shape">
+        <img src="assets/images/shapes/footer-shape-1-1.html" alt="" />
+      </div>
+      <div className="main-footer__shape main-footer__shape--two">
+        <img src="assets/images/shapes/footer-shape-1-2.png" alt="" />
+      </div>
+
+
+    </footer>
+  );
+};
+
+export default Footer;

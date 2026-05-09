@@ -1,114 +1,92 @@
 import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { Link } from 'react-router-dom';
+import { FaHandHoldingMedical } from 'react-icons/fa';
+import { BiSolidAnalyse } from "react-icons/bi";
+import { BsFillBoxSeamFill } from "react-icons/bs";
 
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+// Import images
+import secTitleImg from '../assets/images01/shapes/sec-title-s-2.png'; 
+import investprosess from '../assets/images01/resource/investprosess.jpg'
 
-// Import images (adjust the paths based on your project structure)
-import blogImg1 from '../assets/images/resource/blog.png';
-import blogImg2 from '../assets/images/resource/blog2.png';
-import blogImg3 from '../assets/images/resource/blog3.png';
-import blogImg4 from '../assets/images/resource/blog4.png';
-import shapeImg from '../assets/images/resource/shape1.png';
 
-const Investmentprocess = () => {
-  const slidesData = [
+const ChooseUsSection = () => {
+  const features = [
     {
       id: 1,
-      img: blogImg1,
-      title: 'Sector Analysis',
-      description: 'We analyze healthcare trends, regulatory environments, and market gaps to identify high-potential investment opportunities',
+      icon: <FaHandHoldingMedical/>,
+      title: "Medical Due Diligence",
+      text: " Data-driven pharmaceutical investment evaluation focused on clinical and regulatory success."
     },
     {
       id: 2,
-      img: blogImg2,
-      title: 'Medical Due Diligence',
-      description: 'Comprehensive evaluation of clinical data, regulatory pathways, and intellectual property for pharmaceutical investments',
+      icon: <BsFillBoxSeamFill/>,
+      title: "Continuous Monitoring",
+      text: "Continuous tracking of FDA approvals, clinical trials, and healthcare policy impacts on investments"
     },
     {
       id: 3,
-      img: blogImg3,
-      title: 'Portfolio Construction',
-      description: 'We build diversified healthcare portfolios balancing hospital infrastructure, pharmaceutical stocks, and biotech venture capital',
-    },
-    {
-      id: 4,
-      img: blogImg4,
-      title: 'Continuous Monitoring',
-      description: 'Ongoing tracking of FDA approvals, clinical trial results, and healthcare policy changes that impact investment performance',
-    },
+      icon: <BiSolidAnalyse/>,
+      title: "Sector Analysis",
+      text: "We identify promising healthcare investments through market analysis and regulatory insights."
+    }
   ];
 
   return (
-    <>
-      <div className="blog-section">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="top-mediic-section section-border">
-                <div className="mediic-section-title">
-                  <h4>Investment</h4>
-                  <h1 style={{textAlign: "center"}}>Our Healthcare Investment Process</h1>
+    <section className="choose-us-two">
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-6">
+            <div className="choose-us-two__left">
+              <div className="choose-us-two__thumb">
+                <div className="choose-us-two__thumb__item">
+                  <img src={investprosess} alt="laboix" className='choose-us-two01'/>
+                </div>
+                <div className="choose-us-two__thumb__shape">
+                  {/* <img src={shape1} alt="laboix" /> */}
+                </div>
+                <div className="choose-us-two__thumb__shape choose-us-two__thumb__shape--two">
+                  {/* <img src={shape2} alt="laboix" /> */}
                 </div>
               </div>
             </div>
-            <div className="mediic-shape">
-              <img src={shapeImg} alt="shape" />
-            </div>
           </div>
-
-          <div className="row">
-            <div className="col-lg-12">
-              <Swiper
-                modules={[Autoplay, Pagination]}
-                spaceBetween={30}
-                slidesPerView={1}
-      
-                pagination={{ clickable: true }}
-                autoplay={{ delay: 4000, disableOnInteraction: false }}
-                breakpoints={{
-                  640: { slidesPerView: 1 },
-                  768: { slidesPerView: 2 },
-                  1024: { slidesPerView: 2   },
-                }}
-                className="blog-list"
-              >
-                {slidesData.map((slide) => (
-                  <SwiperSlide key={slide.id}>
-                    <div className="blog-single-box">
-                      <div className="blog-thumb">
-                        <img className='blog-thumb-im' src={slide.img} alt="blog" />
-                      </div>
-                      <div className="blog-content">
-                        <div className="blogs-category">    
-                        </div>
-                        <div className="blog-title">
-                          <h2 className="cursor-scale small">
-                            <a href="blog-details.html">{slide.title}</a>
-                          </h2>
-                        </div>
-                        <div className="blog-description">
-                          <p>{slide.description}</p>
-                        </div>
-                        <div className="blog-icons">
-                          <a href="blog-details.html">
-                            <i className="fa-solid fa-arrow-right-long"></i>
-                          </a>
-                        </div>
-                      </div>
+          <div className="col-lg-6">
+            <div className="choose-us-two__right">
+              <div className="choose-us-two__top">
+                <div className="sec-title sec-title--two text-start wow fadeInUp" data-wow-duration="700ms">
+                  <h6 className="sec-title__tagline">
+                    <img src={secTitleImg} alt="Why choose us" className="sec-title__img" />
+                    Investment Process
+                  </h6>
+                  <h3 className="sec-title__title">
+                    Our Healthcare Investment Process
+                  </h3>
+                </div>
+                <p className="choose-us-two__top__text">
+                  We analyze healthcare trends, regulatory environments, and market gaps to identify high-potential investment opportunities
+                </p>
+              </div>
+              <ul className="choose-us-two__list list-unstyled">
+                {features.map((feature) => (
+                  <li className="choose-us-two__list__item" key={feature.id}>
+                    <div className="choose-us-two__icon">
+                      {feature.icon}
                     </div>
-                  </SwiperSlide>
+                    <div className="choose-us-two__content">
+                      <h4 className="choose-us-two__title">{feature.title}</h4>
+                      <p className="choose-us-two__text">{feature.text}</p>
+                    </div>
+                  </li>
                 ))}
-              </Swiper>
+              </ul>
             </div>
           </div>
         </div>
       </div>
-    </>
+
+    
+    </section>
   );
 };
 
-export default Investmentprocess;
+export default ChooseUsSection;

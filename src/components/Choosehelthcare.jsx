@@ -1,51 +1,90 @@
 import React from 'react';
-import testiImg from '../assets/images/resource/testi.png';
-import quoteImg from '../assets/images/resource/quote3.png';
+import { Link } from 'react-router-dom';
+import { HiOutlineMail } from "react-icons/hi";
+import { FaTrophy, FaBullseye, FaPhoneAlt } from 'react-icons/fa';
 
-const InvestmentProcess = () => {
+import secTitleImg from '../assets/images01/shapes/sec-title-s-1.png';
+import aboutImage from '../assets/images01/resource/testi.png'
+
+
+
+const WhyChoose = () => {
+
   return (
-    <>
-      <div className="testimonial-section">
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-12">
-              <div className="top-mediic-section section-border">
-                <div className="mediic-section-title white">
-                  <h4>Healthcare feedback</h4>
-                  <h1>Why Choose Mango Wealth Planner for Healthcare?</h1>
+    <section className="about-fore" id="about">
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-6">
+            <div className="about-fore__left">
+              <div className="about-fore__top">
+                <div className="sec-title text-start wow fadeInUp" data-wow-duration="700ms">
+                  <h6 className="sec-title__tagline">
+                    <img src={secTitleImg} alt="About Us" className="sec-title__img" />
+                    Choose Healthcare
+                  </h6>
+                  <h3 className="sec-title__title">
+                    Why Choose Mango Wealth Planner for Healthcare?
+                  </h3>
+                </div>
+                <p className="about-fore__top__text">
+                  There are many variations of passages of Lorem Ipsum available, bu the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
+                </p>
+              </div>
+              <ul className="about-fore__feature list-unstyled">
+                <li className="about-fore__feature__item">
+                  <div className="about-fore__feature__icon">
+                    <i className="icon-trophy-1"></i>
+                  </div>
+                  <div className="about-fore__feature__content">
+                    <h4 className="about-fore__feature__title">Sector Specialization</h4>
+                    <p className="about-fore__feature__text">
+                      Our team includes healthcare analysts, former pharmaceutical executives, and hospital administrators who understand industry dynamics.
+                    </p>
+                  </div>
+                </li>
+                <li className="about-fore__feature__item">
+                  <div className="about-fore__feature__icon">
+                    <i className="icon-target-1"></i>
+                  </div>
+                  <div className="about-fore__feature__content">
+                    <h4 className="about-fore__feature__title">Due Diligence Excellence</h4>
+                    <p className="about-fore__feature__text">
+                      We conduct thorough FDA approval tracking, clinical trial analysis, and regulatory pathway assessments for all investments.
+                    </p>
+                  </div>
+                </li>
+              </ul>
+              <div className="about-fore__link">
+                <Link to="/about" className="laboix-btn laboix-btn--base">
+                  Discover More
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-6">
+            <div className="about-fore__right wow fadeInRight" data-wow-duration="700ms" data-wow-delay="500ms">
+              <div className="about-fore__item">
+                <div className="about-fore__item__image">
+                  <img src={aboutImage} alt="laboix image" />
+                </div>
+                <div className="about-fore__item__call">
+                  <div className="about-fore__item__icon">
+                    <HiOutlineMail style={{color: "#fff"}}/>
+                  </div>
+                  <div className="about-fore__item__content">
+                    <span className="about-fore__item__subtitle">Contact to anytime</span>
+                    <h5 className="about-fore__item__number">
+                      <a href="tel:+92-3800-8060">healthcare@mangowealthplanner.com</a>
+                    </h5>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-      <div className="row justify-content-center align-items-center  g-4">
-  <div className="col-lg-6 col-md-12">
-    <div className="">
-      <img src={testiImg} className='img-fluid rounded-4' alt="testimonial" />
-    </div>
-  </div>
-  <div className="col-lg-6 col-md-12">
-    <div className="testimonial-single-slide">
-      <div className="testi-icon">
-        <img src={quoteImg} alt="quote" />
-      </div>
-      <div className="testi-desc">
-        <p>
-          <span>Sector Specialization</span> Our team includes healthcare analysts, former pharmaceutical executives, and hospital administrators who understand industry dynamics.                  
-        </p>
-        <p><span>Due Diligence Excellence</span>We conduct thorough FDA approval tracking, clinical trial analysis, and regulatory pathway assessments for all investments.
-        </p>
-        <p><span>Impact + Returns</span>We identify investments that deliver both competitive financial returns and positive social impact in healthcare accessibility and innovation.
-        </p>
-      </div>
-      <div className="authors-info">
-      </div>
-    </div>
-  </div>        
-</div>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 
-export default InvestmentProcess;
+export default WhyChoose;
