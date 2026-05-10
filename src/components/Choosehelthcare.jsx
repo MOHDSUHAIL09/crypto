@@ -14,7 +14,7 @@ const WhyChoose = () => {
     <section className="about-fore" id="about">
       <div className="container">
         <div className="row">
-          <div className="col-lg-6">
+          <div className="col-lg-6 mb-5 ">
             <div className="about-fore__left">
               <div className="about-fore__top">
                 <div className="sec-title text-start wow fadeInUp" data-wow-duration="700ms">
@@ -61,7 +61,7 @@ const WhyChoose = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-6">
+          <div className="col-lg-6 mb-4">
             <div className="about-fore__right wow fadeInRight" data-wow-duration="700ms" data-wow-delay="500ms">
               <div className="about-fore__item">
                 <div className="about-fore__item__image">

@@ -3328,7 +3328,7 @@ h6 {
   align-items: center;
   background-color: var(--laboix-secondary, #0EBD66);
   gap: 10px;
-  padding: 11px 10px 12px 15px;
+  padding: 11px 10px px 15px;
 }
 @media (max-width: 1300px) {
   .main-header__right__call {
@@ -3349,14 +3349,14 @@ h6 {
 }
 .main-header__right__content__text {
   color: var(--laboix-white, #fff);
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 500;
   line-height: normal;
 }
 .main-header__right__content__number {
   margin-top: -5px;
   color: var(--laboix-white, #fff);
-  font-size: 18px;
+  font-size: 13px;
   font-weight: 600;
   line-height: 166.667%;
   margin-bottom: 0;
@@ -11420,7 +11420,7 @@ h6 {
 }
 @media (max-width: 767px) {
   .about-two {
-    padding: 80px 0px;
+    padding: 50px 0px;
   }
 }
 .about-two__thumb {
@@ -11481,6 +11481,12 @@ h6 {
   position: absolute;
   top: 38%;
   right: 30px;
+}
+
+@media (max-width: 400px) {
+  .about-two__items{
+    display: none;
+  }
 }
 .about-two__box {
   background: var(--laboix-white, #fff);
@@ -11546,7 +11552,7 @@ h6 {
 }
 @media (max-width: 575px) {
   .about-two__box__text {
-    font-size: 20px;
+    font-size: 14px;
   }
 }
 .about-two__box:hover .about-two__box__icon {
@@ -12018,14 +12024,10 @@ h6 {
 .about-fore {
   padding: 50px 0px;
 }
-@media (max-width: 991px) {
-  .about-fore {
-    padding: 100px 0px;
-  }
-}
+
 @media (max-width: 767px) {
   .about-fore {
-    padding: 80px 0px;
+    padding: 0px 0px;
   }
 }
 /* .about-fore__top {
@@ -12199,7 +12201,7 @@ h6 {
 }
 @media (max-width: 767px) {
   .about-fore__item__call {
-    display: block;
+    display: flex;
     padding: 15px 30px;
     margin-top: -100px;
   }
@@ -12538,7 +12540,7 @@ h6 {
 }
 @media (max-width: 991px) {
   .service-page {
-    padding: 80px 0px;
+    padding: 50px 0px;
   }
 }
 .service-page--one {
