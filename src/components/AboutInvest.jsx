@@ -23,9 +23,9 @@ const AboutTwo = () => {
             <div className="about-two__left wow fadeInLeft" data-wow-duration="700ms" data-wow-delay="500ms">
               <div className="about-two__thumb">
                 <div className="about-two__thumb__item">
-                  <img src={aboutImg1} alt="laboix" />
+                  <img className='about-one-img' src={aboutImg1} alt="laboix" />
                 </div>
-                <div className="about-two__thumb__item about-two__thumb__item--two">
+                <div className="about-two__thumb__item01 about-two__thumb__item--two">
                   <img src={aboutImg2} alt="laboix" />
                   <div className="about-two__items">
                     <div className="about-two__box">
@@ -102,7 +102,7 @@ The healthcare sector offers a unique combination of recession-resistant growth,
 </ul>
 
               <div className="about-two__link">
-                <Link to="/about" className="about-two__link__btn laboix-btn">
+                <Link to="/login" className="about-two__link__btn laboix-btn">
                   Discover More
                 </Link>
               </div>

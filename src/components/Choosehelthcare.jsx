@@ -55,7 +55,7 @@ const WhyChoose = () => {
                 </li>
               </ul>
               <div className="about-fore__link">
-                <Link to="/about" className="laboix-btn laboix-btn--base">
+                <Link to="/login" className="laboix-btn">
                   Discover More
                 </Link>
               </div>

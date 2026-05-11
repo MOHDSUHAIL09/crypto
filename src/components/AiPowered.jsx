@@ -5,24 +5,24 @@ import { FaStar } from 'react-icons/fa';
 // Import images
 import testimonialBg from '../assets/images01/backgrounds/testimonial-bg-1.jpg';
 import testiImg1 from '../assets/images01/resource/bot.png';
-import testiShape from '../assets/images01/shapes/test-image-bg.png';
+
 
 const TestimonialsSection = () => {
   const bgRef = useRef(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (bgRef.current) {
-        const scrollPosition = window.scrollY;
-        const sectionPosition = bgRef.current.parentElement?.offsetTop || 0;
-        const relativeScroll = scrollPosition - sectionPosition;
-        bgRef.current.style.transform = `translateY(${relativeScroll * 0.2}px)`;
-      }
-    };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (bgRef.current) {
+  //       const scrollPosition = window.scrollY;
+  //       const sectionPosition = bgRef.current.parentElement?.offsetTop || 0;
+  //       const relativeScroll = scrollPosition - sectionPosition;
+  //       bgRef.current.style.transform = `translateY(${relativeScroll * 0.2}px)`;
+  //     }
+  //   };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, []);
 
   return (
     <section className="testimonials-two">
@@ -39,9 +39,7 @@ const TestimonialsSection = () => {
               <div className="col-lg-4">
                 <div className="testimonials-two__thumb">
                   <img src={testiImg1} alt="laboix image" className='bot-img' />
-                  <div className="testimonials-two__shape">
-                    <img src={testiShape} alt="laboix image" />
-                  </div>
+                
                 </div>
               </div>
               <div className="col-lg-8">

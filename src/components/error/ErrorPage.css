@@ -34,10 +34,11 @@
 }
 
 /* Message */
-.error-message {
+.error-message01 {
   font-size: 1rem;
   margin-bottom: 20px;
   line-height: 1.5;
+  color: #fff !important;
 }
 
 /* Button */
